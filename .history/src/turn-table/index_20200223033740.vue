@@ -1,0 +1,37 @@
+<template>
+  <section class="turn-table-wrapper"></section>
+</template>
+<script>
+export default {
+  data() {
+    return {
+      awards: []
+    };
+  },
+  mounted() {
+    this._initData();
+    this._initMove();
+  },
+  methods: {
+    _initMobile() {
+      let oMeta = document.createElement("meta");
+      oMeta.content = `width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no, target-densitydpi=device-dpi, viewport-fit=cover`;
+      oMeta.name = "viewport";
+      document.getElementsByTagName("head")[0].appendChild(oMeta);
+    },
+    _initData() {
+      import("./award.js").then(res => {
+        // console.log(res.default);
+        this.awards = res.default;
+      });
+    },
+    _initMove() {}
+  }
+};
+</script>
+<style lang="scss" scoped>
+.turn-table-wrapper {
+  width: 100%;
+  height: 100%;
+}
+</style>
