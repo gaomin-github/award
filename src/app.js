@@ -16,6 +16,10 @@ const routes = new VueRouter({
     {
       path: "/turnTable",
       component: () => import("./turn-table/index.vue")
+    },
+    {
+      path: "/lottieDemo",
+      component: () => import("./lottieDemo/lottieComponent.vue")
     }
   ]
 });

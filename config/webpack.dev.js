@@ -11,7 +11,8 @@ module.exports = {
   },
   output: {
     filename: "[name].[hash].js",
-    path: path.resolve(__dirname, "../built")
+    path: path.resolve(__dirname, "../dev_built"),
+    chunkFilename: `[name].[hash].js`
   },
   devServer: {
     historyApiFallback: true,
