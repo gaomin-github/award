@@ -19,7 +19,11 @@ const routes = new VueRouter({
     },
     {
       path: "/lottieDemo",
-      component: () => import("./lottieDemo/lottieComponent.vue")
+      component: () => import("./lottieDemo/index.vue")
+    },
+    {
+      path: "/threeDemo",
+      component: () => import("./threeDemo/demo1.vue")
     }
   ]
 });
