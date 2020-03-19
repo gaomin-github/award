@@ -24,6 +24,10 @@ const routes = new VueRouter({
     {
       path: "/threeDemo",
       component: () => import("./threeDemo/demo1.vue")
+    },
+    {
+      path: "/granulesDemo",
+      component: () => import("./granules/index.vue")
     }
   ]
 });

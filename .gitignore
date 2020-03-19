@@ -1,6 +1,4 @@
-.DS_Store
-.history/
-built/
 node_modules/
-.DS_Store
 .history
+.DS_Store
+built/
