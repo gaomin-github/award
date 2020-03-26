@@ -50,7 +50,7 @@ export default {
         // 初始化画布
         this._initRenderDom();
         // 改变相机视角
-        this._changeCamera();
+        // this._changeCamera();
         // 创建方块
         this.addCube();
         this.addCube();

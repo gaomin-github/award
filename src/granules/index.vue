@@ -10,15 +10,21 @@ export default {
             scene: null,
             camera: null,
             renderer: null,
-            fogNum: 0.01
+            fogNum: 0.01,
+            geometry: null,
+            particle: null,
+            particles: [],
+            group: null,
+            clock: null,
+            newMesh: null
         };
     },
     mounted() {
         document.title = "obj loader";
         this._initScene();
-        this._initCube();
+        // this._initCube();
         this._getObjData();
-        this._renderAnimate();
+        // this._renderAnimate();
     },
     methods: {
         _initScene() {
@@ -31,26 +37,17 @@ export default {
                 1,
                 1000
             );
-            this.camera.position.set(100, 100, 100);
+            this.camera.position.set(300, 300, 300);
             this.camera.lookAt(new Three.Vector3(0, 0, 0));
 
             //   场景
             this.scene = new Three.Scene();
-            // this.scene.fog = new Three.Fog(0x05050c, 10, 60);
-            // this.scene.add(new Three.AxisHelper(15));
-
-            // 灯光
-            // let ambientLight = new Three.AmbientLight(0x000000, 0.4);
-            // this.scene.add(ambientLight);
-            // let pointLight = new Three.PointLight(0xe42107);
-            // pointLight.castShadow = true;
-            // pointLight.position.set(-10, -5, -10);
-            // pointLight.distance = 20;
-            // this.scene.add(pointLight);
 
             let dirLight = new Three.DirectionalLight(0xffffff, 1);
             dirLight.position.set(8, 10, 6);
             this.scene.add(dirLight);
+            // 计时器
+            this.clock = new Three.Clock();
 
             //   渲染器
             this.renderer = new Three.WebGLRenderer({ antialias: true });
@@ -74,42 +71,38 @@ export default {
             loader.load("jkm_female1.obj", module => {
                 console.log(`obj`, 49);
                 console.log(module);
-                // this.scene.add(module);
-                // this._renderAnimate();
-
-                // let color = new Three.color(`#ffffff`);
-                // let material = new Three.PointsMaterial({
-                //     size: 0.2,
-                //     depthTest: false,
-                //     transparent: true
-                // });
-                // let particleSystem = new Three.Group();
-                // let allCount = 0;
-                for (let i = 0; i < module.children.length; i++) {
-                    let geometry = module.children[i].geometry;
-                    let material = module.children[i].material;
-                    let particles = new Three.Points(geometry, material);
-                    this.scene.add(particles);
-                    // let name = module.children[i].name;
-                    // let _attributes = module.children[i].geometry.attributes;
-                    // let count = _attributes.position.count;
-                    // _attributes.positionEnd = _attributes.position.clone();
-                    // _attributes.position1 = _attributes.position.clone();
-                    // for (let i = 0; i < count * 3; i++) {
-                    //     _attributes.position1.array[i] =
-                    //         Math.random() * 100 - 50;
-                    // }
-                    // let particles = new Three.Points(
-                    //     module.children[i].geometry,
-                    //     material
-                    // );
-                    // particleSystem.add(particles);
-                    // allCount += count;
+                // this.scene.add(module.children[1]);
+                this.geometry = module.children[1].geometry;
+                // console.log(, 81);
+                let positions = this.geometry.attributes.position;
+                this.group = new Three.Group();
+                this.scene.add(this.group);
+                for (let i = 0; i < positions.length; i++) {
+                    // sprite实现
+                    // let material = new Three.SpriteMaterial({
+                    //     color: 0x080808 * Math.random() + 0x080808,
+                    //     size: 2
+                    // });
+                    // let particle = new Three.Sprite(material);
+                    // particle.position.x = positions.getX(i);
+                    // particle.position.y = -10;
+                    // particle.position.z = positions.getZ(i);
+                    // this.group.add(particle);
+                    // this.particles.push(particle);
                 }
+                // point实现
+                this.newMesh = new Three.Points(
+                    this.geometry,
+                    new Three.PointsMaterial({
+                        size: 30,
+                        color: 0x808008 * Math.random() + 0x808008
+                    })
+                );
+                this.newMesh.position.x = 10;
+                this.newMesh.position.y = 0;
+                this.newMesh.position.z = 10;
+                this.group.add(this.newMesh);
                 this._renderAnimate();
-                // particleSystem.applyMatrix(
-                //     new Three.Matrix4().makeTranslation(-5, -5, -10)
-                // );
             });
         },
         _renderAnimate() {
@@ -118,8 +111,31 @@ export default {
 
                 // this.scene.fog = new Three.FogExp2("#fff", this.fogNum);
             }
+            // let positions = this.geometry.attributes.position;
+            // for (let i = 0; i < this.particles.length; i++) {
+            //     let particle = this.particles[i];
+
+            //     if (particle.position.y < positions.getY(i)) {
+            //         this.particles[i].position.y += 0.2;
+            //     }
+            // }
+            let meshPositions = this.newMesh.geometry.attributes.position;
+            let count = meshPositions.count;
+            for (let i = 0; i < count; i++) {
+                let px = meshPositions.getX(i);
+                let py = meshPositions.getY(i);
+                let pz = meshPositions.getZ(i);
+                meshPositions.setY(py + 0.01);
+                // meshPositions.setXYZ(
+                //     i,
+                //     px + 10 * Math.random(),
+                //     px + 0.5 * Math.random(),
+                //     px + 0.5 * Math.random()
+                // );
+            }
+
             this.renderer.render(this.scene, this.camera);
-            // requestAnimationFrame(this._renderAnimate);
+            requestAnimationFrame(this._renderAnimate);
         }
     }
 };
