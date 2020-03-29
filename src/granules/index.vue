@@ -31,34 +31,22 @@ export default {
   methods: {
     _initScene() {
       //   相机
-      //   this.camera = new Three.OrthographicCamera(
-      //     window.innerWidth / -20,
-      //     window.innerWidth / 20,
-      //     window.innerHeight / 20,
-      //     window.innerHeight / -20,
-      //     1,
-      //     1000
-      //   );
-      //   this.camera.position.set(300, -300, 300);
-
-      //   this.camera.lookAt(new Three.Vector3(0, 0, 0));
       this.camera = new Three.PerspectiveCamera(
         45,
         window.innerWidth / window.innerHeight,
         1,
         50000
       );
-      this.camera.position.set(0, 70, 700);
+      this.camera.position.set(100, 100, 800);
       //   场景
       this.scene = new Three.Scene();
       this.scene.add(new Three.AxisHelper(55));
 
-      let dirLight = new Three.DirectionalLight(0xffffff, 1);
-      dirLight.position.set(8, 10, 6);
-      this.scene.add(dirLight);
+      //   let dirLight = new Three.DirectionalLight(0xffffff, 1);
+      //   dirLight.position.set(8, 10, 6);
+      //   this.scene.add(dirLight);
       // 计时器
       this.clock = new Three.Clock();
-
       //   渲染器
       this.renderer = new Three.WebGLRenderer({ antialias: true });
       this.renderer.setSize(window.innerWidth, window.innerHeight);
@@ -74,11 +62,6 @@ export default {
     _getObjData() {
       OBJLoader(Three);
       let loader = new Three.OBJLoader();
-      //   import("./jkm_female1.obj").then(module => {
-      //     console.log(`module`);
-      //     console.log(module);
-      //   });
-      //   loader.load("jkm_female1.obj", module => {
       loader.load("male02.obj", module => {
         this.group = new Three.Group();
         this.scene.add(this.group);
@@ -99,27 +82,14 @@ export default {
         // this.particles.push(particle);
         // }
         // point实现
-        let clones = [
-          [60, 0, -40],
-          [50, 0, 0],
-          [10, 0, 50],
-          //   [10, 0, -50],
-          //   [40, 0, 20],
-          //   [-40, 0, 10],
-          //   [-50, 0, -50],
-
-          [0, 0, 0]
-        ];
         let mesh = null;
-        // console.log(`module.length:${module.children.length}`);
         for (let i = 0; i < module.children.length; i++) {
-          //   for (let m = 0; m < clones.length; m++) {
           let geometry = module.children[i].geometry;
           geometry.attributes.position.setUsage(Three.DynamicDrawUsage);
           let positions = geometry.attributes.position;
           geometry.setAttribute("initPosition", positions.clone());
           for (let j = 0; j < positions.count; j++) {
-            positions.setY(j, 0);
+            positions.setXYZ(j, 0, 0, 0);
           }
           mesh = new Three.Points(
             geometry,
@@ -128,45 +98,33 @@ export default {
               color: 0xffffff
             })
           );
-          //   mesh.position.x = clones[m][0];
-          //   mesh.position.y = 0;
-          //   mesh.position.z = clones[m][2];
-          //   mesh.rotation.y = 10;
           mesh.position.x = 30;
           mesh.position.y = 0;
           mesh.position.z = 30;
 
           this.group.add(mesh);
-          //   }
           this.meshes.push(mesh);
         }
         this._renderAnimate();
       });
     },
     _renderAnimate() {
-      //   console.log(`renderAnimation`, 119);
       if (this.fogNum > 0) {
         this.fogNum -= 0.0001;
-
-        // this.scene.fog = new Three.FogExp2("#fff", this.fogNum);
+      } else if (this.fogNum < 0.5) {
+        this.fogNum += 0.0001;
       }
-      //   let positions = this.geometry.attributes.position;
-      //   for (let i = 0; i < this.particles.length; i++) {
-      //     let particle = this.particles[i];
+      this.scene.fog = new Three.FogExp2("#fff", this.fogNum);
 
-      //     if (particle.position.y < positions.getY(i)) {
-      //       this.particles[i].position.y += 0.2;
-      //     }
-      //   }
-      //   this.group.rotation.y -= 0.002;
+      this.group.rotation.y -= 0.002;
       let verticalCount = 0;
       let allPointCount = 0;
+      //   获取坐标点数量
       for (let i = 0; i < this.meshes.length; i++) {
         let mesh = this.meshes[i];
         let meshPositions = mesh.geometry.attributes.position;
         allPointCount += meshPositions.count;
       }
-      //   console.log(this.meshes);
       let delta = this.clock.getDelta() * 100;
       for (let i = 0; i < this.meshes.length; i++) {
         let mesh = this.meshes[i];
@@ -177,34 +135,33 @@ export default {
           let px = meshPositions.getX(j);
           let py = meshPositions.getY(j);
           let pz = meshPositions.getZ(j);
-          //   console.log(`py:${py},initPy:${initMeshPositions.getY(j)}`);
           if (this.dir > 0) {
             //   向上
-            let ix = initMeshPositions.getX(i);
-            let iy = initMeshPositions.getY(i);
-            let iz = initMeshPositions.getZ(i);
-
+            let ix = initMeshPositions.getX(j);
+            let iy = initMeshPositions.getY(j);
+            let iz = initMeshPositions.getZ(j);
             let dx = Math.abs(px - ix);
             let dy = Math.abs(py - iy);
             let dz = Math.abs(pz - iz);
-
-            if (py < initMeshPositions.getY(j)) {
-              meshPositions.setXYZ(j, px, py + delta * Math.random(), pz);
+            if (dx + dy + dz > 1) {
+              meshPositions.setXYZ(
+                j,
+                px + ((ix - px) / dx) * delta * Math.random(),
+                py + ((iy - py) / dy) * delta * Math.random(),
+                pz + ((iz - pz) / dz) * delta * Math.random()
+              );
             } else {
               verticalCount++;
             }
             if (verticalCount === allPointCount) this.dir = -1;
           } else {
             //   向下
-            if (py > 0) {
+            if (py > 0.1) {
               let iy = initMeshPositions.getY(i);
-
               meshPositions.setXYZ(
                 j,
                 px + (0.5 - Math.random()) * delta,
-                // px,
                 py + (0.25 - Math.random()) * delta,
-                // pz
                 pz + (0.5 - Math.random()) * delta
               );
             } else {
@@ -217,7 +174,7 @@ export default {
       }
 
       this.renderer.render(this.scene, this.camera);
-      //   requestAnimationFrame(this._renderAnimate);
+      requestAnimationFrame(this._renderAnimate);
     }
   }
 };
