@@ -68,5 +68,5 @@ Mock.mock("/xian/xianProperty", "get", function() {
       aroundGarden: [[Object], [Object], [Object]],
     },
   ];
-  return JSON.stringify(res);
+  return res;
 });
