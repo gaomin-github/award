@@ -1,21 +1,99 @@
 <template>
-    <section></section>
+  <div class="xianEstate-wrapper">
+    <!-- <div v-if="buildingList && buildingList.length > 0" class="building">
+      <section
+        v-for="building in buildingList"
+        :key="building.href"
+        class="building-item"
+      >
+        <div class="building-item-label" v-html="building.label"></div>
+        <div class="building-item-time">{{ building.time }}</div>
+        <div class="building-item-drive">
+          开车：距离
+          {{ Math.ceil(parseInt(building.drivingRoute.distance) / 100) / 10 }}
+          公里,需要
+          {{ Math.ceil(parseInt(building.drivingRoute.duration) / 60) }} 分钟
+        </div>
+        <div class="building-item-bus">
+          乘公交：距离
+          {{ Math.ceil(parseInt(building.busRoute.distance) / 100) / 10 }}
+          公里，需要
+          {{ Math.ceil(parseInt(building.busRoute.duration) / 60) }}
+          分钟，需要步行：{{ building.busRoute.walking_distance }}米
+        </div>
+        <div class="building-item-garden">
+          周边{{ building.aroundGarden.length }}家公园
+        </div>
+      </section>
+    </div> -->
+  </div>
 </template>
 <script>
 export default {
-    mounted() {
-        this._initPropertyList();
+  data() {
+    return {
+      buildingList: [],
+    };
+  },
+  mounted() {
+    console.log("xian-estate ", 12);
+    this._initPropertyList();
+  },
+  methods: {
+    _initPropertyList() {
+      fetch("/xian/xianProperty", {
+        method: "get",
+      })
+        .then((res) => {
+          console.log(res, 48);
+          return res.json();
+        })
+        .then((data) => {
+          // this.buildingList = data;
+          console.log(data, 53);
+        });
     },
-    methods: {
-        _initPropertyList() {
-            fetch("/xian/xianProperty", {
-                method: "post"
-            }).then(res => {
-                console.log(res, 14);
-            });
-        }
-    }
+  },
 };
 </script>
 <style lang="scss" scoped>
+div,
+section {
+  display: block;
+  overflow: hidden;
+  margin: 0;
+  padding: 0;
+}
+.xianEstate-wrapper {
+  width: 100%;
+  height: 100%;
+  background: rgb(235, 235, 235);
+}
+.building {
+  overflow-y: scroll;
+  height: 100%;
+  padding: 10px;
+  &-item {
+    margin: 10px 0px;
+    &-label {
+      line-height: 30px;
+      font-size: 16px;
+    }
+    &-time {
+      line-height: 20px;
+      font-size: 12px;
+      color: #333;
+    }
+    &-drive {
+      line-height: 24px;
+      font-size: 14px;
+      color: #333;
+    }
+    &-bus {
+      line-height: 24px;
+      font-size: 14px;
+      color: #333;
+    }
+  }
+}
 </style>
