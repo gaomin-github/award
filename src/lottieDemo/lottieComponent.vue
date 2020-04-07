@@ -16,10 +16,11 @@ export default {
             remoteJsUrl: "http://192.168.31.252:9080/jsDemoA.js",
             jsonImgUrl: "./q4-bg.json",
             style: {
-                width: "320px",
-                height: "320px",
-                overflow: "hidden",
-                margin: "0 auto"
+                // width: "370px"
+                height: ""
+                // minHeight: "300px"
+                // overflow: "hidden",
+                // margin: "0 auto"
             }
         };
     },
@@ -30,8 +31,30 @@ export default {
     },
     methods: {
         _loadJsonImg() {
-            import("./q4-bg.json").then(module => {
-                console.log(`module`, 34);
+            let that = this;
+            let el = this.$refs.lottieCon;
+            // console.log(el.offsetWidth, 35);
+            // console.log(el.offsetHeight, 36);
+            // console.log(el, 34);
+
+            // import("./q4-bg.json").then(module => {
+            import("./q9-huawei-bg1.json").then(module => {
+                // console.log(`module`, 34);
+                this.style = { height: `${module.h / 2}px` };
+                requestAnimationFrame(() => {
+                    console.log(this.style, 44);
+                    lottie.loadAnimation({
+                        container: that.$refs.lottieCon,
+                        renderer: "canvas",
+                        loop: true,
+                        autoplay: true,
+                        animationData: module,
+                        className: "canvas-default",
+                        rendererSettings: {
+                            // preserveAspectRatio: "slice"
+                        }
+                    });
+                });
             });
         },
         _loadRemoteJs() {
@@ -67,4 +90,14 @@ export default {
     }
 };
 </script>
+<style lang="scss" scoped>
+.lottie-wrapper {
+    width: 100%;
+    // height: 100%;
+}
+.canvas-default {
+    width: 100%;
+    // min-height: 300px;
+}
+</style>
 <!-- <style lang="scss" scoped></style> -->

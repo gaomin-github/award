@@ -1,7 +1,7 @@
 <template>
     <section class="animate-wrapper">
         <section v-for="(item, key) in jsUrlList" :key="key">
-            <lottie-component :jsUrl="item"></lottie-component>
+            <lottie-component :jsUrl="item" class="img-item"></lottie-component>
         </section>
     </section>
 </template>
@@ -26,3 +26,17 @@ export default {
     }
 };
 </script>
+<style lang="scss" scoped>
+section {
+    display: block;
+    overflow: hidden;
+    box-sizing: border-box;
+}
+.img-item {
+    width: 100%;
+    border: 1px red solid;
+    // padding: 10px;
+    // height: 100%;
+    // height: 300px;
+}
+</style>
