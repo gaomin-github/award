@@ -1,6 +1,7 @@
 <template>
-    <div class="xianEstate-wrapper">
-        <div v-if="buildingList && buildingList.length > 0" class="building">
+    <section class="xianEstate-wrapper">
+        <div class="header"></div>
+        <!-- <div v-if="buildingList && buildingList.length > 0" class="building">
             <section v-for="building in buildingList" :key="building.href" class="building-item">
                 <div class="building-item-title">
                     <div class="building-item-label" v-html="building.label"></div>
@@ -30,8 +31,8 @@
 
                 <div class="building-item-garden">周边{{ building.aroundGarden.length }}家公园</div>
             </section>
-        </div>
-    </div>
+        </div>-->
+    </section>
 </template>
 <script>
 import axios from "axios";
@@ -42,18 +43,25 @@ export default {
         };
     },
     mounted() {
-        console.log("xian-estate ", 12);
+        // console.log("xian-estate ", 12);
         document.title = "xian";
         this._initPropertyList();
     },
     methods: {
         _initPropertyList() {
-            axios.get("/xian/xianProperty").then(res => {
-                console.log(res, 46);
-                if (res.status === 200) {
-                    this.buildingList = res.data;
+            const xianAxios = axios.create();
+
+            xianAxios({ method: "get", url: "/xian/xianProperty" }).then(
+                res => {
+                    console.log(res, 46);
+                    if (res.status === 200) {
+                        this.buildingList = res.data;
+                    }
+                },
+                reject => {
+                    console.log(reject, 60);
                 }
-            });
+            );
             // fetch("/xian/xianProperty", {
             //   method: "get",
             // })
@@ -87,10 +95,10 @@ section {
     height: 100%;
     padding: 0px 15px;
     &-item {
-        margin: 15px 0px;
+        margin: 20px 0px;
         padding: 5px 10px;
         border-radius: 12px;
-        background: rgba(13, 54, 151, 1);
+        background: rgba(13, 54, 151, 0.9);
         // display: flex;
         &-title {
             display: flex;
@@ -121,11 +129,11 @@ section {
             align-items: top;
             line-height: 20px;
             font-size: 14px;
-            margin: 5px 0px;
+            margin: 10px 0px;
         }
 
         .drive {
-            color: rgba(255, 255, 255, 1);
+            color: rgba(235, 235, 235, 1);
             font-weight: 500;
         }
         .bus {
@@ -133,16 +141,16 @@ section {
             font-weight: 400;
         }
         &-route-way {
-            width: 100px;
+            width: 60px;
         }
         &-route-distance {
             flex: 1;
             flex-shrink: 1;
         }
         &-garden {
-            line-height: 24px;
+            line-height: 30px;
             font-size: 12px;
-            color: rgba(230, 230, 230, 1);
+            color: rgba(255, 255, 255, 1);
         }
     }
 }

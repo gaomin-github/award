@@ -24,10 +24,10 @@ module.exports = {
         publicPath: "/",
         disableHostCheck: true,
         proxy: {
-            //   "/xian/xianProperty": {
-            //     target: "http://localhost:5000",
+            // "/xian/xianProperty": {
+            //     target: "http://10.235.148.210:5000",
             //     changeOrigin: false,
-            //   },
+            // },
         },
     },
     resolve: {
