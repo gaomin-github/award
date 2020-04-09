@@ -37,9 +37,7 @@ export default {
             // console.log(el.offsetHeight, 36);
             // console.log(el, 34);
 
-            // import("./q4-bg.json").then(module => {
-            import("./q9-huawei-bg1.json").then(module => {
-                // console.log(`module`, 34);
+            import("" + this.jsUrl).then(module => {
                 this.style = { height: `${module.h / 2}px` };
                 requestAnimationFrame(() => {
                     console.log(this.style, 44);
