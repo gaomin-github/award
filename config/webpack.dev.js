@@ -24,10 +24,14 @@ module.exports = {
     publicPath: "/",
     disableHostCheck: true,
     proxy: {
-      //   "/xian/xianProperty": {
-      //     target: "http://localhost:5000",
-      //     changeOrigin: false,
-      //   },
+      "/xian/estateArea": {
+        target: "http://localhost:5000",
+        changeOrigin: false,
+      },
+      "/xian/estateBuildings": {
+        target: "http://localhost:5000",
+        changeOrigin: false,
+      },
     },
   },
   resolve: {
@@ -35,6 +39,7 @@ module.exports = {
     alias: {
       vue$: "vue/dist/vue.esm.js",
       TagCanvas: path.resolve(__dirname, "../common/lib/tagcanvas.js"),
+      request: path.resolve(__dirname, "../utils/request.js"),
     },
   },
   module: {

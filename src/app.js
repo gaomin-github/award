@@ -36,11 +36,17 @@ const routes = new VueRouter({
       path: "/xianEstateDemo",
       component: () => import("./xian-estate/index.vue"),
     },
+    {
+      // 西安area中的building
+      name: "xianBuilding",
+      path: "/xianBuilding",
+      component: () => import("./xian-estate/area.vue"),
+    },
   ],
 });
 console.log(`18 app.js`);
 // mock数据
-import("./mock/index.js");
+// import("./mock/index.js");
 let vm = new Vue({
   el: "#app",
   components: {

@@ -37,7 +37,6 @@
       [Object],
     ],
   },
-  ,
   {
     label: "紫薇●西棠",
     href: "price?id=8a901c28707bb13f017084cacd0514cb",
