@@ -9,7 +9,6 @@ Vue.use(VueRouter);
 import App from "./app.vue";
 // import xianEstateDemo from './xian-estate/index.vue'
 const routes = new VueRouter({
-<<<<<<< HEAD
   mode: "history",
   routes: [
     // {
@@ -54,54 +53,13 @@ const routes = new VueRouter({
 console.log(`18 app.js`);
 // mock数据
 // import("./mock/index.js");
-=======
-    mode: "history",
-    routes: [
-        // {
-        //   path: "",
-        //   component: () => import("./index.vue")
-        // },
-        {
-            path: "/cloud",
-            component: () => import("./cloud/index.vue"),
-        },
-        {
-            path: "/turnTable",
-            component: () => import("./turn-table/index.vue"),
-        },
-        {
-            path: "/lottieDemo",
-            component: () => import("./lottieDemo/index.vue"),
-        },
-        {
-            // 方块创建动画
-            path: "/threeDemo",
-            component: () => import("./threeDemo/demo1.vue"),
-        },
-        {
-            // 模型转粒子
-            path: "/granulesDemo",
-            component: () => import("./granules/index.vue"),
-        },
-        {
-            // 西安
-            path: "/xianEstateDemo",
-            component: () => import('./xian-estate/index.vue'),
-        },
-    ],
-});
-console.log(`18 app.js`);
-// 调试工具
-// eruda.init();
-
->>>>>>> 82f6c8f193ec5b90330ce9915d440408828bc580
 let vm = new Vue({
-    el: "#app",
-    components: {
-        App: App,
-    },
-    template: "<App/>",
-    router: routes,
-    mock
-    // router: SelfRoutes
+  el: "#app",
+  components: {
+    App: App,
+  },
+  template: "<App/>",
+  router: routes,
+  mock,
+  // router: SelfRoutes
 });
