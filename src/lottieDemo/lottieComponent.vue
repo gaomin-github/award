@@ -14,19 +14,47 @@ export default {
         return {
             remoteJsonUrl: "http://192.168.31.252:9080/lottie.json",
             remoteJsUrl: "http://192.168.31.252:9080/jsDemoA.js",
+            jsonImgUrl: "./q4-bg.json",
             style: {
-                width: "320px",
-                height: "320px",
-                overflow: "hidden",
-                margin: "0 auto"
+                // width: "370px"
+                height: ""
+                // minHeight: "300px"
+                // overflow: "hidden",
+                // margin: "0 auto"
             }
         };
     },
     mounted() {
         // this._loadRemoteJson();
-        this._loadRemoteJs();
+        // this._loadRemoteJs();
+        this._loadJsonImg();
     },
     methods: {
+        _loadJsonImg() {
+            let that = this;
+            let el = this.$refs.lottieCon;
+            // console.log(el.offsetWidth, 35);
+            // console.log(el.offsetHeight, 36);
+            // console.log(el, 34);
+
+            import("" + this.jsUrl).then(module => {
+                this.style = { height: `${module.h / 2}px` };
+                requestAnimationFrame(() => {
+                    console.log(this.style, 44);
+                    lottie.loadAnimation({
+                        container: that.$refs.lottieCon,
+                        renderer: "canvas",
+                        loop: true,
+                        autoplay: true,
+                        animationData: module,
+                        className: "canvas-default",
+                        rendererSettings: {
+                            // preserveAspectRatio: "slice"
+                        }
+                    });
+                });
+            });
+        },
         _loadRemoteJs() {
             let scriptEl = document.createElement("script");
             scriptEl.src = this.jsUrl;
@@ -60,4 +88,14 @@ export default {
     }
 };
 </script>
+<style lang="scss" scoped>
+.lottie-wrapper {
+    width: 100%;
+    // height: 100%;
+}
+.canvas-default {
+    width: 100%;
+    // min-height: 300px;
+}
+</style>
 <!-- <style lang="scss" scoped></style> -->
