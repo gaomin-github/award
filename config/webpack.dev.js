@@ -26,11 +26,15 @@ module.exports = {
     proxy: {
       "/xian/estateArea": {
         target: "http://localhost:5000",
-        changeOrigin: false,
+        changeOrigin: true,
       },
       "/xian/estateBuildings": {
         target: "http://localhost:5000",
-        changeOrigin: false,
+        changeOrigin: true,
+      },
+      "/xian/aroundGarden": {
+        target: "http://localhost:5000",
+        changeOrigin: true,
       },
     },
   },

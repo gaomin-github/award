@@ -51,7 +51,6 @@ export default {
   },
   methods: {
     _initPropertyList() {
-      // console.log(request, 54);
       request.get("/xian/estateArea").then((res) => {
         console.log(res, 46);
         if (res.status === 200) {
