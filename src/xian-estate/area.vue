@@ -54,6 +54,7 @@
 <script>
 import request from "request";
 const GDKEY = "17569efbd54a284b8bd0ce338ae71616";
+const gx_location = "108.8371912900,34.2032353700"; //高新软件园经纬度
 
 export default {
   data() {
@@ -72,6 +73,7 @@ export default {
         },
       ],
       curTabKey: "map",
+      mapObj: null,
     };
   },
   mounted() {
@@ -96,20 +98,129 @@ export default {
     },
     _initMapScript() {
       window.onLoad = () => {
-        console.log("92 onLoad");
         this._initMapContainer();
+        // this._initCurrentLabel();
+        this._initMapUi();
+        // console.log("92 onLoad");
       };
+      // gd script引入
       let url = `https://webapi.amap.com/maps?v=1.4.15&key=${GDKEY}&callback=onLoad`;
       let mapScriptEl = document.createElement("script");
       mapScriptEl.charset = "utf-8";
       mapScriptEl.src = url;
       document.head.appendChild(mapScriptEl);
+      // gd script plugin引入
+      // let url_plugin = `https://webapi.amap.com/maps?v=1.4.15&key=${GDKEY}&plugin=Map3D,ElasticMarker`;
+      // let pluginScriptEl = document.createElement("script");
+      // pluginScriptEl.charset = "utf-8";
+      // pluginScriptEl.src = url_plugin;
+      // document.head.appendChild(pluginScriptEl);
+      // pluginScriptEl.onload = () => {};
     },
     _initMapContainer() {
-      let mapObj = new AMap.Map("map-container", {
-        zoom: 11,
-        viewMode: "3D",
+      this.mapObj = new AMap.Map("map-container", {
+        zoom: 12,
+        center: this._initLocation(gx_location),
+        // mapStyle: "amap://styles/whitesmoke", //设置地图的显示样式
       });
+      let gx_marker = new AMap.Marker({
+        position: [...this._initLocation(gx_location)],
+        icon: "//vdata.amap.com/icons/b18/1/2.png",
+        content: "高新软件园",
+        // styles: [
+        //   {
+        //     icon: {
+        //       size: [16, 16],
+        //     },
+        //   },
+        // ],
+        // zooms: [14, 20],
+        // zoomStyleMapping: {
+        //   14: 0,
+        //   15: 0,
+        //   16: 0,
+        //   17: 0,
+        //   18: 0,
+        //   19: 0,
+        //   20: 0,
+        // },
+      });
+      this.mapObj.add(gx_marker);
+      let cur_marker = new AMap.Marker({
+        position: [...this._initLocation(this.areaInfo.location)],
+        title: this.areaInfo.label,
+      });
+      this.mapObj.add(cur_marker);
+    },
+    _initMapUi() {
+      // gd script ui引入
+      let url_ui = `https://webapi.amap.com/ui/1.0/main.js?v=1.0.11`;
+      let uiScriptEl = document.createElement("script");
+      uiScriptEl.charset = "utf-8";
+      uiScriptEl.src = url_ui;
+      document.head.appendChild(uiScriptEl);
+      let that = this;
+      console.log(that.mapObj, 157);
+      uiScriptEl.onload = () => {
+        this._initPathLns();
+
+        //   AMapUI.loadUI(["overlay/SimpleMarker"], function(SimpleMarker) {
+        //     let position = that._initLocation(gx_location);
+
+        //     let mark = new SimpleMarker({
+        //       iconLabel: "AAAAA",
+        //       map: that.mapObj,
+        //       position: position,
+        //       showPositionPoint: true,
+        //     });
+        //     that.mapObj.add(mark);
+        //   });
+        // };
+        AMapUI.loadUI(["overlay/SimpleMarker"], function(SimpleMarker) {
+          new SimpleMarker({
+            iconLabel: "1",
+
+            map: that.mapObj,
+
+            showPositionPoint: true,
+            position: that._initLocation(gx_location),
+            zIndex: 150,
+          });
+        });
+      };
+    },
+    _initPathLns() {
+      let that = this;
+      AMapUI.load(["ui/misc/PathSimplifier", "lib/$"], function(
+        PathSimplifier,
+        $
+      ) {
+        let lnsObj = new PathSimplifier({
+          zIndex: 100,
+          map: that.mapObj,
+          getPath: (pathData, pathIndex) => {
+            return pathData.path;
+          },
+          renderOptions: {
+            renderAllPointsIfNumberBelow: 100,
+          },
+        });
+        lnsObj.setData([
+          {
+            name: "路线0",
+            path: [
+              that._initLocation(gx_location),
+              that._initLocation(that.areaInfo.location),
+            ],
+          },
+        ]);
+      });
+    },
+    _initCurrentLabel() {
+      let placeSearch = new AMap.placeSearch({
+        city: "西安",
+      });
+      placeSearch.search("高新软件园", function(res) {});
     },
     _initGardens() {
       request
@@ -119,6 +230,9 @@ export default {
             this.gardens = res.data;
           }
         });
+    },
+    _initLocation(locationStr) {
+      return locationStr.split(",");
     },
     getAreaLabel() {
       if (this.areaInfo.label) {
@@ -167,7 +281,7 @@ section {
   /* padding: 5px 0px; */
   border-radius: 15px 15px 3px 3px;
 
-  background: rgba(255, 255, 255, 0.9);
+  background: rgba(255, 255, 255, 0.98);
 }
 .tabs {
   flex-shrink: 1;
@@ -246,6 +360,7 @@ section {
 .garden {
   font-size: 14px;
   color: rgba(0, 0, 0, 0.8);
+  max-height: 70px;
   &-item {
     line-height: 24px;
   }
