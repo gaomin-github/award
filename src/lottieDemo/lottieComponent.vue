@@ -44,7 +44,7 @@ export default {
                     lottie.loadAnimation({
                         container: that.$refs.lottieCon,
                         renderer: "canvas",
-                        loop: true,
+                        loop: false,
                         autoplay: true,
                         animationData: module,
                         className: "canvas-default",
@@ -90,11 +90,13 @@ export default {
 </script>
 <style lang="scss" scoped>
 .lottie-wrapper {
-    width: 100%;
+    // width: 100%;
+    // width: 100px;
+    // height: 300px;
     // height: 100%;
+    height: 600px;
 }
 .canvas-default {
-    width: 100%;
     // min-height: 300px;
 }
 </style>

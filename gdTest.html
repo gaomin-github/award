@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no, target-densitydpi=device-dpi, viewport-fit=cover" />
+    <title>高德</title>
+    <style type="text/css">
+        html,
+        body {
+            margin: 0px;
+            padding: 0px;
+            border: none;
+        }
+
+        #container {
+            width: 400px;
+            height: 500px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="app">
+        <div id="container">
+
+        </div>
+    </div>
+</body>
+<script src=""></script>
+<script>
+    const GDKEY = "17569efbd54a284b8bd0ce338ae71616";
+    const gx_location = "108.8371912900,34.2032353700"; //高新软件园经纬度
+    var map = null;
+    window.onLoad = function () {
+        var plugin_url = `https://webapi.amap.com/ui/1.0/main.js?v=1.0.11`;
+        var jsPLugin = document.createElement('script');
+        jsPLugin.charset = 'utf-8';
+        jsPLugin.src = plugin_url;
+        document.head.appendChild(jsPLugin);
+        jsPLugin.onload = () => {
+            AMapUI.loadUI(['overlay/SimpleMarker'], function (SimpleMarker) {
+                map = new AMap.Map('container', { center: [108.8371912900, 34.2032353700] });
+                var iconTheme = 'default';
+
+                new SimpleMarker({
+                    iconTheme: iconTheme,
+                    //使用内置的iconStyle
+                    iconStyle: 'blue',
+
+                    //图标文字
+                    iconLabel: {
+                        //A,B,C.....
+                        innerHTML: '111',
+                        style: {
+                            //颜色, #333, red等等，这里仅作示例，取iconStyle中首尾相对的颜色
+                            color: 'red'
+                        }
+                    },
+
+                    //显示定位点
+                    //showPositionPoint:true,
+
+                    map: map,
+                    position: [108.8371912900, 34.2032353700],
+
+                    //Marker的label(见https://lbs.amap.com/api/javascript-api/reference/overlay/#Marker)
+                    label: {
+                        content: '111',
+                    }
+                });
+            })
+        }
+
+    }
+    var url = `https://webapi.amap.com/maps?v=1.4.15&key=${GDKEY}&callback=onLoad`;
+    var jsapi = document.createElement('script');
+    jsapi.charset = 'utf-8';
+    jsapi.src = url;
+    document.head.appendChild(jsapi);
+
+
+
+</script>
+
+</html>
