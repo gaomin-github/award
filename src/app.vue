@@ -6,13 +6,12 @@
 </template>
 <script>
 export default {
-  name: "App"
+  name: "App",
 };
 </script>
 <style lang="scss">
 html,
 body {
-  /* width: 100%; */
   height: 100%;
   display: block;
   box-sizing: border-box;
@@ -22,7 +21,8 @@ div,
 section {
   display: block;
   box-sizing: border-box;
-  overflow: hidden;
+  /* 高德地图引入，声明hidden会隐藏高德默认ui */
+  /* overflow: :hidden; */
 }
 .app {
   height: 100%;
