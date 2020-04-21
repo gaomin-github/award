@@ -36,6 +36,11 @@ module.exports = {
                 target: "http://localhost:5000",
                 changeOrigin: true,
             },
+            '/xian/busRoute': {
+                target: "http://localhost:5000",
+                changeOrigin: true,
+
+            }
         },
     },
     resolve: {

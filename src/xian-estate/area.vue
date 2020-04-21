@@ -68,6 +68,7 @@ export default {
       areaInfo: {},
       buildings: [],
       gardens: [],
+      driveRoutes:[],
       tabs: [
         {
           key: "list",
@@ -88,7 +89,9 @@ export default {
     this._initPrevPage();
     this._getBuildingInfo();
     await this._initMapScript();
+    this._initPathLns()
     this._initGardens();
+    this._initBusRoute();
   },
   methods: {
     _initPrevPage() {
@@ -166,7 +169,7 @@ export default {
             return resolve();
           });
           // 路径标注
-          this._initPathLns();
+        //   this._initPathLns();
         };
       });
     },
@@ -193,8 +196,9 @@ export default {
           {
             name: "路线0",
             path: [
-              that._initLocation(gx_location),
-              that._initLocation(that.areaInfo.location),
+                ...that.driveRoutes
+            //   that._initLocation(gx_location),
+            //   that._initLocation(that.areaInfo.location),
             ],
           },
         ]);
@@ -260,14 +264,14 @@ export default {
             if (this.gardens && this.gardens.length > 0) {
               AMapUI.loadUI(["overlay/SimpleMarker"], function(SimpleMarker) {
                 that.gardens.map((garden) => {
-                  console.log(garden, 254);
+                //   console.log(garden, 254);
                   new SimpleMarker({
                     iconTheme: "default",
                     iconStyle: "blue",
                     map: that.mapObj,
                     position: that._initLocation(garden.location),
                     label: {
-                      content: "高新软件园",
+                      content: garden.name,
                       offset: new AMap.Pixel(-10, -20),
                     },
                   });
@@ -277,8 +281,32 @@ export default {
           }
         });
     },
+    _initBusRoute(){
+        request.get(`/xian/busRoute?originLocation=${this.areaInfo.location}&destination=${gx_location}`).then(res=>{
+            // console.log(res,284)
+            if(res.status===200){
+                if(res.data.steps&&res.data.steps.length>0){
+                    res.data.steps.forEach(step => {
+                        console.log(step.polyline,290)
+                        if(step.polyline){
+                            let arrLocation=this._formatPolyline(step.polyline);
+                            // this.driveRoutes.push(...this._formatPolyline(step.polyline))
+                        }
+                    });
+                }
+            }
+            // console.log(this.driveRoutes,296)
+        })
+    },
     _initLocation(locationStr) {
       return locationStr.split(",");
+    },
+    _formatPolyline(polyline){
+        let locationStr=polyline.split(';')
+        let locationArr=locationStr.forEach(location => {
+            return this._initLocation(location)
+        });
+        return locationArr;
     },
     getAreaLabel() {
       if (this.areaInfo.label) {
