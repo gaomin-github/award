@@ -1,87 +1,107 @@
-<!DOCTYPE html>
-<html>
+<!-- 重点：SvgMarker.Shape -->
+<!doctype html>
+<html lang="zh-CN">
 
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport"
-        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no, target-densitydpi=device-dpi, viewport-fit=cover" />
-    <title>高德</title>
-    <style type="text/css">
+    <!-- 原始地址：//webapi.amap.com/ui/1.0/ui/overlay/SvgMarker/examples/all-shapes.html -->
+    <base href="//webapi.amap.com/ui/1.0/ui/overlay/SvgMarker/examples/" />
+    <meta charset="utf-8">
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
+    <title>各类形状</title>
+    <style>
         html,
-        body {
-            margin: 0px;
-            padding: 0px;
-            border: none;
-        }
-
+        body,
         #container {
-            width: 400px;
-            height: 500px;
+            width: 100%;
+            height: 100%;
+            margin: 0px;
         }
     </style>
 </head>
 
 <body>
-    <div id="app">
-        <div id="container">
+    <div id="container"></div>
+    <script type="text/javascript" src='//webapi.amap.com/maps?v=1.4.15&key=您申请的key值'></script>
+    <!-- UI组件库 1.0 -->
+    <script src="//webapi.amap.com/ui/1.0/main.js?v=1.0.11"></script>
+    <script type="text/javascript">
+        //创建地图
+        var map = new AMap.Map('container', {
+            zoom: 4
+        });
 
-        </div>
-    </div>
-</body>
-<script src=""></script>
-<script>
-    const GDKEY = "17569efbd54a284b8bd0ce338ae71616";
-    const gx_location = "108.8371912900,34.2032353700"; //高新软件园经纬度
-    var map = null;
-    window.onLoad = function () {
-        var plugin_url = `https://webapi.amap.com/ui/1.0/main.js?v=1.0.11`;
-        var jsPLugin = document.createElement('script');
-        jsPLugin.charset = 'utf-8';
-        jsPLugin.src = plugin_url;
-        document.head.appendChild(jsPLugin);
-        jsPLugin.onload = () => {
-            AMapUI.loadUI(['overlay/SimpleMarker'], function (SimpleMarker) {
-                map = new AMap.Map('container', { center: [108.8371912900, 34.2032353700] });
-                var iconTheme = 'default';
+        AMapUI.loadUI(['overlay/SvgMarker'], function (SvgMarker) {
 
-                new SimpleMarker({
-                    iconTheme: iconTheme,
-                    //使用内置的iconStyle
-                    iconStyle: 'blue',
+            if (!SvgMarker.supportSvg) {
+                //当前环境并不支持SVG，此时SvgMarker会回退到父类，即SimpleMarker
+                alert('当前环境不支持SVG');
+            }
 
-                    //图标文字
-                    iconLabel: {
-                        //A,B,C.....
-                        innerHTML: '111',
-                        style: {
-                            //颜色, #333, red等等，这里仅作示例，取iconStyle中首尾相对的颜色
-                            color: 'red'
-                        }
-                    },
+            //just some colors
+            var colors = [
+                "#1f77b4", "#aec7e8", "#ff7f0e", "#ffbb78", "#2ca02c", "#98df8a",
+                "#d62728", "#ff9896", "#947cb94", "#843c39", "#ad494a", "#d6616b", "#e7969c", "#7b4173", "#a55194",
+                "#3182bd", "#6baed6", "#9ecae1", "#c6dbef", "#e6550d", "#fd8d3c", "#fdae6b", "#fdd0a2", "#31a354",
+                "#a1d99b", "#c7e9c0", "#756bb1", "#9e9ac8", "#bcbddc", "#dadaeb", "#636363", "#969696", "#bdbdbd"
+            ];
 
-                    //显示定位点
-                    //showPositionPoint:true,
+            //SvgMarker.Shape下的Shape 
+            var shapeKeys = [
+                'Circle',
+                'IconFont'
+            ];
 
-                    map: map,
-                    position: [108.8371912900, 34.2032353700],
+            var colNum = 5,
+                rowNum = shapeKeys.length,
+                markers = [];
 
-                    //Marker的label(见https://lbs.amap.com/api/javascript-api/reference/overlay/#Marker)
-                    label: {
-                        content: '111',
+            var pxCenter = map.lnglatToPixel(map.getCenter());
+
+            var startX = pxCenter.getX(),
+                startY = pxCenter.getY();
+
+            for (var c = 0; c < colNum; c++) {
+
+                for (var r = 0; r < rowNum; r++) {
+
+                    var idx = r * colNum + c;
+
+                    if (!colors[idx]) {
+                        continue;
                     }
-                });
-            })
-        }
 
-    }
-    var url = `https://webapi.amap.com/maps?v=1.4.15&key=${GDKEY}&callback=onLoad`;
-    var jsapi = document.createElement('script');
-    jsapi.charset = 'utf-8';
-    jsapi.src = url;
-    document.head.appendChild(jsapi);
+                    var x = startX + (c - colNum / 2) * 70;
+                    var y = startY + 50 + (r - rowNum / 2) * 80;
 
+                    //创建shape
+                    var shape = new SvgMarker.Shape[shapeKeys[r]]({
+                        height: 24
+                    strokeWidth: 1,
+                        strokeColor: '#ccc',
+                        fillColor: colors[idx]
+                    });
 
+                    var labelCenter = shape.getCenter();
 
-</script>
+                    var position = map.pixelToLngLat(new AMap.Pixel(x, y));
+
+                    markers.push(new SvgMarker(
+                        shape, {
+                            map: map,
+                            position: position,
+                            containerClassNames: 'shape-' + shapeKeys[r],
+                            iconLabel: {
+                                innerHTML: String.fromCharCode('A'.charCodeAt(0) + c),
+                                style: {
+                                    top: labelCenter[1] - 9 + 'px'
+                                }
+                            },
+                            showPositionPoint: true
+                        }));
+                }
+            }
+        });
+    </script>
+</body>
 
 </html>
