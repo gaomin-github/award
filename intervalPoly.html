@@ -1,0 +1,63 @@
+<!-- 重点：SvgMarker.Shape -->
+<!doctype html>
+<html lang="zh-CN">
+
+<head>
+
+    <title>各类形状</title>
+    <style>
+        html,
+        body,
+        #container {
+            width: 100%;
+            height: 100%;
+            margin: 0px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="container"></div>
+
+    <script type="text/javascript">
+        function combine(arr) {
+            if (arr.length <= 1) return arr;
+            arr.sort((a, b) => {
+                return a[0] - b[0]
+            })
+            console.table(arr, 25)
+            let arrLength = arr.length;
+            for (let index = 1; index < arr.length;) {
+
+                let item = arr[index]
+                let prevItem = arr[index - 1];
+                if (item[0] > prevItem[1]) {
+                    index++;
+                    continue;
+                }
+
+                if (item[0] === prevItem[1]) {
+                    arr[index - 1] = [prevItem[0], item[1]];
+                    arr.splice(index, 1)
+                    continue;
+                }
+                if (item[0] < prevItem[1]) {
+                    console.log(item, 45);
+                    console.log(prevItem, 46);
+                    if (item[1] > prevItem[1]) {
+                        arr[index - 1] = [prevItem[0], item[1]]
+                    } else {
+                        arr[index - 1] = [prevItem[0], prevItem[1]]
+                    }
+                    arr.splice(index, 1)
+
+                }
+
+            }
+            return arr;
+        }
+        console.log(combine([[1, 3], [6, 9], [3, 5], [8, 10]]), 43)
+    </script>
+</body>
+
+</html>
