@@ -7,48 +7,43 @@ const VueLoaderPlugin = require("vue-loader/lib/plugin");
 module.exports = {
   mode: "production",
   entry: {
-    main: ["./src/app.js"]
+    main: ["./src/app.js"],
   },
   output: {
     publicPath: "/",
     filename: "award_dist/[name].[hash].js",
     chunkFilename: "award_dist/[name].[hash].js",
     crossOriginLoading: "anonymous",
-    path: path.resolve(__dirname, "../built")
+    path: path.resolve(__dirname, "../built"),
   },
-  //   devServer: {
-  //     historyApiFallback: true,
-  //     clientLogLevel: "info",
-  //     host: "0.0.0.0",
-  //     port: "8090",
-  //     open: false,
-  //     contentBase: path.resolve(__dirname, "../"),
-  //     publicPath: "/",
-  //     disableHostCheck: true
-  //   },
+  node: {
+    fs: "empty",
+    net: "empty",
+    tls: "empty",
+  },
   resolve: {
     extensions: [`.js`, ".json", ".vue"],
     alias: {
       vue$: "vue/dist/vue.esm.js",
-      TagCanvas: path.resolve(__dirname, "../common/lib/tagcanvas.js")
-    }
+      TagCanvas: path.resolve(__dirname, "../common/lib/tagcanvas.js"),
+    },
   },
   module: {
     rules: [
       {
         test: /\.(jpg|png|jpeg|gif)$/,
         use: {
-          loader: "url-loader"
+          loader: "url-loader",
         },
         include: [
           path.resolve(__dirname, "../src"),
-          path.resolve(__dirname, "../common/components")
-        ]
+          path.resolve(__dirname, "../common/components"),
+        ],
       },
       {
         test: /\.(ts|js)?$/,
         loader: "babel-loader",
-        exclude: /(node_modules|bower_components)/
+        exclude: /(node_modules|bower_components)/,
       },
       {
         test: /\.(vue)?$/,
@@ -56,8 +51,8 @@ module.exports = {
         exclude: /node_modules/,
         include: [
           path.resolve(__dirname, "../src"),
-          path.resolve(__dirname, "../common/components")
-        ]
+          path.resolve(__dirname, "../common/components"),
+        ],
       },
       {
         test: /\.(css|scss)$/,
@@ -65,28 +60,28 @@ module.exports = {
         exclude: /node_modules/,
         include: [
           path.resolve(__dirname, "../src"),
-          path.resolve(__dirname, "../common/components")
-        ]
-      }
-    ]
+          path.resolve(__dirname, "../common/components"),
+        ],
+      },
+    ],
   },
   devtool: "inline-source-map",
   plugins: [
     new webpack.DefinePlugin({
       "process.env": {
-        NODE_ENV: '"production"'
-      }
+        NODE_ENV: '"production"',
+      },
     }),
     new CleanWebpackPlugin(),
     new HtmlWebpackPlugin({
       title: "award project",
       template: "./template.html",
-      inject: true
+      inject: true,
     }),
     new webpack.HotModuleReplacementPlugin(),
     new VueLoaderPlugin(),
     new webpack.ProvidePlugin({
-      Vue: ["vue/dist/vue.esm.js", "default"]
-    })
-  ]
+      Vue: ["vue/dist/vue.esm.js", "default"],
+    }),
+  ],
 };
