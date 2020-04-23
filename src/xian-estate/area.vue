@@ -314,7 +314,7 @@ export default {
     _initDriveRoute() {
       request
         .get(
-          `/xian/busRoute?originLocation=${this.areaInfo.location}&destination=${gx_location}`
+          `/xian/drivingRoute?originLocation=${this.areaInfo.location}&destination=${gx_location}`
         )
         .then((res) => {
           // console.log(res,284)
