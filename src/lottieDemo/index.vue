@@ -1,6 +1,6 @@
 <template>
     <section class="animate-wrapper">
-        this is lottie img test
+        this is lottie img test 123
         <section v-for="(item, key) in jsUrlList" :key="key">
             <lottie-component :jsUrl="item" class="img-item"></lottie-component>
         </section>
