@@ -1,2 +1,0 @@
-(window.webpackJsonp=window.webpackJsonp||[]).push([[0],{191:function(n){n.exports=JSON.parse('{"id":"123","entity":{"name":"aaa"}}')}}]);
-//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IiIsImZpbGUiOiJhd2FyZF9kaXN0LzAuNWVhOWVhYmUyNjI4ODA0OTNlOTkuanMiLCJzb3VyY2VSb290IjoiIn0=
