@@ -1,12 +1,13 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
+import store from "./store/index";
 import mock from "./mock/index.js";
 // import './axios.js';
 // mock数据
 // import eruda from 'eruda';
 
-Vue.use(VueRouter);
 import App from "./app.vue";
+Vue.use(VueRouter);
 // import xianEstateDemo from './xian-estate/index.vue'
 const routes = new VueRouter({
   mode: "history",
@@ -48,6 +49,16 @@ const routes = new VueRouter({
       path: "/xianBuilding",
       component: () => import("./xian-estate/area.vue"),
     },
+    {
+      name: "weekly",
+      path: "/weekly",
+      component: () => import("./weekly/index.vue"),
+    },
+    {
+      name: "weeklyContent",
+      path: "/weeklyContent",
+      component: () => import("./weekly/content.vue"),
+    },
   ],
 });
 console.log(`18 app.js`);
@@ -61,5 +72,6 @@ let vm = new Vue({
   template: "<App/>",
   router: routes,
   mock,
+  store,
   // router: SelfRoutes
 });
