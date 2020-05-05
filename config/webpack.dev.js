@@ -25,21 +25,26 @@ module.exports = {
     disableHostCheck: true,
     proxy: {
       "/xian/estateArea": {
-        target: "http://localhost:5000",
+        target: "http://localhost:9081",
         changeOrigin: true,
       },
       "/xian/estateBuildings": {
-        target: "http://localhost:5000",
+        target: "http://localhost:9081",
         changeOrigin: true,
       },
       "/xian/aroundGarden": {
-        target: "http://localhost:5000",
+        target: "http://localhost:9081",
         changeOrigin: true,
       },
       "/xian/drivingRoute": {
-        target: "http://localhost:5000",
+        target: "http://localhost:9081",
         changeOrigin: true,
       },
+      "/task": "http://localhost:9081",
+      //  {
+      //   target: "http://localhost:9081",
+      //   changeOrigin: true,
+      // },
     },
   },
   resolve: {

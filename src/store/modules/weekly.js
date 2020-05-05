@@ -1,5 +1,7 @@
 const state = () => ({
+  taskId: "",
   scheduleList: [],
+  curUser: null,
 });
 
 const getters = {
@@ -29,11 +31,15 @@ const getters = {
 };
 
 const mutations = {
-  insert(state, item) {
+  initTask(state, task) {
+    state.scheduleList = task.schedules;
+    state.taskId = task.taskId;
+  },
+  insertSchedule(state, item) {
     // console.log(item, 6);
     state.scheduleList.push(item);
   },
-  update(state, item) {
+  updateSchedule(state, item) {
     let index = state.scheduleList.findIndex((schedule) => {
       if (item.subid === schedule.subid) {
         return true;
@@ -44,13 +50,16 @@ const mutations = {
     }
     console.log(state.scheduleList, 18);
   },
-  delete(state, { item }) {
+  deleteSchedule(state, { item }) {
     let index = state.scheduleList.findIndex((schedule) => {
       if (item.subid === schedule.subid) {
         return true;
       }
     });
     state.scheduleList.splice(index, 1);
+  },
+  updateUser(state, user) {
+    state.curUser = user;
   },
 };
 export default {

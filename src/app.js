@@ -50,9 +50,14 @@ const routes = new VueRouter({
       component: () => import("./xian-estate/area.vue"),
     },
     {
+      name: "weeklyUser",
+      path: "/weeklyUser",
+      component: () => import("./weekly/index.vue"),
+    },
+    {
       name: "weekly",
       path: "/weekly",
-      component: () => import("./weekly/index.vue"),
+      component: () => import("./weekly/weekly.vue"),
     },
     {
       name: "weeklyContent",
