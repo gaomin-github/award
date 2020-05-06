@@ -1,215 +1,267 @@
 <template>
-  <section class="schedule_wrapper">
-    <header>
-      <div class="prev">查看上周</div>
-      <div class="cur">本周任务</div>
-    </header>
-    <div class="schedule">
-      <div class="schedule-item">
-        <div class="schedule-item-content">任务内容</div>
-        <div class="schedule-item-worth">分值</div>
-        <div class="schedule-item-process">完成情况</div>
-      </div>
-      <div v-if="scheduleList">
-        <div class="schedule-item" v-for="item in scheduleList">
-          <!-- <div class="schedule-item-content"> -->
-          <div class="schedule-item-content" @click="editScheduleContent(item)">
-            <p v-if="item.content">{{ item.content }}</p>
-            <div class="schedule-item-placeholder" v-else>点击添加内容</div>
-          </div>
-          <div class="schedule-item-worth">
-            <input
-              type="number"
-              placeholder="0"
-              @input="editScheduleNum(item, 'worth')"
-              v-model="item.worth"
-            />
-          </div>
-          <div
-            class="schedule-item-process"
-            @click="editScheduleNum(item, 'process')"
-          >
-            <input
-              type="number"
-              placeholder="0"
-              @input="editScheduleNum(item, 'worth')"
-              v-model="item.process"
-            />
-          </div>
+    <section class="schedule_wrapper">
+        <header>
+            <div class="prev">查看上周</div>
+            <div class="cur">本周任务</div>
+        </header>
+        <div class="schedule">
+            <div class="schedule-item schedule-item-label">
+                <div class="schedule-item-content">任务内容</div>
+                <div class="schedule-item-worth">分值</div>
+                <div class="schedule-item-process">完成情况</div>
+            </div>
+            <div v-if="scheduleList">
+                <div class="schedule-item" v-for="item in scheduleList" :key="item.subId">
+                    <!-- <div class="schedule-item-content"> -->
+                    <div class="schedule-item-content" @click="editScheduleContent(item)">
+                        <p v-if="item.content">{{ item.content }}</p>
+                        <div class="schedule-item-placeholder" v-else>点击添加内容</div>
+                    </div>
+                    <div class="schedule-item-worth" :class="item.numberStatus?'':'number-err'">
+                        <input
+                            type="number"
+                            placeholder="0"
+                            @input="editScheduleNum(item, 'worth')"
+                            v-model="item.worth"
+                        />
+                    </div>
+                    <div class="schedule-item-process" :class="item.numberStatus?'':'number-err'">
+                        <input
+                            type="number"
+                            placeholder="0"
+                            @input="editScheduleNum(item, 'worth')"
+                            v-model="item.process"
+                        />
+                    </div>
+                </div>
+            </div>
+            <div class="add-icon" @click="addSchedule">+</div>
         </div>
-      </div>
-      <div class="add-icon" @click="addSchedule">+</div>
-    </div>
-    <div class="result" v-if="totalValue">
-      总分{{ totalValue }},得分{{ score }},成绩{{
-        Math.ceil((score / totalValue) * 100)
-      }}
-    </div>
-  </section>
+        <div class="result" v-if="totalValue">
+            总分{{ totalValue }},得分{{ score }},成绩{{
+            Math.ceil((score / totalValue) * 100)
+            }}
+        </div>
+    </section>
 </template>
 <script>
 import { mapState, mapGetters, mapMutations } from "vuex";
 import { throttle } from "lib/throttle.js";
 import request from "request";
 export default {
-  data() {
-    return {};
-  },
-  computed: {
-    ...mapState("weekly", ["scheduleList", "taskId"]),
-    ...mapGetters("weekly", ["totalValue", "score"]),
-  },
-  created() {
-    console.log("weekly index created");
-  },
-  mounted() {
-    console.log("weekly index mounted");
-    this._initHistory();
-  },
-  methods: {
-    ...mapMutations("weekly", [
-      "initTask",
-      "insertSchedule",
-      "updateSchedule",
-      "deleteSchedule",
-    ]),
-    _initHistory() {
-      request.get(`/task/task`).then((res) => {
-        if (res.status === 200 && res.data) {
-          this.initTask(res.data);
-        }
-      });
+    data() {
+        return {};
     },
-    addSchedule() {
-      let newSchedule = {
-        subId: Math.random(),
-        content: "",
-        worth: 0,
-        process: 0,
-      };
-      this.insertSchedule(newSchedule);
+    computed: {
+        ...mapState("weekly", ["scheduleList", "taskId", "curUser"]),
+        ...mapGetters("weekly", ["totalValue", "score"])
     },
-    editScheduleContent(item) {
-      this.$router.push({
-        name: "weeklyContent",
-        query: {
-          content: item.content,
-          subId: item.subId,
-          worth: item.worth,
-          process: item.process,
-        },
-      });
+    created() {
+        console.log("weekly index created");
     },
-    editScheduleNum(item, type) {
-      this.updateSchedule(item);
-      //   console.log("editScheduleNum", 105);
-      throttle(() => {
-        console.log("saveTask", 106);
+    mounted() {
+        // console.log("weekly index mounted");
+        this._initTask();
+    },
+    beforeDestroy() {
+        this.updateSchedule(item);
         this._saveTask();
-      }, 200)();
     },
-    _saveTask() {
-      let scheduleStr = encodeURIComponent(JSON.stringify(this.scheduleList));
-      console.log(scheduleStr, 114);
-      request
-        .get(
-          `/task/updateTask?taskId=${this.taskId}&scheduleStr=${scheduleStr}`
-        )
-        .then((res) => {
-          if (res.status === 200) {
-            return res.data;
-          }
-        });
-    },
-    // editScheduleProcess() {
-    //   //   添加时间限制
-    // },
-  },
+    methods: {
+        ...mapMutations("weekly", [
+            "initTask",
+            "insertSchedule",
+            "updateSchedule",
+            "deleteSchedule"
+        ]),
+        _initTask() {
+            let userId = this.$route.query.userId;
+            request.get(`/task/task?userId=${userId}`).then(res => {
+                if (res.status === 200 && res.data) {
+                    this.initTask(res.data[0]);
+                } else {
+                    request
+                        .get(`/task/createTask?userId=${userId}`)
+                        .then(newRes => {
+                            if (newRes.status === 200 && newRes.data) {
+                                this.initTask(newRes.data);
+                            }
+                        });
+                }
+            });
+        },
+        addSchedule() {
+            let newSchedule = {
+                subId: Math.random(),
+                content: "",
+                worth: 0,
+                process: 0
+            };
+            this.insertSchedule(newSchedule);
+        },
+        editScheduleContent(item) {
+            this.$router.push({
+                name: "weeklyContent",
+                query: {
+                    content: item.content,
+                    subId: item.subId,
+                    worth: item.worth,
+                    process: item.process
+                }
+            });
+        },
+        editScheduleNum(item, type) {
+            throttle(() => {
+                item = this._checkNum(item);
+                this.updateSchedule(item);
+                this._saveTask();
+            }, 1000)();
+        },
+        _saveTask() {
+            let scheduleStr = encodeURIComponent(
+                JSON.stringify(this.scheduleList)
+            );
+            request
+                .get(
+                    `/task/updateTask?taskId=${this.taskId}&scheduleStr=${scheduleStr}`
+                )
+                .then(res => {
+                    if (res.status === 200) {
+                        return res.data;
+                    }
+                });
+        },
+        _checkNum(item) {
+            if (
+                item.worth < item.process ||
+                item.worth < 0 ||
+                item.process < 0
+            ) {
+                item.numberStatus = false;
+            }
+            return item;
+        }
+        // editScheduleProcess() {
+        //   //   添加时间限制
+        // },
+    }
 };
 </script>
 <style lang="scss" scoped>
 .schedule_wrapper {
-  display: block;
-  height: 100%;
-  padding: 20px 5px;
+    display: block;
+    height: 100%;
+    padding: 20px 5px;
 }
 section,
 div,
 header,
 p {
-  display: block;
-  overflow: hidden;
-  margin: 0;
-  padding: 0;
+    display: block;
+    overflow: hidden;
+    margin: 0;
+    padding: 0;
 }
 input,
 textarea {
-  appearance: none;
-  background: none;
-  border: none;
-  outline: none;
-  height: 100%;
-  font-size: 14px;
+    appearance: none;
+    background: none;
+    border: none;
+    outline: none;
+    height: 100%;
+    font-size: 14px;
 }
 header {
-  display: flex;
-  position: relative;
-  line-height: 42px;
-  border-radius: 5px 5px 0 0;
-  background-color: rgba(66, 144, 55, 1);
-  .prev {
-    font-size: 14px;
-    position: absolute;
-    left: 10px;
-  }
-  .cur {
-    font-size: 16px;
-    text-align: center;
-    width: 100%;
-  }
+    display: flex;
+    position: relative;
+    line-height: 42px;
+    border-radius: 5px 5px 0 0;
+    background-color: rgba(66, 144, 55, 1);
+    .prev {
+        font-size: 14px;
+        position: absolute;
+        left: 10px;
+        color: rgba(245, 236, 177, 1);
+        font-size: 15px;
+    }
+    .cur {
+        font-size: 16px;
+        text-align: center;
+        width: 100%;
+        color: rgba(245, 236, 177, 1);
+        font-weight: 600;
+        font-size: 18px;
+    }
 }
 .schedule {
-  position: relative;
-  &-item {
-    display: flex;
-    line-height: 32px;
+    position: relative;
+    &-item {
+        display: flex;
+        line-height: 32px;
 
-    padding: 0px 5px;
-    background-color: rgba(246, 245, 220, 1);
-    border-bottom: 1px rgba(104, 162, 112, 1) solid;
-    font-size: 14px;
-    height: auto;
-    &-content {
-      flex: 1;
-      flex-shrink: 1;
-      p {
-        white-space: pre-wrap;
-      }
+        padding: 5px 5px;
+        background-color: rgba(246, 245, 220, 1);
+        border-bottom: 1px rgba(104, 162, 112, 1) solid;
+        font-size: 16px;
+        height: auto;
+        &-content {
+            flex: 1;
+            flex-shrink: 1;
+            p {
+                white-space: pre-wrap;
+            }
+        }
+        &-worth,
+        &-process {
+            text-align: center;
+
+            input {
+                width: 100%;
+                line-height: 32px;
+                text-align: center;
+                font-size: 16px;
+            }
+        }
+        &-worth {
+            width: 50px;
+        }
+        &-process {
+            width: 70px;
+        }
+        &-process-poor {
+            input {
+                color: rgba(213, 30, 30, 1);
+            }
+        }
+        &-process-aver {
+            input {
+                color: rgba(113, 100, 100, 1);
+            }
+        }
+        &-process-exe {
+            input {
+                color: rgba(66, 144, 55, 1);
+            }
+        }
     }
-    &-worth {
-      min-width: 40px;
-      input {
-        width: 40px;
-        line-height: 32px;
-      }
+    &-item-label {
+        color: rgba(95, 142, 100, 1);
     }
-    &-process {
-      min-width: 50px;
-      input {
-        width: 40px;
-        line-height: 32px;
-      }
+    .add-icon {
+        width: 24px;
+        line-height: 24px;
+        text-align: center;
+        vertical-align: top;
+        border-radius: 50%;
+        font-size: 18px;
+        background: rgba(66, 144, 55, 1);
+        color: rgba(255, 255, 255, 1);
     }
-  }
-  .add-icon {
-    width: 24px;
-    line-height: 24px;
-    text-align: center;
-    vertical-align: top;
-    border-radius: 50%;
-    font-size: 18px;
-    background: rgba(66, 144, 55, 1);
-    color: rgba(255, 255, 255, 1);
-  }
+}
+.result {
+    margin: 20px 10px;
+}
+.number-err {
+    border-bottom: 1px red solid;
 }
 </style>
