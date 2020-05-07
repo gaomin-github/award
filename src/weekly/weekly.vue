@@ -1,5 +1,5 @@
 <template>
-    <section class="schedule_wrapper">
+    <section class="task_wrapper">
         <header>
             <div class="prev">查看上周</div>
             <div class="cur">本周任务</div>
@@ -11,29 +11,12 @@
                 <div class="schedule-item-process">完成情况</div>
             </div>
             <div v-if="scheduleList">
-                <div class="schedule-item" v-for="item in scheduleList" :key="item.subId">
-                    <!-- <div class="schedule-item-content"> -->
-                    <div class="schedule-item-content" @click="editScheduleContent(item)">
-                        <p v-if="item.content">{{ item.content }}</p>
-                        <div class="schedule-item-placeholder" v-else>点击添加内容</div>
-                    </div>
-                    <div class="schedule-item-worth" :class="item.numberStatus?'':'number-err'">
-                        <input
-                            type="number"
-                            placeholder="0"
-                            @input="editScheduleNum(item, 'worth')"
-                            v-model="item.worth"
-                        />
-                    </div>
-                    <div class="schedule-item-process" :class="item.numberStatus?'':'number-err'">
-                        <input
-                            type="number"
-                            placeholder="0"
-                            @input="editScheduleNum(item, 'worth')"
-                            v-model="item.process"
-                        />
-                    </div>
-                </div>
+                <schedule
+                    v-for="(item,index) in scheduleList"
+                    :key="item.subId"
+                    v-model="scheduleList[index]"
+                    v-on:editScheduleNum="editScheduleNum(item)"
+                ></schedule>
             </div>
             <div class="add-icon" @click="addSchedule">+</div>
         </div>
@@ -48,7 +31,11 @@
 import { mapState, mapGetters, mapMutations } from "vuex";
 import { throttle } from "lib/throttle.js";
 import request from "request";
+import schedule from "./com/schedule.vue";
 export default {
+    components: {
+        schedule
+    },
     data() {
         return {};
     },
@@ -99,24 +86,7 @@ export default {
             };
             this.insertSchedule(newSchedule);
         },
-        editScheduleContent(item) {
-            this.$router.push({
-                name: "weeklyContent",
-                query: {
-                    content: item.content,
-                    subId: item.subId,
-                    worth: item.worth,
-                    process: item.process
-                }
-            });
-        },
-        editScheduleNum(item, type) {
-            throttle(() => {
-                item = this._checkNum(item);
-                this.updateSchedule(item);
-                this._saveTask();
-            }, 1000)();
-        },
+
         _saveTask() {
             let scheduleStr = encodeURIComponent(
                 JSON.stringify(this.scheduleList)
@@ -130,6 +100,13 @@ export default {
                         return res.data;
                     }
                 });
+        },
+        editScheduleNum(item, type) {
+            throttle(() => {
+                item = this._checkNum(item);
+                this.updateSchedule(item);
+                this._saveTask();
+            }, 1000)();
         },
         _checkNum(item) {
             if (
@@ -148,7 +125,7 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-.schedule_wrapper {
+.task_wrapper {
     display: block;
     height: 100%;
     padding: 20px 5px;
@@ -262,6 +239,6 @@ header {
     margin: 20px 10px;
 }
 .number-err {
-    border-bottom: 1px red solid;
+    border-bottom: 1px red dashed;
 }
 </style>
