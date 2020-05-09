@@ -1,35 +1,24 @@
 import { mapState, mapGetters, mapMutations } from "vuex";
-import request from "request";
 
 export default {
+    components: {
+        headerTool: () => import('./com/headerTool.vue'),
+        user: () => import('./com/user.vue'),
+        taskHistory: () => import('./com/taskHistory.vue'),
+        taskAllHistory: () => import('./com/taskAllHistory.vue'),
+        editor: () => import('./com/editor.vue'),
+        task: () => import('./com/task.vue'),
+    },
     data() {
         return {
-            users: [],
         };
     },
     computed: {
-        ...mapState("weekly", ["curUser"]),
+        ...mapState("weekly", ["curUser", 'taskHistory', 'editing']),
     },
     mounted() {
-        this._initUsers();
+        // this._initUsers();
     },
     methods: {
-        ...mapMutations("weekly", ["updateUser"]),
-        _initUsers() {
-            request.get("/task/users").then((res) => {
-                if (res.status === 200 && res.data) {
-                    this.users = res.data;
-                }
-            });
-        },
-        gotoWeekly(user) {
-            this.updateUser(user);
-            this.$router.push({
-                name: "weekly",
-                query: {
-                    userId: user.userId
-                }
-            });
-        },
     },
 };

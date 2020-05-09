@@ -1,7 +1,11 @@
 const state = () => ({
     taskId: "",
-    scheduleList: [],
+    scheduleList: null,
     curUser: null,
+    curSchedule: null,
+    subId: '',
+    taskHistory: null,
+    editing: false
 });
 
 const getters = {
@@ -15,7 +19,6 @@ const getters = {
             if (index === 1) return a.worth + b.worth;
             return a + b.worth;
         });
-        // console.log(totalValue, 14);
     },
     score: (state) => {
         if (!state.scheduleList || state.scheduleList.length == 0) {
@@ -35,7 +38,6 @@ const mutations = {
         state.taskId = task.taskId;
     },
     insertSchedule(state, item) {
-        console.log(item, 6);
         state.scheduleList.push(item);
     },
     updateSchedule(state, item) {
@@ -56,9 +58,19 @@ const mutations = {
         });
         state.scheduleList.splice(index, 1);
     },
-    updateUser(state, user) {
-        state.curUser = user;
+    updateCurUser(state, user) {
+        state.curUser = user
     },
+    updateCurSchedule(state, curSchedule) {
+        state.curSchedule = curSchedule;
+    },
+    updateSubId(state, subId) {
+        state.subId = subId
+    },
+    updateEditing(state, bool) {
+        state.editing = bool;
+        // console.log
+    }
 };
 export default {
     namespaced: true,

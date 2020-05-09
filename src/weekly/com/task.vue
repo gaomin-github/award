@@ -1,9 +1,25 @@
 <template>
-    <section class="task_wrapper">
-        <header>
+    <div class="task-wrapper">
+        <header class="user">
+            <div class="user-info">
+                <p class="user-info-name">welcome {{curUser.userName}} ~</p>
+                <p class="user-info-score">
+                    total score is
+                    <span>{{totalValue}}</span>
+                </p>
+                <p class="user-info-score">
+                    You've already get
+                    <span>{{score}}</span>
+                </p>
+            </div>
+            <div class="user-score">
+                <circle-chart :score="20"></circle-chart>
+            </div>
+        </header>
+        <nav>
             <div class="prev">查看上周</div>
             <div class="cur">本周任务</div>
-        </header>
+        </nav>
         <div class="schedule">
             <div class="schedule-item schedule-item-label">
                 <div class="schedule-item-content">任务内容</div>
@@ -15,7 +31,8 @@
                     v-for="(item,index) in scheduleList"
                     :key="item.subId"
                     v-model="scheduleList[index]"
-                    v-on:editScheduleNum="editScheduleNum(item)"
+                    @editScheduleNum="editScheduleNum"
+                    @deleteSchedule="deleteSchedule"
                 ></schedule>
             </div>
             <div class="add-icon" @click="addSchedule">+</div>
@@ -25,16 +42,19 @@
             Math.ceil((score / totalValue) * 100)
             }}
         </div>
-    </section>
+    </div>
 </template>
 <script>
 import { mapState, mapGetters, mapMutations } from "vuex";
 import { throttle } from "lib/throttle.js";
 import request from "request";
-import schedule from "./com/schedule.vue";
+import schedule from "./schedule.vue";
+import circleChart from "./circleChart.vue";
+
 export default {
     components: {
-        schedule
+        schedule,
+        circleChart
     },
     data() {
         return {};
@@ -43,16 +63,15 @@ export default {
         ...mapState("weekly", ["scheduleList", "taskId", "curUser"]),
         ...mapGetters("weekly", ["totalValue", "score"])
     },
-    created() {
-        console.log("weekly index created");
-    },
     mounted() {
-        // console.log("weekly index mounted");
         this._initTask();
     },
     beforeDestroy() {
-        this.updateSchedule(item);
-        this._saveTask();
+        let scheduleList = this.scheduleList.filter(schedule => {
+            return schedule.content && schedule.content.length > 0;
+        });
+        this.updateSchedule(scheduleList);
+        this._saveTask(scheduleList);
     },
     methods: {
         ...mapMutations("weekly", [
@@ -62,20 +81,21 @@ export default {
             "deleteSchedule"
         ]),
         _initTask() {
-            let userId = this.$route.query.userId;
-            request.get(`/task/task?userId=${userId}`).then(res => {
-                if (res.status === 200 && res.data) {
-                    this.initTask(res.data[0]);
-                } else {
-                    request
-                        .get(`/task/createTask?userId=${userId}`)
-                        .then(newRes => {
-                            if (newRes.status === 200 && newRes.data) {
-                                this.initTask(newRes.data);
-                            }
-                        });
-                }
-            });
+            request
+                .get(`/task/task?userId=${this.curUser.userId}`)
+                .then(res => {
+                    if (res.status === 200 && res.data) {
+                        this.initTask(res.data[0]);
+                    } else {
+                        request
+                            .get(`/task/createTask?userId=${userId}`)
+                            .then(newRes => {
+                                if (newRes.status === 200 && newRes.data) {
+                                    this.initTask(newRes.data);
+                                }
+                            });
+                    }
+                });
         },
         addSchedule() {
             let newSchedule = {
@@ -86,8 +106,15 @@ export default {
             };
             this.insertSchedule(newSchedule);
         },
-
-        _saveTask() {
+        editScheduleNum(item) {
+            throttle(() => {
+                item = this._checkNum(item);
+                this.updateSchedule(item);
+                this._saveTask(item);
+            }, 1000)();
+        },
+        deleteSchedule(item) {},
+        _saveTask(item) {
             let scheduleStr = encodeURIComponent(
                 JSON.stringify(this.scheduleList)
             );
@@ -101,13 +128,6 @@ export default {
                     }
                 });
         },
-        editScheduleNum(item, type) {
-            throttle(() => {
-                item = this._checkNum(item);
-                this.updateSchedule(item);
-                this._saveTask();
-            }, 1000)();
-        },
         _checkNum(item) {
             if (
                 item.worth < item.process ||
@@ -118,26 +138,23 @@ export default {
             }
             return item;
         }
-        // editScheduleProcess() {
-        //   //   添加时间限制
-        // },
     }
 };
 </script>
 <style lang="scss" scoped>
-.task_wrapper {
+.task-wrapper {
     display: block;
     height: 100%;
-    padding: 20px 5px;
 }
-section,
 div,
 header,
+nav,
 p {
     display: block;
     overflow: hidden;
     margin: 0;
     padding: 0;
+    box-sizing: border-box;
 }
 input,
 textarea {
@@ -148,7 +165,35 @@ textarea {
     height: 100%;
     font-size: 14px;
 }
-header {
+header,
+.user {
+    display: flex;
+    &-info {
+        flex: 1;
+        flex-shrink: 1;
+
+        &-name {
+            line-height: 34px;
+            font-size: 18px;
+            color: rgba(145, 136, 137, 1);
+            font-weight: 600;
+        }
+        &-score {
+            line-height: 24px;
+            font-size: 14px;
+            color: rgba(185, 186, 187, 1);
+            span {
+                color: rgba(220, 24, 24, 1);
+            }
+        }
+    }
+    &-score {
+        margin-top: 10px;
+        flex-shrink: 1;
+        min-width: 100px;
+    }
+}
+nav {
     display: flex;
     position: relative;
     line-height: 42px;
@@ -181,45 +226,6 @@ header {
         border-bottom: 1px rgba(104, 162, 112, 1) solid;
         font-size: 16px;
         height: auto;
-        &-content {
-            flex: 1;
-            flex-shrink: 1;
-            p {
-                white-space: pre-wrap;
-            }
-        }
-        &-worth,
-        &-process {
-            text-align: center;
-
-            input {
-                width: 100%;
-                line-height: 32px;
-                text-align: center;
-                font-size: 16px;
-            }
-        }
-        &-worth {
-            width: 50px;
-        }
-        &-process {
-            width: 70px;
-        }
-        &-process-poor {
-            input {
-                color: rgba(213, 30, 30, 1);
-            }
-        }
-        &-process-aver {
-            input {
-                color: rgba(113, 100, 100, 1);
-            }
-        }
-        &-process-exe {
-            input {
-                color: rgba(66, 144, 55, 1);
-            }
-        }
     }
     &-item-label {
         color: rgba(95, 142, 100, 1);

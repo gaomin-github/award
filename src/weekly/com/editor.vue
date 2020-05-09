@@ -1,6 +1,5 @@
 <template>
     <section class="content-wrapper">
-        <header class="back" @click="handleBack">《---</header>
         <textarea ref="content" class="content" v-model="content" @input="inputHandler"></textarea>
     </section>
 </template>
@@ -11,22 +10,16 @@ import { throttle } from "lib/throttle.js";
 export default {
     data() {
         return {
-            content: "",
-            subId: "",
-            worth: 0,
-            process: 0
+            content: ""
         };
     },
-    //   props: {
-    //     data: {
-    //       subId: "",
-    //       content: "",
-    //       worth: 0,
-    //       process: 0,
-    //     },
-    //   },
     computed: {
-        ...mapState("weekly", ["scheduleList", "taskId"])
+        ...mapState("weekly", [
+            "scheduleList",
+            "taskId",
+            "curSchedule",
+            "subId"
+        ])
     },
     mounted() {
         this._prevData();
@@ -34,40 +27,32 @@ export default {
     },
     beforeDestroy() {
         this._saveSchedule();
+        this.updateEditing(false);
     },
     methods: {
-        ...mapMutations("weekly", ["updateSchedule"]),
+        ...mapMutations("weekly", ["updateSchedule", "updateEditing"]),
         _prevData() {
-            let data = this.$route.query;
-            this.content = data.content;
-            this.subId = data.subId;
-            this.worth = data.worth;
-            this.process = data.process;
+            this.content = this.curSchedule.content;
         },
         inputHandler() {
-            //   console.log(throttle, 43);
             throttle(() => {
                 // 更新到vuex
-                this.updateSchedule({
-                    subId: this.subId,
-                    content: this.content,
-                    worth: this.worth,
-                    process: this.process
-                });
                 this._saveSchedule();
             }, 500)();
         },
+        // 返回
         handleBack() {
-            this.updateSchedule({
-                subId: this.subId,
-                content: this.content,
-                worth: this.worth,
-                process: this.process
-            });
             this._saveSchedule();
-            this.$router.go(-1);
+            this.updateEditing(false);
         },
         _saveSchedule() {
+            // 更新store
+            this.updateSchedule(
+                Object.assign(this.curSchedule, {
+                    content: this.content
+                })
+            );
+            // 更新数据库
             let scheduleStr = encodeURIComponent(
                 JSON.stringify(this.scheduleList)
             );
@@ -89,28 +74,25 @@ export default {
     height: 100%;
     display: flex;
     flex-direction: column;
-    padding: 10px;
 }
 textarea {
     appearance: none;
     border: none;
     outline: none;
+    width: 100%;
+    height: 100%;
+    box-sizing: border-box;
 }
-div,
-section {
-    display: block;
-    overflow: hidden;
-}
-header {
-    line-height: 30px;
-}
+
 .content {
     flex: 1;
     padding: 0px 5px;
+    margin-top: 10px;
     border: 1px rgba(180, 175, 175, 1) solid;
     line-height: 28px;
     font-size: 14px;
     border-radius: 5px;
     overflow-y: scroll;
+    min-height: 300px;
 }
 </style>

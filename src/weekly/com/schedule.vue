@@ -28,6 +28,8 @@
     </section>
 </template>
 <script>
+import { mapState, mapGetters, mapMutations } from "vuex";
+
 // 时间超过500ms，滑动距离超过一半 ，
 export default {
     data() {
@@ -48,21 +50,25 @@ export default {
         prop: "schedule",
         event: "update"
     },
+    computed: {
+        ...mapState("weekly", ["editing"])
+    },
     mounted() {},
     methods: {
+        ...mapMutations("weekly", [
+            "updateCurSchedule",
+            "updateEditing",
+            "initTask",
+            "insertSchedule",
+            "updateSchedule",
+            "deleteSchedule"
+        ]),
         editScheduleContent() {
-            this.$router.push({
-                name: "weeklyContent",
-                query: {
-                    content: schedule.content,
-                    subId: schedule.subId,
-                    worth: schedule.worth,
-                    process: schedule.process
-                }
-            });
+            this.updateCurSchedule(this.schedule);
+            this.updateEditing(true);
         },
         editScheduleNum() {
-            this.$emit("editScheduleNum", schedule);
+            this.$emit("editScheduleNum", this.schedule);
         },
         handleTouchStart(e) {
             this.touchStartX = e.targetTouches[0].pageX;
