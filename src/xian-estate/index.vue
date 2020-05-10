@@ -1,43 +1,49 @@
 <template>
   <div class="xianEstate-wrapper">
     <section class="header">高新周边楼盘参考</section>
-    <div v-if="areaList && areaList.length > 0" class="building">
-      <section
-        v-for="building in areaList"
-        :key="building.href"
-        class="building-item"
-        @click="stepTo(building)"
-      >
-        <div class="building-item-label" v-html="building.label"></div>
-        <div class="building-item-time">备案时间：{{ building.time }}</div>
-        <div class="building-item-drive">
-          <section class="label">开车：</section>
-          <section class="content">
-            距离
-            <span>{{
-              Math.ceil(parseInt(building.drivingRoute.distance) / 100) / 10
-            }}</span>
-            公里,需要
-            <span>{{
-              Math.ceil(parseInt(building.drivingRoute.duration) / 60)
-            }}</span>
-            分钟
-          </section>
-        </div>
-        <div class="building-item-bus">
-          <section class="label">乘公交：</section>
-          <section class="content">
-            距离{{ Math.ceil(parseInt(building.busRoute.distance) / 100) / 10 }}
-            公里，需要
-            {{ Math.ceil(parseInt(building.busRoute.duration) / 60) }}
-            分钟，需要步行{{ building.busRoute.walking_distance }}米
-          </section>
-        </div>
-        <div class="building-item-garden">
-          周边
-          <span>&nbsp;{{ building.garden.num }}&nbsp;</span>家公园
-        </div>
-      </section>
+    <div class="content">
+      <div v-if="areaList && areaList.length > 0" class="building">
+        <section
+          v-for="building in areaList"
+          :key="building.href"
+          class="building-item"
+          @click="stepTo(building)"
+        >
+          <div class="building-item-title" v-html="building.label"></div>
+          <div class="building-item-time">备案时间：{{ building.time }}</div>
+          <div class="building-item-drive">
+            <section class="label">开车：</section>
+            <section class="building-item-content">
+              距离
+              <span>{{
+                Math.ceil(parseInt(building.drivingRoute.distance) / 100) / 10
+              }}</span>
+              公里,需要
+              <span>{{
+                Math.ceil(parseInt(building.drivingRoute.duration) / 60)
+              }}</span>
+              分钟
+            </section>
+          </div>
+          <div class="building-item-bus">
+            <section class="building-item-label">乘公交：</section>
+            <section class="building-item-content">
+              距离{{
+                Math.ceil(parseInt(building.busRoute.distance) / 100) / 10
+              }}
+              公里，需要
+              {{ Math.ceil(parseInt(building.busRoute.duration) / 60) }}
+              分钟，需要步行{{ building.busRoute.walking_distance }}米
+            </section>
+          </div>
+          <div class="building-item-garden">
+            周边
+            <span
+              >&nbsp;{{ building.garden ? building.garden.num : 0 }}&nbsp;</span
+            >家公园
+          </div>
+        </section>
+      </div>
     </div>
   </div>
 </template>
@@ -100,6 +106,7 @@ section {
   overflow: hidden;
   margin: 0;
   padding: 0;
+  box-sizing: border-box;
 }
 .xianEstate-wrapper {
   width: 100%;
@@ -119,21 +126,24 @@ section {
   font-weight: 600;
   padding: 0px 20px;
 }
-.building {
-  overflow-y: scroll;
+.content {
   flex-shrink: 1;
-
   flex: 1;
-  border-radius: 15px;
+  padding: 5px 10px;
+  border-radius: 10px;
   background: rgb(245, 245, 245);
+}
+.building {
+  height: 100%;
+  overflow-y: scroll;
   &-item {
-    margin: 15px 10px;
-    padding: 8px 10px;
+    margin: 15px 0px;
+    padding: 5px;
     background: rgba(20, 53, 129, 1);
     /* background: rgba(237, 237, 237, 1); */
-    border-radius: 10px;
+    border-radius: 5px;
 
-    &-label {
+    &-title {
       line-height: 28px;
       font-size: 18px;
       font-weight: 600;
@@ -163,14 +173,11 @@ section {
       line-height: 24px;
       font-size: 14px;
       color: rgba(255, 255, 255, 0.8);
-
-      /* color: rgba(105, 105, 105, 1); */
     }
     &-garden {
       span {
         line-height: 24px;
         color: rgba(243, 88, 67, 1);
-        /* color: rgba(244, 131, 115, 1); */
         font-weight: 600;
       }
     }
@@ -179,17 +186,17 @@ section {
     &-garden,
     &-drive {
       display: flex;
-      .label {
+      &-label {
         width: 60px;
         flex-shrink: 1;
         text-align: justify;
         text-align-last: justify;
       }
-      .content {
-        flex: 1;
-        flex-shrink: 1;
-        justify-content: start;
-      }
+    }
+    &-content {
+      flex: 1;
+      flex-shrink: 1;
+      justify-content: start;
     }
   }
 }

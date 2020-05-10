@@ -1,22 +1,21 @@
 <template>
-    <section class="weekly-wrapper">
-        <header-tool />
-        <!-- 没有选中用户 -->
-        <user v-if="!curUser"></user>
-        <!-- 选中用户，查看历史状态 -->
-        <task-history v-if="curUser&&taskHistory"></task-history>
-        <!-- 所有用户历史任务查看 -->
-        <task-all-history v-if="!curUser&&taskHistory"></task-all-history>
-        <!-- 在编辑状态 -->
-        <editor v-if="curUser&&editing"></editor>
-        <!-- 选中用户，查看自己当前任务 -->
-        <task v-if="curUser&&!taskHistory&&!editing"></task>
-        <!-- {{curUser}}
+  <section class="weekly-wrapper">
+    <!-- 没有选中用户 -->
+    <user v-if="!curUser"></user>
+    <!-- 选中用户，查看历史状态 -->
+    <task-history v-if="curUser && taskHistory"></task-history>
+    <!-- 所有用户历史任务查看 -->
+    <task-all-history v-if="!curUser && taskHistory"></task-all-history>
+    <!-- 在编辑状态 -->
+    <editor v-if="curUser && editing"></editor>
+    <!-- 选中用户，查看自己当前任务 -->
+    <task v-if="curUser && !taskHistory && !editing"></task>
+    <!-- {{curUser}}
         <br />
         {{taskHistory}}
         <br />
         {{editing}}-->
-    </section>
+  </section>
 </template>
 <script src="./index.js"></script>
 <style lang="scss">
@@ -25,11 +24,11 @@
 section,
 div,
 p {
-    display: block;
-    box-sizing: border-box;
-    overflow: hidden;
+  display: block;
+  box-sizing: border-box;
+  overflow: hidden;
 }
 .weekly-wrapper {
-    padding: 10px 5px;
+  padding: 10px 5px;
 }
 </style>

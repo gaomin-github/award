@@ -12,6 +12,7 @@
           v-for="tab in tabs"
           :key="tab.key"
           @click="changeTab(tab)"
+          :style="`background:${tab.color}`"
         >
           {{ tab.label }}
         </section>
@@ -63,6 +64,9 @@
 
         <section class="map-container" id="map-container"></section>
       </section>
+      <section class="assess-con con" v-show="curTabKey === 'assess'">
+        <assess />
+      </section>
     </section>
   </section>
 </template>
@@ -78,6 +82,9 @@ const displayStrictCode = [
   // 610124
 ]; //碑林区，莲湖区，雁塔区，长安区，周至县
 export default {
+  components: {
+    assess: () => import("./assess.vue"),
+  },
   data() {
     return {
       areaInfo: {},
@@ -88,13 +95,20 @@ export default {
         {
           key: "list",
           label: "所有房间",
+          color: "rgba(43, 116, 215, 1)",
         },
         {
           key: "map",
           label: "地图查看",
+          color: "rgba(254, 148, 73, 1)",
+        },
+        {
+          key: "assess",
+          label: "评价",
+          color: "rgba(115, 163, 9, 1)",
         },
       ],
-      curTabKey: "map",
+      curTabKey: "assess",
       mapObj: null,
       pathObj: null,
     };
@@ -122,11 +136,14 @@ export default {
     },
     _getBuildingInfo() {
       let areaId = "8a901c28707bb13f0170e10d428d0913";
-      request.get(`/xian/estateBuildings?areaId=${areaId}`).then((res) => {
-        if (res.status === 200) {
-          this.buildings = res.data;
-        }
-      });
+      request
+        .get(`/xian/estateBuildings?areaId=${this.areaInfo.areaId}`)
+        .then((res) => {
+          if (res.status === 200) {
+            this.buildings = res.data;
+            console.log(this.buildings, 136);
+          }
+        });
     },
     async _initMapScript() {
       return new Promise((resolve, reject) => {
@@ -357,6 +374,7 @@ export default {
     },
     changeTab(tab) {
       this.curTabKey = tab.key;
+      console.log(this.curTabKey, 368);
     },
     backHandler() {
       this.$router.go(-1);
@@ -422,15 +440,21 @@ section {
     flex: 1;
   }
   .list {
-    background-color: rgba(43, 116, 215, 1);
+    /* background-color: rgba(43, 116, 215, 1); */
     /* background-color: rgba(13, 36, 59, 0.8); */
-    border-radius: 20px 0px 0px 20px;
+    /* border-radius: 20px 0px 0px 20px; */
     color: rgba(255, 255, 255, 0.85);
   }
   .map {
-    border-radius: 0px 20px 20px 0px;
+    /* border-radius: 0px 20px 20px 0px; */
 
-    background: rgba(254, 148, 73, 1);
+    /* background: rgba(254, 148, 73, 1); */
+  }
+  section:first-child {
+    border-radius: 20px 0px 0px 20px;
+  }
+  section:last-child {
+    border-radius: 0px 20px 20px 0px;
   }
 }
 
@@ -476,7 +500,9 @@ section {
     }
   }
 }
-
+.con {
+  flex: 1;
+}
 .map-con {
   padding: 0px 5px 5px;
   flex: 1;
