@@ -37,7 +37,7 @@
                             }}
                             公里，需要
                             {{ Math.ceil(parseInt(building.busRoute.duration) / 60) }}
-                            分钟，需要步行{{ building.busRoute.walking_distance||0 }}米
+                            分钟，需要步行{{ building.busRoute.walking_distance }}米
                         </section>
                     </div>
                     <div class="building-item-garden">
@@ -102,6 +102,7 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
+
 div,
 section {
     display: block;
