@@ -127,6 +127,7 @@ export default {
             let areaInfo = this.$route.query.areaInfo;
             this.areaInfo = JSON.parse(areaInfo);
             console.log(this.areaInfo, 15);
+            this.setCurArea(this.areaInfo);
         },
         _getBuildingInfo() {
             let areaId = "8a901c28707bb13f0170e10d428d0913";
