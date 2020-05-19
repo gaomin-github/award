@@ -79,7 +79,6 @@ export default {
             "updateSchedule",
             "deleteSchedule",
             "updateCurUser",
-            "popPathArr"
         ]),
         back() {
             let schedules =[]
@@ -97,7 +96,6 @@ export default {
                 schedules
             });
             this._saveTask();
-            this.popPathArr()
             this.updateCurUser(null);
         },
         _initTask() {

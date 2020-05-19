@@ -10,7 +10,9 @@ import { mapState, mapGetters, mapMutations } from "vuex";
 
 export default {
   methods: {
+      ...mapMutations('weekly',['popPathArr']),
     handleBack() {
+        this.popPathArr()
       this.$emit("back");
     },
   },
