@@ -1,4 +1,5 @@
 <template>
+<!-- <transition name="slid"> -->
     <div class="task-wrapper">
         <header-tool @back="back" />
         <header class="user">
@@ -43,6 +44,7 @@
             <i class="plus-circle" @click="addSchedule"></i>
         </div>
     </div>
+<!-- </transition> -->
 </template>
 <script>
 import { mapState, mapGetters, mapMutations } from "vuex";
@@ -76,19 +78,26 @@ export default {
             "insertSchedule",
             "updateSchedule",
             "deleteSchedule",
-            "updateCurUser"
+            "updateCurUser",
+            "popPathArr"
         ]),
         back() {
-            let schedules = this.scheduleList.filter((schedule, index) => {
-                if (schedule.content && schedule.content.length > 0)
+            let schedules =[]
+            if(this.scheduleList&&this.scheduleList.length>1){
+                schedules=this.scheduleList.filter((schedule, index) => {
+                    if (schedule.content && schedule.content.length > 0)
                     return true;
                 else return false;
             });
+            }else{
+                schedules=this.scheduleList;
+            } 
             this.initTask({
                 taskId: this.taskId,
                 schedules
             });
             this._saveTask();
+            this.popPathArr()
             this.updateCurUser(null);
         },
         _initTask() {
@@ -97,6 +106,7 @@ export default {
                 .then(res => {
                     if (res.status === 200 && res.data) {
                         this.initTask(res.data[0]);
+                        console.log(this.scheduleList,104)
                     } else {
                         request
                             .get(
@@ -158,9 +168,26 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
+// .slid-leave-to{
+//     transform:translateX(100%)
+// }
+// .slid-leave-active{
+//     transition:all 2s ease;
+// }
+// @keyframes slid {
+//     0%{
+//         transform:translateX(100%);
+//     }
+//     100%{
+//         transform:translateX(0);
+//     }
+// }
+
 .task-wrapper {
-    display: block;
-    height: 100%;
+    // animation:slid 1s;
+    position:absolute;
+    width:100%;
+    // top:0;
 }
 div,
 header,

@@ -6,6 +6,8 @@ const state = () => ({
   subId: "",
   taskHistory: null,
   editing: false,
+  pathArr:'',
+  pageMove:''
 });
 
 const getters = {
@@ -73,6 +75,17 @@ const mutations = {
   updateEditing(state, bool) {
     state.editing = bool;
   },
+  pushPathArr(state,path){
+    state.pathArr+=`/${path}`
+  },
+  popPathArr(state){
+      let pathStr=state.pathArr.split('/');
+      pathStr.pop()
+      state.pathArr=pathStr.join('/')
+  },
+  setPageMove(state,method){
+    state.pageMove=method;
+  }
 };
 export default {
   namespaced: true,
