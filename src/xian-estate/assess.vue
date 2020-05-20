@@ -2,19 +2,11 @@
   <div class="assess-wrapper">
     <div class="editor" v-if="isEditing">
       <div class="editor-control">
-        <i class="editor-btn editor-cancel fa fa-times-circle"></i>
+        <i class="editor-btn editor-cancel fa fa-eraser"></i>
         <div class="editor-btn editor-send" @click="saveAssess">发表</div>
       </div>
       <textarea v-model="content" placeholder="给点评价吧..."></textarea>
       <div>
-        <input
-          type="file"
-          accept="image/*"
-          style="opacity:0"
-          ref="imgPicker"
-          multiple="multiple"
-          @change="changeImg"
-        />
         <div class="editor-img" v-if="imgs && imgs.length > 0">
           <div
             v-for="imgItem in imgs"
@@ -33,6 +25,14 @@
         <div class="editor-img-item" v-else>
           <assess-img @chooseImg="chooseImg"></assess-img>
         </div>
+        <input
+          type="file"
+          accept="image/*"
+          style="visibility: hidden;height:0px;"
+          ref="imgPicker"
+          multiple="multiple"
+          @change="changeImg"
+        />
       </div>
     </div>
     <div class="assess-con" v-else>
@@ -193,13 +193,14 @@ div {
   width: 100%;
   box-sizing: border-box;
   border: 1px black solid;
-  input[type="text"] {
+  /* input[type="text"] {
     width: 100%;
     padding: 0px 10px;
     line-height: 36px;
     font-size: 16px;
-  }
+  } */
   ::-webkit-input-placeholder {
+    margin-top: 50px;
     color: #999;
   }
 }
@@ -214,45 +215,46 @@ div {
   &-control {
     display: flex;
     justify-content: space-between;
+    align-items: center;
     padding: 5px 10px;
   }
   &-btn {
-    // position: absolute;
     top: 5px;
     right: 5px;
     width: 60px;
     line-height: 32px;
-    // text-align: center;
   }
   &-cancel {
-    line-height: 32px;
-    width: 32px;
-    height: 32px;
+    line-height: 22px;
+    width: 22px;
+    height: 22px;
     margin: 0px;
     padding: 0px;
     display: block;
-  }
-  &-cancel:before {
-    // font-size: 36px;
-    // color: #999;
+    font-size: 22px;
+    color: #999;
+    font-weight: 400;
   }
   &-send {
-    background-color: rgba(115, 163, 9, 1);
+    background-color: rgba(226, 248, 221, 1);
     border-radius: 5px;
-    color: rgba(255, 255, 255, 1);
+    color: rgba(224, 105, 30, 1);
     text-align: center;
+    font-weight: 600;
+    font-size: 18px;
   }
   textarea {
     appearance: none;
     box-sizing: border-box;
+    overflow-y: scroll;
     width: 100%;
-    height: 200px;
+    height: 180px;
     padding: 5px;
     border: none;
     font-size: 16px;
     line-height: 30px;
     outline: none;
-    border: 1px rgba(115, 163, 9, 1) solid;
+    /* border: 1px rgba(115, 163, 9, 1) solid; */
     background: rgba(0, 0, 0, 0);
   }
   &-img {
