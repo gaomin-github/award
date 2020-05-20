@@ -1,11 +1,11 @@
 <template>
-  <section class="content-wrapper">
+  <div class="content-wrapper">
     <header-tool @back="back" />
     <div class="grade">
         <div class="grade-progress">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 105 10">
                 <line class="grade-progress-path " x1="5" y1="5" x2="100" y2="5" />
-                <line class="grade-progress-path valid" v-if="process&&worth" x1="5" y1="5" x2="100" :stroke-dasharray="`${100*process/worth} 500`" y2="5" />
+                <line class="grade-progress-path valid" v-if="process&&worth" x1="5" y1="5" x2="100" :stroke-dasharray="`${process<worth?100*process/worth:100} 500`" y2="5" />
             </svg>
         </div>
         <div class="grade-worth">
@@ -23,21 +23,37 @@
       @input="inputHandler"
       placeholder="add some content"
     ></textarea>
-  </section>
+    <div class="schedule">
+        <img-uploader class="schedule-item"></img-uploader>
+    </div>
+    <div class="schedule" >
+        <div class="schedule-item" >
+            <div class="schedule-item-time">
+
+            </div>
+            <div class="schedule-item-imgs">
+
+            </div>
+        </div>
+    </div>
+  </div>
 </template>
 <script>
 import request from "request";
 import { mapState, mapMutations } from "vuex";
 import { throttle } from "lib/throttle.js";
+import imgUploader from 'components/img-uploader.vue'
 export default {
   components: {
     headerTool: () => import("./headerTool.vue"),
+    imgUploader: () => import("components/img-uploader")
   },
   data() {
     return {
       content: "",
       worth:0,
-      process:0
+      process:0,
+      pics:[]
     };
   },
   computed: {
@@ -111,6 +127,9 @@ export default {
   display: flex;
   flex-direction: column;
   position:absolute;
+  padding:10px;
+  background:rgba(242,245,249,1);
+
 }
 textarea {
   appearance: none;
@@ -153,6 +172,7 @@ textarea {
         border:none;
         border-bottom:1px #999 solid;
         text-align: center;
+        background:none;
     }
     &-worth{
         flex-shrink: 1;
@@ -166,7 +186,7 @@ textarea {
     }
 }
 .content {
-  flex: 1;
+height:300px;
   padding: 0px 5px;
   margin-top: 10px;
   border: 1px rgba(180, 175, 175, 1) solid;
@@ -176,5 +196,11 @@ textarea {
   overflow-y: scroll;
   height:300px;
 
+}
+.schedule{
+    &-item{
+        width:100px;
+        height:130px;
+    }
 }
 </style>

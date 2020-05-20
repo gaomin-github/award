@@ -3,7 +3,7 @@
     <svg xmlns="http://www.w3.org/2000/svg">
       <circle class="circle_path_bg" />
       <circle class="circle_path" :stroke-dasharray="`${score * 200} 500`" />
-      <circle class="circle_path" stroke-dasharray="100 200" />
+      <!-- <circle class="circle_path" stroke-dasharray="100 200" /> -->
 
       <path
         v-if="score === 1"

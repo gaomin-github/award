@@ -26,6 +26,8 @@ module.exports = {
     alias: {
       vue$: "vue/dist/vue.esm.js",
       TagCanvas: path.resolve(__dirname, "../common/lib/tagcanvas.js"),
+      component:path.resolve(__dirname,'../common/components')
+
     },
   },
   module: {
