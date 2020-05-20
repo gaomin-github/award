@@ -76,7 +76,7 @@ p {
 }
 .weekly-wrapper {
 
-  padding: 10px 5px;
+//   padding: 10px 5px;
   width:100%;
   height:100%;
   position:relative;

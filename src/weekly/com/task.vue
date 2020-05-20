@@ -1,9 +1,9 @@
 <template>
 <!-- <transition name="slid"> -->
     <div class="task-wrapper">
-        <header-tool @back="back" />
+        <!-- <header-tool @back="back" /> -->
         <header class="user">
-            <div class="user-info">
+            <!-- <div class="user-info">
                 <p class="user-info-name">
                     welcome
                     <span>{{ curUser.userName }}</span> ~
@@ -19,30 +19,37 @@
             </div>
             <div class="user-score">
                 <circle-chart :score="totalValue ? score / totalValue : 0"></circle-chart>
-            </div>
+            </div> -->
         </header>
-        <nav>
+        <!-- <nav>
             <div class="prev">查看上周</div>
             <div class="cur">本周任务</div>
-        </nav>
-        <div class="schedule">
-            <div class="schedule-item schedule-item-label">
-                <div class="content">任务内容</div>
-                <div class="worth">分值</div>
-                <div class="process">完成</div>
+        </nav> -->
+        <div class="content">
+
+            <div class="title">
+                Your Schedules
             </div>
-            <div v-if="scheduleList">
+
+            <div class="schedule" v-if="scheduleList">
+                <!-- <div class="schedule-item schedule-item-label">
+                    <div class="content">任务内容</div>
+                    <div class="worth">分值</div>
+                    <div class="process">完成</div>
+                </div> -->
                 <schedule
+                class="schedule-item"
                     v-for="(item, index) in scheduleList"
                     :key="item.subId"
+                    :order="index"
                     v-model="scheduleList[index]"
                     @editScheduleNum="editScheduleNum"
                     @deleteSchedule="deleteSchedule"
                 ></schedule>
+                <!-- <div class="add-icon" @click="addSchedule">+</div> -->
             </div>
-            <!-- <div class="add-icon" @click="addSchedule">+</div> -->
-            <i class="plus-circle" @click="addSchedule"></i>
         </div>
+        <i class="icon fa fa-plus" @click="addSchedule"></i>
     </div>
 <!-- </transition> -->
 </template>
@@ -185,6 +192,10 @@ export default {
     // animation:slid 1s;
     position:absolute;
     width:100%;
+    height:100%;
+    background:rgba(242,245,249,1);
+    display: flex;
+    flex-direction: column;
     // top:0;
 }
 div,
@@ -260,38 +271,77 @@ nav {
         font-size: 18px;
     }
 }
-.schedule {
-    position: relative;
-    &-item-label {
-        color: rgba(95, 142, 100, 1);
-        display: flex;
-        line-height: 32px;
+.content{
+    flex:1;
+    border:1px red solid;
+    border-radius:15px;
+    margin:10px 10px 20px;
+    overflow-y: scroll;
+    background:rgba(255,255,255,1);
+    .title{
+        font-size: 24px;
+        font-weight: 500;
+        line-height: 41px;
+        color:rgba(65,71,85,1);
+    }
+    .schedule{
+        flex:1;
+        margin-top:10px;
+    }
+}
+.schedule{
+    padding:10px 15px;
 
-        padding: 5px 5px;
-        background-color: rgba(246, 245, 220, 1);
-        border-bottom: 1px rgba(104, 162, 112, 1) solid;
-        font-size: 16px;
-        height: auto;
+    &-item{
+        // margin-top:10px;
     }
-    .content {
-        flex: 1;
-        flex-shrink: 1;
-    }
-    .worth,
-    .process {
-        width: 50px;
-        text-align: center;
-    }
-    .add-icon {
-        width: 24px;
-        line-height: 24px;
-        text-align: center;
-        vertical-align: top;
-        border-radius: 50%;
-        font-size: 18px;
-        background: rgba(66, 144, 55, 1);
-        color: rgba(255, 255, 255, 1);
-    }
+}
+// .schedule {
+
+//     position: relative;
+//     &-item-label {
+//         color: rgba(95, 142, 100, 1);
+//         display: flex;
+//         line-height: 32px;
+
+//         padding: 5px 5px;
+//         background-color: rgba(246, 245, 220, 1);
+//         border-bottom: 1px rgba(104, 162, 112, 1) solid;
+//         font-size: 16px;
+//         height: auto;
+//     }
+//     // .content {
+//     //     flex: 1;
+//     //     flex-shrink: 1;
+//     // }
+//     // .worth,
+//     // .process {
+//     //     width: 50px;
+//     //     text-align: center;
+//     // }
+//     .add-icon {
+//         width: 24px;
+//         line-height: 24px;
+//         text-align: center;
+//         vertical-align: top;
+//         border-radius: 50%;
+//         font-size: 18px;
+//         background: rgba(66, 144, 55, 1);
+//         color: rgba(255, 255, 255, 1);
+//     }
+// }
+.icon{
+     flex-shrink: 1;
+  box-sizing: border-box;
+  color: rgba(255, 255, 255, 1);
+  width: 42px;
+  height: 42px;
+  line-height: 42px;
+  border-radius: 50%;
+  text-align: center;
+  font-size: 28px;
+
+  background: rgba(66, 144, 55, 1);
 }
 .result {
     margin: 20px 10px;
