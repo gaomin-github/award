@@ -35,10 +35,10 @@
     transform: translateX(100%);
 }
 .prev-enter-active,.next-enter-active{
-    transition:all .8s ease-in;
+    transition:all .4s ease-in;
 }
 .prev-leave-active,.next-leave-active{
-    transition:all .6s ease-out;
+    transition:all .3s ease-out;
 }
 
 .next-enter{

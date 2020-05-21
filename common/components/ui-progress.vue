@@ -41,8 +41,8 @@ svg{
     stroke:#999;
 }
 .valid{
-    stroke:red;
-    transition:all 3s ease;
+    stroke:rgba(66, 144, 55, 1);
+    // transition:all 3s ease;
     animation:valid_path 1s ease reverse;
 }
 </style>
