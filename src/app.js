@@ -9,7 +9,7 @@ eruda.init();
 import App from "./app.vue";
 Vue.use(VueRouter);
 // import xianEstateDemo from './xian-estate/index.vue'
-const routes = new VueRouter({
+const router = new VueRouter({
     mode: "history",
     routes: [
         // {
@@ -67,6 +67,10 @@ const routes = new VueRouter({
         // },
     ],
 });
+
+// router.beforeEach((to, from, next) => {
+
+// })
 // mock数据
 // import("./mock/index.js");
 let vm = new Vue({
@@ -75,7 +79,7 @@ let vm = new Vue({
         App: App,
     },
     template: "<App/>",
-    router: routes,
+    router,
     mock,
     store,
     // router: SelfRoutes

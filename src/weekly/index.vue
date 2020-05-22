@@ -1,59 +1,60 @@
 <template>
-  <section class="weekly-wrapper">
-      <transition :name="pageMove" >
-        <!-- 没有选中用户 -->
-        <user v-if="!curUser"></user>
-        <!-- 选中用户，查看历史状态 -->
-        <task-history v-if="curUser && taskHistory"></task-history>
-        <!-- 所有用户历史任务查看 -->
-        <task-all-history v-if="!curUser && taskHistory"></task-all-history>
-        <!-- 在编辑状态 -->
-        <editor v-if="curUser && editing"></editor>
-        <!-- 选中用户，查看自己当前任务 -->
-        <task v-if="curUser && !taskHistory && !editing"></task>
-      </transition>
-    <!-- {{curUser}}
+    <section class="weekly-wrapper">
+        <transition :name="pageMove">
+            <!-- 没有选中用户 -->
+            <user v-if="!curUser"></user>
+            <!-- 选中用户，查看历史状态 -->
+            <task-history v-if="curUser && taskHistory"></task-history>
+            <!-- 所有用户历史任务查看 -->
+            <task-all-history v-if="!curUser && taskHistory"></task-all-history>
+            <!-- 在编辑状态 -->
+            <editor v-if="curUser && editing"></editor>
+            <!-- 选中用户，查看自己当前任务 -->
+            <task v-if="curUser && !taskHistory && !editing"></task>
+        </transition>
+        <!-- {{curUser}}
         <br />
         {{taskHistory}}
         <br />
         {{editing}}-->
-  </section>
+    </section>
 </template>
 <script src="./index.js"></script>
 <style lang="scss">
 @import url("https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.css");
-.prev-enter-to{
+.prev-enter-to {
     transform: translateX(0);
 }
-.prev-enter{
+.prev-enter {
     transform: translateX(-100%);
 }
-.prev-leave{
+.prev-leave {
     transform: translateX(0);
 }
-.prev-leave-to{
+.prev-leave-to {
     transform: translateX(100%);
 }
-.prev-enter-active,.next-enter-active{
-    transition:all .4s ease-in;
+.prev-enter-active,
+.next-enter-active {
+    transition: all 0.4s ease-in;
 }
-.prev-leave-active,.next-leave-active{
-    transition:all .3s ease-out;
+.prev-leave-active,
+.next-leave-active {
+    transition: all 0.3s ease-out;
 }
 
-.next-enter{
-transform: translateX(100%);
-// top:0;
+.next-enter {
+    transform: translateX(100%);
+    // top:0;
 }
-.next-enter-to{
+.next-enter-to {
     transform: translateX(0);
     // top:0;
 }
-.next-leave{
+.next-leave {
     transform: translateX(0);
-
 }
-.next-leave-to{
+.next-leave-to {
     transform: translateX(-100%);
 }
 
@@ -70,15 +71,14 @@ transform: translateX(100%);
 section,
 div,
 p {
-  display: block;
-  box-sizing: border-box;
-  overflow: hidden;
+    display: block;
+    box-sizing: border-box;
+    overflow: hidden;
 }
 .weekly-wrapper {
-
-//   padding: 10px 5px;
-  width:100%;
-  height:100%;
-  position:relative;
+    //   padding: 10px 5px;
+    width: 100%;
+    height: 100%;
+    position: relative;
 }
 </style>

@@ -22,17 +22,26 @@ export default {
             users: []
         };
     },
-    computed:{
-        ...mapState('weekly',['pathArr'])
+    computed: {
+        ...mapState("weekly", ["pathArr"])
     },
     mounted() {
         this._initUsers();
-        if(!(this.pathArr&&this.pathArr.length>0)){
-            this.pushPathArr('user')
+        if (!(this.pathArr && this.pathArr.length > 0)) {
+            this.pushPathArr("user");
         }
+        // window.addEventListener("online", () => {
+        //     console.log(window.location.href, 34);
+        //     console.log("online", 35);
+        // });
+        // window.addEventListener("offline", () => {
+        //     console.log(window.location.href, 38);
+
+        //     console.log("offline", 40);
+        // });
     },
     methods: {
-        ...mapMutations("weekly", ["updateCurUser",'pushPathArr']),
+        ...mapMutations("weekly", ["updateCurUser", "pushPathArr"]),
         _initUsers() {
             request.get("/task/users").then(res => {
                 if (res.status === 200 && res.data) {
@@ -42,19 +51,18 @@ export default {
         },
         selectUser(user) {
             this.updateCurUser(user);
-            this.pushPathArr('task')
-
+            this.pushPathArr("task");
         }
     }
 };
 </script>
 <style lang="scss" scoped>
-.user-wrapper{
-    position:absolute;
-    width:100%;
-    height:100%;
-    top:0px;
-    bottom:0px;
+.user-wrapper {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0px;
+    bottom: 0px;
 }
 .user {
     &-item {
