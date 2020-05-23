@@ -17,7 +17,7 @@
       multiple="multiple"
       @change="changeImg"
     />
-    <div class="loading" v-if="showLoading">
+    <div class="loading" v-if="!imgUrl && imgLoading">
       <ui-progress :value="loadingValue"></ui-progress>
     </div>
     <div class="del" v-if="showDel">
@@ -34,10 +34,14 @@ export default {
   },
   props: {
     imgUrl: String,
+    imgLoading: {
+      type: Boolean,
+      default: false,
+    },
   },
   data() {
     return {
-      showLoading: false,
+      // showLoading: false,
       loadingValue: 0,
       timerTask: null,
       touchStartTime: 0,
@@ -51,11 +55,10 @@ export default {
     },
   },
   mounted() {
-    console.log(this.imgUrl, 54);
-    console.log(this.showLoading, 55);
-
-    // if (this.imgUrl) {
-    this.showLoading = false;
+    // console.log(this.imgUrl, 54);
+    // console.log(this.showLoading, 55);
+    // // if (this.imgUrl) {
+    // this.showLoading = false;
     // }
   },
   methods: {
@@ -63,7 +66,7 @@ export default {
       this.$refs.imgPicker.click();
     },
     changeImg(e) {
-      this.showLoading = true;
+      this.$emit("changeLoading", true);
       let imgs = [];
       let imgObjs = this.$refs.imgPicker.files;
       if (!imgObjs || imgObjs.length === 0) return;
@@ -89,6 +92,8 @@ export default {
             this.$emit("chooseImg", imgs);
             requestAnimationFrame(() => {
               // this.showLoading = false;
+              this.$emit("changeImgLoading", false);
+
               this.loadingValue = 0;
             });
           }

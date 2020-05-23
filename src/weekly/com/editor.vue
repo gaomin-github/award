@@ -50,11 +50,15 @@
           <img-uploader
             class="schedule-cur-item"
             @chooseImg="chooseImg"
+            @changeLoading="changeImgLoading"
+            :imgLoading="imgLoading"
           ></img-uploader>
         </div>
         <img-uploader
           class="schedule-cur-item"
           @chooseImg="chooseImg"
+          @changeLoading="changeImgLoading"
+          :imgLoading="imgLoading"
           v-else
         ></img-uploader>
       </div>
@@ -94,6 +98,7 @@ export default {
       pics: [],
       curPics: [],
       curPicPath: [],
+      imgLoading: false,
     };
   },
   computed: {
@@ -167,6 +172,10 @@ export default {
           }
         });
     },
+    changeImgLoading(param) {
+      console.log(param, 174);
+      this.imgLoading = param;
+    },
     async chooseImg(param) {
       this.curPics.push(...param);
       let formObj = new FormData();
@@ -185,6 +194,7 @@ export default {
       }).then((res) => {
         if (res.status === 200) {
           this.curPicPath.push(...res.data);
+          this.imgLoading = false;
         }
       });
     },
@@ -201,6 +211,7 @@ export default {
             return o === param;
           });
           this.curPicPath.splice(index, 1);
+          this.imgLoading = false;
         }
       });
     },
