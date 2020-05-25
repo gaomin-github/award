@@ -10,7 +10,7 @@ module.exports = {
     main: ["./src/app.js"],
   },
   output: {
-    publicPath: "/",
+    // publicPath: "/",
     filename: "award_dist/[name].[hash].js",
     chunkFilename: "award_dist/[name].[hash].js",
     crossOriginLoading: "anonymous",
@@ -26,8 +26,10 @@ module.exports = {
     alias: {
       vue$: "vue/dist/vue.esm.js",
       TagCanvas: path.resolve(__dirname, "../common/lib/tagcanvas.js"),
-      component:path.resolve(__dirname,'../common/components')
-
+      request: path.resolve(__dirname, "../utils/request.js"),
+      "lottie-web": "lottie-web/build/player/lottie.js",
+      lib: path.resolve(__dirname, "../common/lib"),
+      components: path.resolve(__dirname, "../common/components"),
     },
   },
   module: {

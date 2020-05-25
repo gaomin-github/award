@@ -1,7 +1,8 @@
 <template>
   <section class="app">
     <!-- app.vue -->
-    <router-view></router-view>
+    this is award pj test!!!
+    <!-- <router-view></router-view> -->
   </section>
 </template>
 <script>
