@@ -15,6 +15,7 @@ module.exports = {
     chunkFilename: "award_dist/[name].[hash].js",
     crossOriginLoading: "anonymous",
     path: path.resolve(__dirname, "../built"),
+    publicPath: "../built/",
   },
   node: {
     fs: "empty",
@@ -78,6 +79,7 @@ module.exports = {
     }),
     new CleanWebpackPlugin(),
     new HtmlWebpackPlugin({
+      filename: "../index.html",
       title: "award project",
       template: "./template.html",
       inject: true,
