@@ -6,7 +6,7 @@
         <div class="editor-btn editor-send" @click="saveAssess">发表</div>
       </div>
       <textarea v-model="content" placeholder="给点评价吧..."></textarea>
-      <div>
+      <!-- <div>
         <div class="editor-img" v-if="imgs && imgs.length > 0">
           <div
             v-for="imgItem in imgs"
@@ -33,7 +33,7 @@
           multiple="multiple"
           @change="changeImg"
         />
-      </div>
+      </div> -->
     </div>
     <div class="assess-con" v-else>
       <div class="assess-list"></div>
@@ -232,16 +232,17 @@ div {
     padding: 0px;
     display: block;
     font-size: 22px;
-    color: #999;
+    color: rgba(213, 183, 160, 1);
     font-weight: 400;
   }
   &-send {
-    background-color: rgba(226, 248, 221, 1);
-    border-radius: 5px;
+    background-color: rgba(235, 227, 213, 1);
+    border-radius: 50%;
     color: rgba(224, 105, 30, 1);
     text-align: center;
     font-weight: 600;
     font-size: 18px;
+    padding: 4px;
   }
   textarea {
     appearance: none;
