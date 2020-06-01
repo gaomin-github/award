@@ -3,72 +3,17 @@ const webpack = require("webpack");
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const VueLoaderPlugin = require("vue-loader/lib/plugin");
+const merge=require('webpack-merge');
 
-module.exports = {
+const baseWebpackConfig=require('./webpack.base');
+const prodWebpackConfig = merge(baseWebpackConfig,{
   mode: "production",
-  entry: {
-    main: ["./src/app.js"],
-  },
   output: {
-    // publicPath: "/",
     filename: "award_dist/[name].[hash].js",
     chunkFilename: "award_dist/[name].[hash].js",
     crossOriginLoading: "anonymous",
     path: path.resolve(__dirname, "../built"),
-    publicPath: "../built/",
-  },
-  node: {
-    fs: "empty",
-    net: "empty",
-    tls: "empty",
-  },
-  resolve: {
-    extensions: [`.js`, ".json", ".vue"],
-    alias: {
-      vue$: "vue/dist/vue.esm.js",
-      TagCanvas: path.resolve(__dirname, "../common/lib/tagcanvas.js"),
-      request: path.resolve(__dirname, "../utils/request.js"),
-      "lottie-web": "lottie-web/build/player/lottie.js",
-      lib: path.resolve(__dirname, "../common/lib"),
-      components: path.resolve(__dirname, "../common/components"),
-    },
-  },
-  module: {
-    rules: [
-      {
-        test: /\.(jpg|png|jpeg|gif)$/,
-        use: {
-          loader: "url-loader",
-        },
-        include: [
-          path.resolve(__dirname, "../src"),
-          path.resolve(__dirname, "../common/components"),
-        ],
-      },
-      {
-        test: /\.(ts|js)?$/,
-        loader: "babel-loader",
-        exclude: /(node_modules|bower_components)/,
-      },
-      {
-        test: /\.(vue)?$/,
-        loader: "vue-loader",
-        exclude: /node_modules/,
-        include: [
-          path.resolve(__dirname, "../src"),
-          path.resolve(__dirname, "../common/components"),
-        ],
-      },
-      {
-        test: /\.(css|scss)$/,
-        use: ["style-loader", "css-loader", "sass-loader"],
-        exclude: /node_modules/,
-        include: [
-          path.resolve(__dirname, "../src"),
-          path.resolve(__dirname, "../common/components"),
-        ],
-      },
-    ],
+    publicPath: "./",
   },
   devtool: "inline-source-map",
   plugins: [
@@ -79,7 +24,7 @@ module.exports = {
     }),
     new CleanWebpackPlugin(),
     new HtmlWebpackPlugin({
-      filename: "../index.html",
+      filename: "./index.html",
       title: "award project",
       template: "./template.html",
       inject: true,
@@ -90,4 +35,5 @@ module.exports = {
       Vue: ["vue/dist/vue.esm.js", "default"],
     }),
   ],
-};
+});
+module.exports=prodWebpackConfig;
