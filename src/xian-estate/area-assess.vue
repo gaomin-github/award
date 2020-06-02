@@ -2,7 +2,7 @@
   <div class="assess-wrapper">
     <div class="editor" v-if="isEditing">
       <div class="editor-control">
-        <i class="editor-btn editor-cancel fa fa-eraser"></i>
+        <i class="editor-btn editor-cancel fa fa-trash-o"></i>
         <div class="editor-btn editor-send" @click="saveAssess">发表</div>
       </div>
       <textarea v-model="content" placeholder="给点评价吧..."></textarea>
@@ -36,8 +36,9 @@
       </div> -->
     </div>
     <div class="assess-con" v-else>
-      <div class="assess-list" v-if="comment&&comment.length>0">
-          <div class="assess-list-item" v-for="item in comment" :key="item.id">
+      <div class="assess-list">
+          <template v-if="comment&&comment.length>0">
+              <div class="assess-list-item" v-for="item in comment" :key="item.id">
               <img src="./imgs/user_default_avatar.png" class="assess-list-avatar"/>
               <div class="assess-list-con">
                 <div class="assess-list-item-content">
@@ -48,6 +49,8 @@
                 </div>
               </div>
           </div>
+        </template>
+          
       </div>
       <div class="assess-in">
         <input

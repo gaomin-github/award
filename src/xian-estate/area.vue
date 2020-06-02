@@ -2,7 +2,7 @@
     <section class="area-wrapper">
         <section class="header">
             <section class="header-icon" @click="backHandler">返回</section>
-            <!-- {{ getAreaLabel() }} -->
+            {{ getAreaLabel() }}
         </section>
         <section class="content">
             <section class="tabs" v-if="tabs && tabs.length > 0">
@@ -50,7 +50,7 @@ export default {
                     color: "rgba(254, 148, 73, 1)"
                 }
             ],
-            curTabKey: "assess",
+            curTabKey: "list",
         };
     },
     async mounted() {
@@ -117,13 +117,13 @@ section {
         color: rgba(245, 245, 245, 0.9);
         position: absolute;
         left: 10px;
+        font-size: 15px;
     }
 }
 .content {
     flex: 1;
     display: flex;
     flex-direction: column;
-    margin: 0px 3px;
     /* padding: 5px 0px; */
     border-radius: 15px 15px 3px 3px;
 
@@ -134,6 +134,7 @@ section {
     display: flex;
     justify-content: space-around;
     padding: 10px 10px 5px;
+    margin-bottom:10px;
     color: rgba(255, 255, 255, 0.8);
     &-item {
         padding: 0px 10px;

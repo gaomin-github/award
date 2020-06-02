@@ -36,16 +36,19 @@ export default {
     computed:{
         ...mapGetters('estate',['getCurArea'])
     },
-    async mounted(){
-        await this._initMapScript();
-        await this._initMapUi();
+    mounted(){
+        setTimeout(async ()=>{
+        
+            await this._initMapScript();
+            await this._initMapUi();
 
-        // this._initDistrict();
+            // this._initDistrict();
 
-        await this._initGardens();
-        // this._initPathLns();
+            await this._initGardens();
+            // this._initPathLns();
 
-        await this._initDriveRoute();
+            this._initDriveRoute();
+        },1000)
 
     },
     methods:{
@@ -55,13 +58,10 @@ export default {
                     this._initMapContainer();
                     return resolve();
                 };
-                // gd script引入
-                let url = `https://webapi.amap.com/maps?v=1.4.15&key=${GDKEY}&callback=onLoad`;
                 let mapScriptEl = document.createElement("script");
                 mapScriptEl.charset = "utf-8";
-                mapScriptEl.src = url;
+                mapScriptEl.src = `https://webapi.amap.com/maps?v=1.4.15&key=${GDKEY}&callback=onLoad`;
                 document.head.appendChild(mapScriptEl);
-                return resolve()
             });
         },
         _initMapContainer() {
@@ -168,6 +168,9 @@ export default {
                 // 开车路线图样式
         _initPathLns() {
             let that = this;
+            if(!AMapUI){
+                console.log('AMapUI false',175)
+            }
             AMapUI.load(["ui/misc/PathSimplifier", "lib/$"], function(
                 PathSimplifier,
                 $
@@ -301,7 +304,8 @@ export default {
     font-size: 14px;
     color: rgba(0, 0, 0, 0.8);
     padding-bottom: 10px;
-    overflow-y: hidden;
+    max-height: 160px;    
+    overflow: scroll;
     &-item {
         line-height: 26px;
         display: flex;

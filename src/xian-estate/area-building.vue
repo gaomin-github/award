@@ -62,6 +62,8 @@ export default {
 <style lang="scss" scoped>
 .building-wrapper{
     height:100%;
+    display:flex;
+    flex-direction: column;
 }
 div{
     display: block;
