@@ -2,7 +2,11 @@ const state = () => ({
   curArea: null,
 });
 
-const getters = {};
+const getters = {
+    getCurArea:(state)=>{
+        return state.curArea;
+    }
+};
 
 const mutations = {
   setCurArea(state, item) {

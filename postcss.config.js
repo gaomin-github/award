@@ -8,7 +8,7 @@ module.exports = {
         "postcss-write-svg": { utf8: false },
         "postcss-cssnext": {},
         "postcss-px-to-viewport": {
-            viewportWidth: 1920,
+            viewportWidth: 375,
             unitPrecision: 3,
             viewportUnit: 'vw',
             selectorBlackList: ['.ignore', '.hairlines'],

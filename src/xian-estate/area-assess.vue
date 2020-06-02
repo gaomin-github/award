@@ -6,7 +6,7 @@
         <div class="editor-btn editor-send" @click="saveAssess">发表</div>
       </div>
       <textarea v-model="content" placeholder="给点评价吧..."></textarea>
-      <div>
+      <!-- <div>
         <div class="editor-img" v-if="imgs && imgs.length > 0">
           <div
             v-for="imgItem in imgs"
@@ -33,10 +33,22 @@
           multiple="multiple"
           @change="changeImg"
         />
-      </div>
+      </div> -->
     </div>
     <div class="assess-con" v-else>
-      <div class="assess-list"></div>
+      <div class="assess-list" v-if="comment&&comment.length>0">
+          <div class="assess-list-item" v-for="item in comment" :key="item.id">
+              <img src="./imgs/user_default_avatar.png" class="assess-list-avatar"/>
+              <div class="assess-list-con">
+                <div class="assess-list-item-content">
+                    {{item.content}}
+                </div>
+                <div class="assess-list-item-ctime">
+                    {{getCTime(item.cTime)}}
+                </div>
+              </div>
+          </div>
+      </div>
       <div class="assess-in">
         <input
           placeholder="添加评价"
@@ -49,34 +61,38 @@
 </template>
 <script>
 import request from "request";
-import { mapState } from "vuex";
+import { mapGetters,mapMutations } from "vuex";
 export default {
   components: {
     assessImg: () => import("./assess-img.vue"),
   },
-  props: {
-    assessList: {
-      type: Array,
-      default: () => {
-        return [];
-      },
-    },
-  },
   data() {
     return {
+      comment:[],
       isEditing: false,
       content: "",
       imgs: [],
       curImgUrl: "",
     };
   },
-  computed: {
-    ...mapState("estate", ["curArea"]),
-  },
+    computed:{
+        ...mapGetters('estate',['getCurArea']),
+       
+    },
   mounted() {
-    // console.log(this.curArea, 58);
+      this._initAssess();
   },
   methods: {
+    ...mapMutations("estate", ["setCurArea"]),
+    _initAssess(){
+        console.log(this.getCurArea,86);
+        let comment=this.getCurArea.comment;
+        comment.sort((a,b)=>{
+            return b.cTime-a.cTime;
+        })
+        this.comment=comment;
+        console.log(this.comment,85)
+    },
     handleEditing(param) {
       this.isEditing = param;
     },
@@ -89,7 +105,8 @@ export default {
       }
       formObj.append("content", this.content);
       formObj.append("type", "insert");
-      formObj.append("areaId", this.curArea.areaId);
+      formObj.append("areaId", this.getCurArea.areaId);
+      console.log('areaId',this.getCurArea.areaId)
       request({
         url: "/xian/assess",
         method: "post",
@@ -101,6 +118,9 @@ export default {
             this.isEditing = false;
             this.content = "";
             this.imgs = [];
+            this.setCurArea(res.data[0]);
+            console.log(this.getCurArea,119);
+            this._initAssess()
           }
         }
       });
@@ -113,7 +133,7 @@ export default {
     delAssess(item) {
       let formObj = new FormData();
       formObj.append("type", "delete");
-      formObj.append("areaId", this.curArea.areaId),
+      formObj.append("areaId", this.getCurArea.areaId),
         formObj.append("assessId", item.id);
       request({
         url: "/xian/assess",
@@ -155,6 +175,16 @@ export default {
         }
       }
     },
+    getCTime(timeStr){
+        let result='';
+        result+=timeStr.substring(0,4)+'-'
+        result+=timeStr.substring(4,6)+'-'
+        result+=timeStr.substring(6,8)+' '
+        result+=timeStr.substring(8,10)+':'
+        result+=timeStr.substring(10,12)+':'
+        result+=timeStr.substring(12,14)
+        return result;
+    }
   },
 };
 </script>
@@ -185,25 +215,59 @@ div {
   flex: 1;
   flex-shrink: 1;
   overflow-y: scroll;
-  border: 1px black solid;
+  &-item{
+      margin:10px 0px;
+      display:flex;
+  }
+  &-avatar{
+      display:block;
+      width:32px;
+      height:32px;
+      flex-shrink: 1;
+      border-radius: 50%;
+      margin-right: 10px;
+  }
+  &-con{
+      flex:1;
+    flex-shrink: 1;
+
+  }
+
+  &-item-content{
+      line-height: 32px;
+      font-size: 18px;
+      color:rgba(33,33,33,1);
+
+  }
+  &-item-ctime{
+      line-height: 20px;
+      font-size: 14px;
+      color:rgba(111,111,111,1);
+  }
 }
+
 .assess-in {
   flex-shrink: 1;
   line-height: 36px;
   width: 100%;
   box-sizing: border-box;
-  border: 1px black solid;
-  /* input[type="text"] {
+   input[type="text"] {
+    appearance: none;
+    border: none;
+    outline: none;
     width: 100%;
     padding: 0px 10px;
-    line-height: 36px;
-    font-size: 16px;
-  } */
+    border-radius: 5px;
+    line-height: 42px;
+    font-size: 18px;
+  } 
   ::-webkit-input-placeholder {
     margin-top: 50px;
     color: #999;
   }
 }
+
+
 .editor {
   height: 100%;
   position: relative;
