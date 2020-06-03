@@ -4,8 +4,13 @@ import store from "./store/index";
 import mock from "./mock/index.js";
 // import './axios.js';
 // mock数据
+
 import eruda from "eruda";
-eruda.init();
+if (process.env.NODE_ENV === "development") {
+  // import("eruda").then(() => {
+  eruda.init();
+  // });
+}
 import App from "./app.vue";
 Vue.use(VueRouter);
 // import xianEstateDemo from './xian-estate/index.vue'
@@ -43,37 +48,36 @@ const router = new VueRouter({
       name: "gxEstate",
       path: "/gxEstate",
       component: () => import("./xian-estate/index.vue"),
-      meta:{
-          keepAlive:true
-      }
+      meta: {
+        keepAlive: true,
+      },
     },
     {
       // 西安area中的building
       name: "gxBuilding",
       path: "/gxBuilding",
       component: () => import("./xian-estate/area.vue"),
-      
     },
     {
       name: "weekly",
       path: "/weekly",
       component: () => import("./weekly/index.vue"),
     },
-    
+
     {
       name: "animTest",
       path: "/animTest",
-      component: () => import("./animTest/index.vue"),      
-      meta:{
-        keepAlive:true
-        }
+      component: () => import("./animTest/index.vue"),
+      meta: {
+        keepAlive: true,
+      },
     },
     {
-        name: "scrollTest",
-        path: "/scrollTest",
-        component: () => import("./scrollTest/index.vue"),
+      name: "scrollTest",
+      path: "/scrollTest",
+      component: () => import("./scrollTest/index.vue"),
     },
-  
+
     // {
     //     name: "weekly",
     //     path: "/weekly",

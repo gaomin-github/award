@@ -1,82 +1,97 @@
 <template>
   <div class="xianEstate-wrapper">
-    <!-- <section class="header">高新周边楼盘参考</!-->
+    <div class="header">高新周边楼盘参考</div>
     <div class="content">
-      <div class="building" ref="building">
-        <section
-          v-for="building in areaList"
-          :key="building.href"
-          class="building-item"
-          @click="stepTo(building)"
+      <transition name="in" mode="out-in">
+        <div
+          class="building"
+          v-if="areaList && areaList.length > 0"
+          ref="building"
         >
-          <div class="building-item-title" v-html="building.label"></div>
-          <div class="building-item-time">备案时间：{{ building.time }}</div>
+          <section
+            v-for="building in areaList"
+            :key="building.href"
+            class="building-item"
+            @click="stepTo(building)"
+          >
+            <div class="building-item-title" v-html="building.label"></div>
+            <div class="building-item-time">备案时间：{{ building.time }}</div>
 
-          <div class="building-item-unitprice">
-            单价：最低 <span>{{ building.minUnitPrice }}</span> 元，最高
-            <span>{{ building.maxUnitPrice }}</span> 元
-          </div>
+            <div class="building-item-unitprice">
+              单价：最低 <span>{{ building.minUnitPrice }}</span> 元，最高
+              <span>{{ building.maxUnitPrice }}</span> 元
+            </div>
 
-          <div class="building-item-drive">
-            <section class="label">开车：</section>
-            <section class="building-item-content">
-              距离
-              <span>
-                {{
-                  Math.ceil(
-                    parseInt(building.drivingRoute.distance || 0) / 100
-                  ) / 10
+            <div class="building-item-drive">
+              <section class="label">开车：</section>
+              <section class="building-item-content">
+                距离
+                <span>
+                  {{
+                    Math.ceil(
+                      parseInt(building.drivingRoute.distance || 0) / 100
+                    ) / 10
+                  }}
+                </span>
+                公里,需要
+                <span>{{
+                  Math.ceil(parseInt(building.drivingRoute.duration) / 60)
+                }}</span>
+                分钟
+              </section>
+            </div>
+            <div class="building-item-bus">
+              <section class="building-item-label">乘公交：</section>
+              <section class="building-item-content">
+                距离{{
+                  Math.ceil(parseInt(building.busRoute.distance || 0) / 100) /
+                    10
                 }}
-              </span>
-              公里,需要
-              <span>{{
-                Math.ceil(parseInt(building.drivingRoute.duration) / 60)
-              }}</span>
-              分钟
-            </section>
-          </div>
-          <div class="building-item-bus">
-            <section class="building-item-label">乘公交：</section>
-            <section class="building-item-content">
-              距离{{
-                Math.ceil(parseInt(building.busRoute.distance || 0) / 100) / 10
-              }}
-              公里，需要
-              {{ Math.ceil(parseInt(building.busRoute.duration) / 60) }}
-              分钟，需要步行{{ building.busRoute.walking_distance }}米
-            </section>
-          </div>
-          <div class="building-item-bus">
-            <section class="building-item-label">乘公交：</section>
-            <section class="building-item-content">
-              距离{{
-                Math.ceil(parseInt(building.busRoute.distance || 0) / 100) / 10
-              }}
-              公里，需要
-              {{ Math.ceil(parseInt(building.busRoute.duration) / 60) }}
-              分钟，需要步行{{ building.busRoute.walking_distance }}米
-            </section>
-          </div>
-          <div class="building-item-garden">
-            周边
-            <span
-              >&nbsp;{{ building.garden ? building.garden.num : 0 }}&nbsp;</span
-            >家公园
-          </div>
-        </section>
-      </div>
+                公里，需要
+                {{ Math.ceil(parseInt(building.busRoute.duration) / 60) }}
+                分钟，需要步行{{ building.busRoute.walking_distance }}米
+              </section>
+            </div>
+            <div class="building-item-bus">
+              <section class="building-item-label">乘公交：</section>
+              <section class="building-item-content">
+                距离{{
+                  Math.ceil(parseInt(building.busRoute.distance || 0) / 100) /
+                    10
+                }}
+                公里，需要
+                {{ Math.ceil(parseInt(building.busRoute.duration) / 60) }}
+                分钟，需要步行{{ building.busRoute.walking_distance }}米
+              </section>
+            </div>
+            <div class="building-item-garden">
+              周边
+              <span
+                >&nbsp;{{
+                  building.garden ? building.garden.num : 0
+                }}&nbsp;</span
+              >家公园
+            </div>
+          </section>
+        </div>
+        <loading :imgUrl="loadingUrl" class="loading" v-else></loading>
+      </transition>
     </div>
   </div>
 </template>
 <script>
-import request from "request";
 import { mapState, mapMutations } from "vuex";
-
+import request from "request";
+import loading from "components/ui-loading.vue";
 export default {
+  components: {
+    loading,
+  },
   data() {
     return {
       areaList: [],
       scrollTop: 0,
+      loadingUrl: require("./imgs/house.png"),
     };
   },
   computed: {
@@ -89,11 +104,7 @@ export default {
     this._initScroll();
   },
   beforeDestroy() {
-    this.$refs.building.removeEventListener(
-      "scroll",
-      this._scrollHandler,
-      true
-    );
+    window.removeEventListener("scroll", this._scrollHandler, true);
   },
   activated() {
     if (this.scrollTop) {
@@ -103,7 +114,7 @@ export default {
   methods: {
     ...mapMutations("estate", ["setCurArea"]),
     _initScroll() {
-      this.$refs.building.addEventListener("scroll", this._scrollHandler, true);
+      window.addEventListener("scroll", this._scrollHandler, true);
     },
     _scrollHandler() {
       this.scrollTop = this.$refs.building.scrollTop;
@@ -114,17 +125,6 @@ export default {
           this.areaList = res.data;
         }
       });
-      // fetch("/xian/xianProperty", {
-      //   method: "get",
-      // })
-      //   .then((res) => {
-      //     console.log(res, 48);
-      //     return res.json();
-      //   })
-      //   .then((data) => {
-      //     // this.buildingList = data;
-      //     console.log(data, 53);
-      //   });
     },
     stepTo(area) {
       let areaStr = JSON.stringify(area);
@@ -172,6 +172,7 @@ section {
   padding: 10px;
   border-radius: 10px;
   background: rgb(245, 245, 245);
+  position: relative;
 }
 .building {
   height: 100%;
@@ -249,5 +250,25 @@ section {
       justify-content: start;
     }
   }
+}
+.loading {
+  display: inline-block;
+  width: 55px;
+  height: 55px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+.in-enter,
+.in-leave-to {
+  opacity: 0;
+}
+.in-enter-to,
+.in-leave {
+  opacity: 1;
+}
+.in-enter-active,
+.in-leave-active {
+  transition: all 1s ease;
 }
 </style>

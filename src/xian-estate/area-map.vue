@@ -154,7 +154,8 @@ export default {
     _initPathLns() {
       let that = this;
       if (!AMapUI) {
-        console.log("AMapUI false", 175);
+        // console.log("AMapUI false", 175);
+        return;
       }
       AMapUI.load(["ui/misc/PathSimplifier", "lib/$"], function(
         PathSimplifier,
@@ -165,8 +166,6 @@ export default {
           map: that.mapObj,
 
           getPath: (pathData, pathIndex) => {
-            console.log(pathData.path, 163);
-
             return pathData.path;
           },
           renderOptions: {
