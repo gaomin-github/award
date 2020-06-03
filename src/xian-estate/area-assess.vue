@@ -88,13 +88,11 @@ export default {
   methods: {
     ...mapMutations("estate", ["setCurArea"]),
     _initAssess(){
-        console.log(this.getCurArea,86);
         let comment=this.getCurArea.comment;
         comment.sort((a,b)=>{
             return b.cTime-a.cTime;
         })
         this.comment=comment;
-        console.log(this.comment,85)
     },
     handleEditing(param) {
       this.isEditing = param;
@@ -109,7 +107,6 @@ export default {
       formObj.append("content", this.content);
       formObj.append("type", "insert");
       formObj.append("areaId", this.getCurArea.areaId);
-      console.log('areaId',this.getCurArea.areaId)
       request({
         url: "/xian/assess",
         method: "post",
@@ -122,7 +119,6 @@ export default {
             this.content = "";
             this.imgs = [];
             this.setCurArea(res.data[0]);
-            console.log(this.getCurArea,119);
             this._initAssess()
           }
         }

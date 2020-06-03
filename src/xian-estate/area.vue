@@ -77,7 +77,6 @@ export default {
         },
         changeTab(tab) {
             this.curTabKey = tab.key;
-            console.log(this.curTabKey, 368);
         },
         backHandler() {
             this.$router.go(-1);

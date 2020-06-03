@@ -3,10 +3,18 @@
     <div v-for="com in comList" :key="com" @click="changeCom(com)" class="bar">
       {{ com }}
     </div>
-    <div class="item">
+    <!-- <div class="item">
       <transition :name="transitionName" @enter="handleEnter">
-        <component :is="curCom" class="item-con"></component>
+          <keep-alive>
+
+            <component :is="curCom" class="item-con"></component>
+          </keep-alive>
       </transition>
+    </div> -->
+    <div class="scroll-con" ref="scrollCon" >
+        <div v-for="(item,key) in 30" :key="key" class="scroll-con-item" @click="stepTo(item)">
+            this is {{item}} information test!
+        </div>
     </div>
   </div>
 </template>
@@ -18,12 +26,24 @@ export default {
       curCom: "aCom",
       animDuration: 0,
       transitionName: "",
+      scrollTop:0
     };
   },
   components: {
     aCom: () => import("./com/aCom.vue"),
     bCom: () => import("./com/bCom.vue"),
     cCom: () => import("./com/cCom.vue"),
+  },
+  activated(){
+      if(this.scrollTop){
+          this.$refs.scrollCon.scrollTo(0,this.scrollTop)
+      }
+      this.$refs.scrollCon.addEventListener('scroll',()=>{
+          this.scrollTop=this.$refs.scrollCon.scrollTop;
+      },true)
+  },
+  deactivated(){
+    console.log(this.scrollTop,51)
   },
   methods: {
     changeCom(param) {
@@ -34,6 +54,13 @@ export default {
       this.animDuration = "1000";
       console.log("handleEnter", 31);
     },
+    stepTo(param){
+        this.$router.push({
+            name:'scrollTest',
+            query:{
+                pageIndex:param
+            }})
+    }
   },
 };
 </script>
@@ -45,14 +72,31 @@ div {
 .anim-wrapper {
   width: 100%;
   height: 100%;
+  display:flex;
+  flex-direction: column;
+  overflow-y:scroll;
 }
 .bar {
+  flex-shrink: 1;
   line-height: 38px;
 }
 .item {
+  flex-shrink: 1;
   width: 300px;
-  height: 100px;
+//   height: 100px;
+    flex:1;
   position: relative;
+}
+.scroll-con{
+    flex:1;
+    flex-shrink: 1;
+    overflow-y:scroll;
+    border:1px black solid;
+    margin:10px;
+    &-item{
+        line-height:42px;
+        font-size: 18px;
+    }
 }
 .item-con {
   position: absolute;
