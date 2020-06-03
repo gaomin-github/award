@@ -1,7 +1,11 @@
 <template>
   <section class="app">
     <!-- app.vue -->
-    <router-view></router-view>
+    <keep-alive>
+        <router-view v-if="$route.meta.keepAlive"></router-view>
+
+    </keep-alive>
+    <router-view v-if="!$route.meta.keepAlive"></router-view>
   </section>
 </template>
 <script>

@@ -43,23 +43,37 @@ const router = new VueRouter({
       name: "gxEstate",
       path: "/gxEstate",
       component: () => import("./xian-estate/index.vue"),
+      meta:{
+          keepAlive:true
+      }
     },
     {
       // 西安area中的building
       name: "gxBuilding",
       path: "/gxBuilding",
       component: () => import("./xian-estate/area.vue"),
+      
     },
     {
       name: "weekly",
       path: "/weekly",
       component: () => import("./weekly/index.vue"),
     },
+    
     {
       name: "animTest",
       path: "/animTest",
-      component: () => import("./animTest/index.vue"),
+      component: () => import("./animTest/index.vue"),      
+      meta:{
+        keepAlive:true
+        }
     },
+    {
+        name: "scrollTest",
+        path: "/scrollTest",
+        component: () => import("./scrollTest/index.vue"),
+    },
+  
     // {
     //     name: "weekly",
     //     path: "/weekly",

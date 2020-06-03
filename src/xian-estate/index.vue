@@ -1,8 +1,8 @@
 <template>
   <div class="xianEstate-wrapper">
-    <section class="header">高新周边楼盘参考</section>
+    <!-- <section class="header">高新周边楼盘参考</!-->
     <div class="content">
-      <div v-if="areaList && areaList.length > 0" class="building">
+      <div class="building" ref="building">
         <section
           v-for="building in areaList"
           :key="building.href"
@@ -76,6 +76,7 @@ export default {
   data() {
     return {
       areaList: [],
+      scrollTop: 0,
     };
   },
   computed: {
@@ -83,15 +84,32 @@ export default {
   },
 
   mounted() {
-    console.log("xian-estate ", 12);
     document.title = "高德";
     this._initPropertyList();
+    this._initScroll();
+  },
+  beforeDestroy() {
+    this.$refs.building.removeEventListener(
+      "scroll",
+      this._scrollHandler,
+      true
+    );
+  },
+  activated() {
+    if (this.scrollTop) {
+      this.$refs.building.scrollTo(0, this.scrollTop);
+    }
   },
   methods: {
     ...mapMutations("estate", ["setCurArea"]),
+    _initScroll() {
+      this.$refs.building.addEventListener("scroll", this._scrollHandler, true);
+    },
+    _scrollHandler() {
+      this.scrollTop = this.$refs.building.scrollTop;
+    },
     _initPropertyList() {
       request.get("/xian/estateArea").then((res) => {
-        console.log(res, 46);
         if (res.status === 200) {
           this.areaList = res.data;
         }
@@ -110,13 +128,6 @@ export default {
     },
     stepTo(area) {
       let areaStr = JSON.stringify(area);
-      console.log(areaStr, 74);
-      // this.$router.push({
-      //   name: "xianBuilding",
-      //   params: {
-      //     areaInfo: area,
-      //   },
-      // });
       this.setCurArea(area);
       this.$router.push({
         name: "gxBuilding",

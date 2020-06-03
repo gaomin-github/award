@@ -23,13 +23,14 @@ module.exports={
         rules: [
             {
                 test: /\.(jpg|png|jpeg|gif)$/,
-                use: {
-                    loader: "url-loader",
-                },
+                loader: "url-loader",
                 include: [
                     path.resolve(__dirname, "../src"),
                     path.resolve(__dirname, "../common/components"),
                 ],
+                options:{
+                    esModule:false
+                }
             },
             {
                 test: /\.(ts|js)?$/,
