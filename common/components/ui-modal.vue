@@ -4,15 +4,17 @@
       <ui-mask v-if="show"> </ui-mask>
     </transition>
     <transition name="content" mode="out-in">
-      <section class="modal modal-center" v-if="show">
+      <template v-if="show">
         <!-- <section class="modal-header ">
           <section class="modal-title">{{ title }}</section>
           <section class="modal-close" @click="closeModal"></section>
         </section>
         <section class="modal-content"> -->
+        <section class="modal modal-center" :style="`width:${widthP}`">
           <slot></slot>
+        </section>
         <!-- </section> -->
-      </section>
+      </template>
     </transition>
   </section>
 </template>
@@ -23,34 +25,38 @@ export default {
   props: {
     dir: {
       type: String,
-      default: "bottom"
+      default: "bottom",
     },
     title: {
       type: String,
-      default: ""
+      default: "",
     },
     show: {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
+    widthP: {
+      type: String,
+      default: "80%",
+    },
   },
   components: {
-    uiMask
+    uiMask,
   },
   model: {
     prop: "show",
-    event: "close"
+    event: "close",
   },
-  mounted(){
-      console.log(this.show,45)
+  mounted() {
+    console.log(this.show, 45);
   },
   methods: {
     closeModal() {
       console.log("close current modal");
       this.$emit("close", false);
       console.log(`current:${this.show}`);
-    }
-  }
+    },
+  },
 };
 </script>
 <style lang="scss" scoped>
@@ -61,10 +67,10 @@ section {
 .modal {
   position: fixed;
   background: #f8f8f8;
-  padding: 0px 30px 10px 30px;
-  width: 80%;
-  max-height: 80%;
-
+  padding: 10px;
+  /* width: 80%; */
+  /* max-height: 80%; */
+  z-index: 999;
   display: flex;
   flex-direction: column;
   &-header {
@@ -131,7 +137,7 @@ section {
 }
 .content-enter-to,
 .content-leave {
-  max-width: 80%;
-  max-height: 80%;
+  /* max-width: 80%; */
+  /* max-height: 80%; */
 }
 </style>

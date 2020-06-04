@@ -14,7 +14,7 @@ export default {
     return {
       show: false,
       animation: null,
-      show: false
+      show: false,
     };
   },
   mounted() {
@@ -26,11 +26,11 @@ export default {
       "#mask-wrapper",
       [
         {
-          opacity: 0.5
+          opacity: 0.5,
         },
         {
-          opacity: 0
-        }
+          opacity: 0,
+        },
       ],
       5000,
       function() {
@@ -42,7 +42,7 @@ export default {
     let maskEle = this.$refs.mask;
     // maskEle.className += " mask-wrapper-out";
     this.show = false;
-  }
+  },
 };
 </script>
 <style lang="scss" scoped>
@@ -53,7 +53,7 @@ export default {
   bottom: 0px;
   right: 0px;
   background: rgba(0, 0, 0, 0.3);
-  /* z-index: 900; */
+  z-index: 900;
   /* animation: 1s opacityIn; */
 }
 .mask-wrapper-out {
