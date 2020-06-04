@@ -5,13 +5,13 @@
     </transition>
     <transition name="content" mode="out-in">
       <section class="modal modal-center" v-if="show">
-        <section class="modal-header ">
+        <!-- <section class="modal-header ">
           <section class="modal-title">{{ title }}</section>
           <section class="modal-close" @click="closeModal"></section>
         </section>
-        <section class="modal-content">
+        <section class="modal-content"> -->
           <slot></slot>
-        </section>
+        <!-- </section> -->
       </section>
     </transition>
   </section>
@@ -40,6 +40,9 @@ export default {
   model: {
     prop: "show",
     event: "close"
+  },
+  mounted(){
+      console.log(this.show,45)
   },
   methods: {
     closeModal() {

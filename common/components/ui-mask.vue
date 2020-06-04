@@ -52,7 +52,7 @@ export default {
   left: 0px;
   bottom: 0px;
   right: 0px;
-  background: rgba(0, 0, 0, 0.8);
+  background: rgba(0, 0, 0, 0.3);
   /* z-index: 900; */
   /* animation: 1s opacityIn; */
 }

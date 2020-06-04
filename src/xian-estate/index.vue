@@ -1,6 +1,18 @@
 <template>
   <div class="xianEstate-wrapper">
-    <div class="header">高新周边楼盘参考</div>
+      <!-- <div class="test">
+          <div @click="sendEmail">email test</div>
+      </div> -->
+      <modal :show="showEmailModal" class="email-modal" dir="center">
+          <div class="email">
+              <div class="email-status">
+                  <i class="fa fa-envelope-o" aria-hidden="true"></i>
+              </div>
+              <input type="text" class="email-content"/>
+              <div class="email-send">确定</div>
+          </div>
+      </modal>
+    <!-- <div class="header">高新周边楼盘参考</div>
     <div class="content">
       <transition name="in" mode="out-in">
         <div
@@ -76,22 +88,27 @@
         </div>
         <loading :imgUrl="loadingUrl" class="loading" v-else></loading>
       </transition>
-    </div>
+    </div> -->
   </div>
 </template>
 <script>
 import { mapState, mapMutations } from "vuex";
 import request from "request";
 import loading from "components/ui-loading.vue";
+import modal from "components/ui-modal.vue";
+
 export default {
   components: {
     loading,
+    modal
   },
   data() {
     return {
       areaList: [],
       scrollTop: 0,
       loadingUrl: require("./imgs/house.png"),
+      showEmailModal:true,
+      curEmail:''
     };
   },
   computed: {
@@ -113,6 +130,18 @@ export default {
   },
   methods: {
     ...mapMutations("estate", ["setCurArea"]),
+    sendEmail(){
+        request({
+            url:'/common/email',
+            method:'post',
+            data:{
+                to:'gaomin5@xiaomi.com',
+                subject:''
+            }        
+        }).then(res=>{
+            console.log(res,128)
+        })
+    },
     _initScroll() {
       window.addEventListener("scroll", this._scrollHandler, true);
     },
@@ -154,6 +183,28 @@ section {
   background: rgba(9, 41, 114, 0.95);
   display: flex;
   flex-direction: column;
+}
+.test{
+    color:#fff;
+
+}
+.email-modal{
+    background:#fff;
+}
+.email{
+    display: flex;
+    background:#fff;
+    padding:10px;
+    &-status{
+        width:30px;
+        height:30px;
+    }
+    &-content{
+
+    }
+    &-send{
+
+    }
 }
 .header {
   height: 80px;
