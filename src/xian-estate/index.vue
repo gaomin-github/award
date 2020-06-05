@@ -1,29 +1,11 @@
 <template>
   <div class="xianEstate-wrapper">
+      <email v-if="showEmailModal" @handleEmail="handleEmail"/>
     <!-- <div class="test">
           <div @click="sendEmail">email test</div>
       </div> -->
-    <modal :show="showEmailModal" widthP="95%" class="email-modal" dir="center">
-      <div class="email">
-        <div class="email-status">
-          <i class="fa fa-envelope-o" aria-hidden="true"></i>
-          <i class="fa fa-check confirm"></i>
-        </div>
-        <input type="text" class="email-content" />
-        <div class="email-type">
-          <select>
-            <option v-for="item in emailType">
-              {{ item ? item : "自定义" }}
-            </option>
-          </select>
-        </div>
-        <div class="email-send">
-          <i class="fa fa-paper-plane"></i>
-        </div>
-      </div>
-      <div class="tip">订阅后，出现最新备案价，将会发邮件提醒您哦</div>
-    </modal>
-    <div class="header">高新周边楼盘参考</div>
+    
+    <!-- <div class="header">高新周边楼盘参考</div>
     <div class="content">
       <transition name="in" mode="out-in">
         <div
@@ -99,19 +81,18 @@
         </div>
         <loading :imgUrl="loadingUrl" class="loading" v-else></loading>
       </transition>
-    </div>
+    </div> -->
   </div>
 </template>
 <script>
 import { mapState, mapMutations } from "vuex";
 import request from "request";
 import loading from "components/ui-loading.vue";
-import modal from "components/ui-modal.vue";
 
 export default {
   components: {
     loading,
-    modal,
+    email:()=>import('./email.vue')
   },
   data() {
     return {
@@ -119,8 +100,6 @@ export default {
       scrollTop: 0,
       loadingUrl: require("./imgs/house.png"),
       showEmailModal: true,
-      curEmail: "",
-      emailType: ["qq.com", "163.com", "126.com", null],
     };
   },
   computed: {
@@ -142,23 +121,14 @@ export default {
   },
   methods: {
     ...mapMutations("estate", ["setCurArea"]),
-    sendEmail() {
-      request({
-        url: "/common/email",
-        method: "post",
-        data: {
-          to: "gaomin5@xiaomi.com",
-          subject: "",
-        },
-      }).then((res) => {
-        console.log(res, 128);
-      });
-    },
     _initScroll() {
       window.addEventListener("scroll", this._scrollHandler, true);
     },
     _scrollHandler() {
-      this.scrollTop = this.$refs.building.scrollTop;
+        let buildingEl=this.$refs.building;
+        if(buildingEl){
+            this.scrollTop = buildingEl.scrollTop;
+        }
     },
     _initPropertyList() {
       request.get("/xian/estateArea").then((res) => {
@@ -177,6 +147,9 @@ export default {
         },
       });
     },
+    handleEmail(param){
+        this.showEmailModal=param;
+    }
   },
 };
 </script>
@@ -195,54 +168,6 @@ section {
   background: rgba(9, 41, 114, 0.95);
   display: flex;
   flex-direction: column;
-}
-.test {
-  color: #fff;
-}
-.tip {
-  line-height: 36px;
-  color: #666;
-}
-.email {
-  display: flex;
-  background: #fff;
-  line-height: 42px;
-  border: 1px red solid;
-  &-status {
-    flex-shrink: 1;
-
-    width: 30px;
-    height: 30px;
-    i {
-      width: 100%;
-      height: 100%;
-      font-size: 24px;
-    }
-    .confirm {
-      color: rgba(13, 112, 183, 1);
-    }
-  }
-  &-content {
-    flex: 1;
-    flex-shrink: 1;
-    border: 1px black solid;
-    padding-left: 10px;
-    font-size: 18px;
-  }
-  &-send {
-    flex-shrink: 1;
-
-    width: 38px;
-    height: 38px;
-    text-align: center;
-    border: 1px blue solid;
-    i {
-      width: 100%;
-      height: 100%;
-      font-size: 24px;
-      color: rgba(13, 112, 183, 1);
-    }
-  }
 }
 .header {
   height: 80px;
