@@ -1,11 +1,11 @@
 <template>
   <div class="xianEstate-wrapper">
-      <email v-if="showEmailModal" @handleEmail="handleEmail"/>
+    <email v-if="showEmailModal" @handleEmail="handleEmail" />
     <!-- <div class="test">
           <div @click="sendEmail">email test</div>
       </div> -->
-    
-    <!-- <div class="header">高新周边楼盘参考</div>
+
+    <div class="header">高新周边楼盘参考</div>
     <div class="content">
       <transition name="in" mode="out-in">
         <div
@@ -81,7 +81,7 @@
         </div>
         <loading :imgUrl="loadingUrl" class="loading" v-else></loading>
       </transition>
-    </div> -->
+    </div>
   </div>
 </template>
 <script>
@@ -92,7 +92,7 @@ import loading from "components/ui-loading.vue";
 export default {
   components: {
     loading,
-    email:()=>import('./email.vue')
+    email: () => import("./email.vue"),
   },
   data() {
     return {
@@ -125,10 +125,10 @@ export default {
       window.addEventListener("scroll", this._scrollHandler, true);
     },
     _scrollHandler() {
-        let buildingEl=this.$refs.building;
-        if(buildingEl){
-            this.scrollTop = buildingEl.scrollTop;
-        }
+      let buildingEl = this.$refs.building;
+      if (buildingEl) {
+        this.scrollTop = buildingEl.scrollTop;
+      }
     },
     _initPropertyList() {
       request.get("/xian/estateArea").then((res) => {
@@ -147,9 +147,9 @@ export default {
         },
       });
     },
-    handleEmail(param){
-        this.showEmailModal=param;
-    }
+    handleEmail(param) {
+      this.showEmailModal = param;
+    },
   },
 };
 </script>
