@@ -4,6 +4,9 @@
             <i class="fa fa-paper-plane"></i>
         </div>
         <ui-modal v-else :show="true" widthP="90%" class="email-modal" dir="center" >
+            <div class="close-btn" @click="$emit('handleEmail',false)">
+                <i class="fa fa-plus"></i>
+            </div>
             <div class="email">
                 <div class="email-status">
                     <i class="fa fa-envelope-o" v-if="!emailValue"></i>
@@ -52,7 +55,7 @@ export default {
             this.sendStatus=true;
             this.sendAnimation='circle'
             request({
-                url: "/common/email",
+                url: "/xian/subscribe",
                 method: "post",
                 data: {
                 to: "gaomin5@xiaomi.com",
@@ -102,10 +105,31 @@ input,select,option{
   line-height: 36px;
   color: #666;
 }
+
+.close-btn{
+      position:absolute;
+      left:-10px;
+      top:-10px;
+      width:30px;
+      height:26px;
+      text-align: center;
+      background:rgba(13, 112, 183, 0.75);
+      border-radius: 50%;
+      transform: rotate(45deg);
+      i{
+          width:100%;
+          height:100%;
+          font-size: 16px;
+          font-weight: 400;
+          line-height: 26px;
+          color:rgba(255,255,255,1);
+      }
+  }
 .email{
   display: flex;
   justify-content: space-between;
   line-height: 42px;
+  
   &-status {
     flex-shrink: 1;
     width: 24px;
