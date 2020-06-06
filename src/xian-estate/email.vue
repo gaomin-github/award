@@ -123,7 +123,7 @@ option {
   width: 30px;
   height: 26px;
   text-align: center;
-  background: rgba(13, 112, 183, 0.75);
+  background: rgba(13, 112, 183, 0.85);
   border-radius: 50%;
   transform: rotate(45deg);
   i {

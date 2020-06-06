@@ -21,7 +21,7 @@ export default {
 </script>
 <style lang="scss" scoped>
 .switch-wrapper {
-  background: rgba(205, 204, 215, 1);
+  background: rgba(222, 221, 231, 1);
   display: flex;
   width: 48px;
   height: 22px;
@@ -44,7 +44,7 @@ export default {
   right: -2px;
 }
 .off {
-  background: rgba(118, 108, 148, 1);
+  background: rgba(182, 172, 191, 1);
   left: -2px;
 }
 </style>
