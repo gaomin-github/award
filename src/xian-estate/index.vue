@@ -1,6 +1,18 @@
 <template>
   <div class="xianEstate-wrapper">
-    <div class="header">高新周边楼盘参考</div>
+    <email v-if="showEmailModal" @handleEmail="handleEmail" />
+    <!-- <div class="test">
+          <div @click="sendEmail">email test</div>
+      </div> -->
+
+    <div class="header">
+      高新周边楼盘参考
+      <ui-switch
+        class="switch-btn"
+        :switchBool="switchBool"
+        @changeStatus="handleSwitchStatus"
+      ></ui-switch>
+    </div>
     <div class="content">
       <transition name="in" mode="out-in">
         <div
@@ -83,15 +95,20 @@
 import { mapState, mapMutations } from "vuex";
 import request from "request";
 import loading from "components/ui-loading.vue";
+
 export default {
   components: {
     loading,
+    email: () => import("./email.vue"),
+    uiSwitch: () => import("components/ui-switch.vue"),
   },
   data() {
     return {
       areaList: [],
       scrollTop: 0,
       loadingUrl: require("./imgs/house.png"),
+      showEmailModal: false,
+      switchBool: false, //开关状态
     };
   },
   computed: {
@@ -118,7 +135,10 @@ export default {
       window.addEventListener("scroll", this._scrollHandler, true);
     },
     _scrollHandler() {
-      this.scrollTop = this.$refs.building.scrollTop;
+      let buildingEl = this.$refs.building;
+      if (buildingEl) {
+        this.scrollTop = buildingEl.scrollTop;
+      }
     },
     _initPropertyList() {
       request.get("/xian/estateArea").then((res) => {
@@ -139,6 +159,15 @@ export default {
           areaInfo: areaStr,
         },
       });
+    },
+    handleEmail(param) {
+      this.showEmailModal = param;
+    },
+    handleSwitchStatus(param) {
+      this.switchBool = param;
+      if (this.switchBool) {
+        this.showEmailModal = true;
+      }
     },
   },
 };
@@ -169,6 +198,11 @@ section {
   font-size: 20px;
   font-weight: 600;
   padding: 0px 20px;
+  .switch-btn {
+    position: absolute;
+    right: 20px;
+    top: 10px;
+  }
 }
 .content {
   flex-shrink: 1;

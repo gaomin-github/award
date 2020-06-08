@@ -1,18 +1,18 @@
 <template>
   <section class="modal-wrapper">
-    <transition name="mask" mode="in-out">
-      <ui-mask v-if="show"> </ui-mask>
-    </transition>
-    <transition name="content" mode="out-in">
-      <section class="modal modal-center" v-if="show">
-        <section class="modal-header ">
-          <section class="modal-title">{{ title }}</section>
-          <section class="modal-close" @click="closeModal"></section>
-        </section>
-        <section class="modal-content">
-          <slot></slot>
-        </section>
+    <!-- <transition name="mask" mode="in-out"> -->
+    <ui-mask v-if="show"> </ui-mask>
+    <!-- </transition> -->
+    <transition :name="dir" mode="out-in">
+      <!-- <template > -->
+      <section
+        v-if="show"
+        class="modal modal-center"
+        :style="`width:${widthP}`"
+      >
+        <slot></slot>
       </section>
+      <!-- </template> -->
     </transition>
   </section>
 </template>
@@ -23,31 +23,38 @@ export default {
   props: {
     dir: {
       type: String,
-      default: "bottom"
+      default: "bottom",
     },
     title: {
       type: String,
-      default: ""
+      default: "",
     },
     show: {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
+    widthP: {
+      type: String,
+      default: "80%",
+    },
   },
   components: {
-    uiMask
+    uiMask,
   },
   model: {
     prop: "show",
-    event: "close"
+    event: "close",
+  },
+  mounted() {
+    console.log(this.dir, 45);
   },
   methods: {
     closeModal() {
       console.log("close current modal");
       this.$emit("close", false);
       console.log(`current:${this.show}`);
-    }
-  }
+    },
+  },
 };
 </script>
 <style lang="scss" scoped>
@@ -58,10 +65,8 @@ section {
 .modal {
   position: fixed;
   background: #f8f8f8;
-  padding: 0px 30px 10px 30px;
-  width: 80%;
-  max-height: 80%;
-
+  padding: 10px;
+  z-index: 999;
   display: flex;
   flex-direction: column;
   &-header {
@@ -116,19 +121,27 @@ section {
   transition: opacity 1s;
 }
 
-.content-enter-active,
-.content-leave-active {
-  transition: all 0.5s;
-  transition-timing-function: ease-in-out;
+.center-enter,
+.center-leave-to {
+  .modal {
+    width: 0px;
+    height: 0px;
+    opacity: 0;
+    background: red;
+  }
 }
-.content-enter,
-.content-leave-to {
-  max-width: 0px;
-  max-height: 0px;
+.center-enter-to,
+.center-leave {
+  .modal {
+    width: 100%;
+    height: 100%;
+    opacity: 1;
+    background: blue;
+  }
 }
-.content-enter-to,
-.content-leave {
-  max-width: 80%;
-  max-height: 80%;
+.center-enter-active {
+  .modal {
+    transition: all 3s ease;
+  }
 }
 </style>
