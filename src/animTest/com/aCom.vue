@@ -1,8 +1,8 @@
 <template>
   <div class="a-wrapper" ref="acon">
-      <div class="item" v-for="(item,key) in 30" :key="key">
+      <!-- <div class="item" v-for="(item,key) in 30" :key="key">
           this is page a ,pageIndex {{item}}
-      </div>
+      </div> -->
   </div>
 </template>
 <script>

@@ -102,6 +102,7 @@ export default {
     document.title = "高德";
     this._initPropertyList();
     this._initScroll();
+    this._initHm();
   },
   beforeDestroy() {
     window.removeEventListener("scroll", this._scrollHandler, true);
@@ -125,6 +126,9 @@ export default {
           this.areaList = res.data;
         }
       });
+    },
+    _initHm(){
+        // 百度统计打点
     },
     stepTo(area) {
       let areaStr = JSON.stringify(area);

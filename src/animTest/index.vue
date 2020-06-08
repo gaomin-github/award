@@ -3,22 +3,23 @@
     <div v-for="com in comList" :key="com" @click="changeCom(com)" class="bar">
       {{ com }}
     </div>
-    <!-- <div class="item">
+    <div class="item">
       <transition :name="transitionName" @enter="handleEnter">
           <keep-alive>
 
             <component :is="curCom" class="item-con"></component>
           </keep-alive>
       </transition>
-    </div> -->
-    <div class="scroll-con" ref="scrollCon" >
+    </div>
+    <!-- <div class="scroll-con" ref="scrollCon" >
         <div v-for="(item,key) in 30" :key="key" class="scroll-con-item" @click="stepTo(item)">
             this is {{item}} information test!
         </div>
-    </div>
+    </div> -->
   </div>
 </template>
 <script>
+import {bdTrack} from 'lib/track.js';
 export default {
   data() {
     return {
@@ -26,7 +27,8 @@ export default {
       curCom: "aCom",
       animDuration: 0,
       transitionName: "",
-      scrollTop:0
+      scrollTop:0,
+      hmObj:null
     };
   },
   components: {
@@ -34,24 +36,31 @@ export default {
     bCom: () => import("./com/bCom.vue"),
     cCom: () => import("./com/cCom.vue"),
   },
+  mounted(){
+      this._initHm()
+  },
   activated(){
-      if(this.scrollTop){
-          this.$refs.scrollCon.scrollTo(0,this.scrollTop)
-      }
-      this.$refs.scrollCon.addEventListener('scroll',()=>{
-          this.scrollTop=this.$refs.scrollCon.scrollTop;
-      },true)
+    //   if(this.scrollTop){
+    //       this.$refs.scrollCon.scrollTo(0,this.scrollTop)
+    //   }
+    //   this.$refs.scrollCon.addEventListener('scroll',()=>{
+    //       this.scrollTop=this.$refs.scrollCon.scrollTop;
+    //   },true)
   },
   deactivated(){
     console.log(this.scrollTop,51)
   },
   methods: {
+    _initHm(){
+        // bdTrack('pv','animTest')
+    },
     changeCom(param) {
       this.curCom = param;
+      bdTrack('event',['search','click',param,new Date().getTime()])
     },
     handleEnter() {
       this.transitionName = "com";
-      this.animDuration = "1000";
+      this.animDuration = "300";
       console.log("handleEnter", 31);
     },
     stepTo(param){
@@ -59,7 +68,8 @@ export default {
             name:'scrollTest',
             query:{
                 pageIndex:param
-            }})
+            }
+        })
     }
   },
 };
@@ -83,8 +93,8 @@ div {
 .item {
   flex-shrink: 1;
   width: 300px;
-//   height: 100px;
-    flex:1;
+  height: 100px;
+    // flex:1;
   position: relative;
 }
 .scroll-con{
