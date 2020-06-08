@@ -52,7 +52,7 @@ export default {
   },
   methods: {
     _initHm(){
-        // bdTrack('pv','animTest')
+        bdTrack('pv','animTest')
     },
     changeCom(param) {
       this.curCom = param;
