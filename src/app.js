@@ -77,12 +77,11 @@ const router = new VueRouter({
       path: "/scrollTest",
       component: () => import("./scrollTest/index.vue"),
     },
-
-    // {
-    //     name: "weekly",
-    //     path: "/weekly",
-    //     component: () => import("./weekly/weekly.vue"),
-    // },
+    {
+      name: "vr",
+      path: "/vr",
+      component: () => import("./vr/index.vue"),
+    },
     // {
     //     name: "weeklyContent",
     //     path: "/weeklyContent",

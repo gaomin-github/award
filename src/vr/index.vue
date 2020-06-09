@@ -1,13 +1,7 @@
 <template>
-  <div class="vr-wrapper"></div>
+  <div class="vr-wrapper">
+    <canvas ref="canvas"></canvas>
+  </div>
 </template>
-<script>
-const fileType = ["hall-of-frame", "pantry", "reception"];
-const dirType = ["back", "bottom", "front", "left", "right", "top"];
-export default {
-  data() {
-    return {};
-  },
-};
-</script>
+<script src="./index.js"></script>
 <style lang="scss" scoped></style>
