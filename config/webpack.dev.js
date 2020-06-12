@@ -3,7 +3,9 @@ const webpack = require("webpack");
 
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
+// const ProgressBarPlugin=require('progress-bar-webpack-plugin')
 const VueLoaderPlugin = require("vue-loader/lib/plugin");
+
 const merge=require('webpack-merge');
 
 const baseWebpackConfig=require('./webpack.base.js');
@@ -41,6 +43,8 @@ const devWebpackConfig =merge(baseWebpackConfig,{
             new webpack.ProvidePlugin({
                 Vue: ["vue/dist/vue.esm.js", "default"],
             }),
+            // new ProgressBarPlugin(),
+
         ],
 }) 
 module.exports=devWebpackConfig;
