@@ -5,6 +5,8 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 // 进度条
 const ProgressBarPlugin = require('progress-bar-webpack-plugin')
 
+const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 const VueLoaderPlugin = require("vue-loader/lib/plugin");
 const merge = require('webpack-merge');
 
@@ -44,6 +46,29 @@ const prodWebpackConfig = merge(baseWebpackConfig, {
         // })
 
     ],
+    optimization: {
+        minimizer: [new OptimizeCssAssetsPlugin({
+            cssProcessor: require('cssnano'),
+            cssProcessorOptions: { discardComments: { removeAll: true } }
+        }), new UglifyJsPlugin({
+            cache: true,
+            parallel: true,
+            sourceMap: true,
+            uglifyOptions: {
+                comments: false,
+                warnings: false,
+                compress: {
+                    unused: true,
+                    dead_code: true,
+                    collapse_vars: true,
+                    reduce_vars: true
+                },
+                output: {
+                    comments: false
+                }
+            }
+        })]
+    }
 });
 // console.log(prodWebpackConfig.module,59)
 module.exports = prodWebpackConfig;
