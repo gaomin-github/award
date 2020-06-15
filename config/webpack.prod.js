@@ -12,7 +12,10 @@ const TerserPlugin = require('terser-webpack-plugin');
 // 多线程编译，加快打包速度
 const HappyPack = require('happypack');
 const happyLoaderId = 'happypack-for-react-babel-loader';
-
+// 编译分析
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+// preload
+const PreloadWebpackPlugin = require('preload-webpack-plugin');
 const VueLoaderPlugin = require("vue-loader/lib/plugin");
 const merge = require('webpack-merge');
 
@@ -20,8 +23,8 @@ const baseWebpackConfig = require('./webpack.base');
 const prodWebpackConfig = merge(baseWebpackConfig, {
     mode: "production",
     output: {
-        filename: "award_dist/js/[name].[hash].js",
-        chunkFilename: "award_dist/js/[name].[hash].js",
+        filename: "award_dist/js/[name].[chunkhash].js",
+        chunkFilename: "award_dist/js/[name].[chunkhash].js",
         crossOriginLoading: "anonymous",
         path: path.resolve(__dirname, "../built"),
         publicPath: "./",
@@ -51,17 +54,15 @@ const prodWebpackConfig = merge(baseWebpackConfig, {
             template: "./template.html",
             inject: true,
         }),
-        new webpack.HotModuleReplacementPlugin(),
         new VueLoaderPlugin(),
         new webpack.ProvidePlugin({
             Vue: ["vue/dist/vue.esm.js", "default"],
         }),
         new ProgressBarPlugin(),
-        // new MinCssExtractPlugin({
-        //     filename:'[name].css',
-        //     chunkFilename:'[id].css'
-        // })
-
+        new PreloadWebpackPlugin({
+            rel: 'preload',
+            as: 'script'
+        }),
     ],
     optimization: {
         splitChunks: {
@@ -125,5 +126,19 @@ const prodWebpackConfig = merge(baseWebpackConfig, {
         ]
     }
 });
-// console.log(prodWebpackConfig.module,59)
+if (process.env.npm_config_report) {
+    prodWebpackConfig.plugins.push(new BundleAnalyzerPlugin({
+        analyzerMode: 'server',
+        analyzerHost: 'localhost',
+        analyzerPort: 8090,
+        reportFilename: 'report.html',
+        defaultSizes: 'parsed',
+        generateStatsFile: false,
+        statsFilename: 'stats.json',
+        statsOptions: null,
+        logLevel: 'info'
+    }))
+}
+
+prodWebpackConfig.plugins.push()
 module.exports = prodWebpackConfig;
