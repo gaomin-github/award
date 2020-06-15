@@ -4,9 +4,15 @@ const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 // 进度条
 const ProgressBarPlugin = require('progress-bar-webpack-plugin')
-
+// css压缩
 const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');
-const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
+// const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
+// js压缩
+const TerserPlugin = require('terser-webpack-plugin');
+// 多线程编译，加快打包速度
+const HappyPack = require('happypack');
+const happyLoaderId = 'happypack-for-react-babel-loader';
+
 const VueLoaderPlugin = require("vue-loader/lib/plugin");
 const merge = require('webpack-merge');
 
@@ -21,7 +27,18 @@ const prodWebpackConfig = merge(baseWebpackConfig, {
         publicPath: "./",
     },
     devtool: "inline-source-map",
+    module: {
+        rules: [{
+            test: /\.js?$/,
+            loader: 'happypack/loader',
+            query: {
+                id: happyLoaderId
+            },
+            include: '/../src'
+        }]
+    },
     plugins: [
+
         new webpack.DefinePlugin({
             "process.env": {
                 NODE_ENV: '"production"',
@@ -47,14 +64,33 @@ const prodWebpackConfig = merge(baseWebpackConfig, {
 
     ],
     optimization: {
+        splitChunks: {
+            cacheGroups: {
+                vendor: {
+                    name: 'vendor',
+                    test: /[\\/]node_modules[\\/]/,
+                    // maxSize: 5000,
+                    chunks: 'initial',
+                    priority: 10,
+                },
+                common: {
+                    name: 'common',
+                    test: /[\\/]src[\\/]/,
+                    // minSize: 1024,
+                    chunks: 'async',
+                    priority: 5
+                }
+            }
+        },
         minimizer: [new OptimizeCssAssetsPlugin({
             cssProcessor: require('cssnano'),
             cssProcessorOptions: { discardComments: { removeAll: true } }
-        }), new UglifyJsPlugin({
+        }),
+        new TerserPlugin({
             cache: true,
             parallel: true,
             sourceMap: true,
-            uglifyOptions: {
+            terserOptions: {
                 comments: false,
                 warnings: false,
                 compress: {
@@ -67,7 +103,26 @@ const prodWebpackConfig = merge(baseWebpackConfig, {
                     comments: false
                 }
             }
-        })]
+        })
+            //  new UglifyJsPlugin({
+            //     cache: true,
+            //     parallel: true,
+            //     sourceMap: true,
+            //     uglifyOptions: {
+            //         comments: false,
+            //         warnings: false,
+            //         compress: {
+            //             unused: true,
+            //             dead_code: true,
+            //             collapse_vars: true,
+            //             reduce_vars: true
+            //         },
+            //         output: {
+            //             comments: false
+            //         }
+            //     }
+            // })
+        ]
     }
 });
 // console.log(prodWebpackConfig.module,59)
