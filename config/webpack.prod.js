@@ -30,6 +30,13 @@ const prodWebpackConfig = merge(baseWebpackConfig, {
         publicPath: "./",
     },
     devtool: "inline-source-map",
+    externals: {
+        'vue': "Vue",
+        'Vue': 'Vue',
+        'vue-router': 'VueRouter',
+        'vuex': 'Vuex'
+    },
+    // 编译加速
     module: {
         rules: [{
             test: /\.js?$/,
@@ -51,7 +58,7 @@ const prodWebpackConfig = merge(baseWebpackConfig, {
         new HtmlWebpackPlugin({
             filename: "./index.html",
             title: "award project",
-            template: "./template.html",
+            template: "./template.prod.html",
             inject: true,
         }),
         new VueLoaderPlugin(),
@@ -76,10 +83,12 @@ const prodWebpackConfig = merge(baseWebpackConfig, {
                 },
                 common: {
                     name: 'common',
+                    minChunks: 2,
                     test: /[\\/]src[\\/]/,
                     // minSize: 1024,
                     chunks: 'async',
-                    priority: 5
+                    priority: 5,
+                    reuseExistingChunk: true,
                 }
             }
         },

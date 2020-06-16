@@ -19,7 +19,7 @@ module.exports = {
     resolve: {
         extensions: [`.js`, ".json", ".vue"],
         alias: {
-            vue$: "vue/dist/vue.esm.js",
+            // vue$: "vue/dist/vue.esm.js",
             TagCanvas: path.resolve(__dirname, "../common/lib/tagcanvas.js"),
             request: path.resolve(__dirname, "../utils/request.js"),
             "lottie-web": "lottie-web/build/player/lottie.js",
