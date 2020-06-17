@@ -75,8 +75,13 @@ const router = new VueRouter({
     {
       name: "scrollTest",
       path: "/scrollTest",
-      component: () => import("./scrollTest/index.vue"),
+      component: () => import("./scrollTest/index.vue")
     },
+    {
+        name: 'bdGolf',
+        path:  '/bdGolf',
+        component: () => import('./golf/index.vue')
+    }
 
     // {
     //     name: "weekly",
@@ -88,7 +93,7 @@ const router = new VueRouter({
     //     path: "/weeklyContent",
     //     component: () => import("./weekly/content.vue"),
     // },
-  ],
+  ]
 });
 
 // router.beforeEach((to, from, next) => {
