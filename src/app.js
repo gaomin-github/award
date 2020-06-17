@@ -62,31 +62,36 @@ const router = new VueRouter({
             component: () => import("./weekly/index.vue"),
         },
 
-        {
-            name: "animTest",
-            path: "/animTest",
-            component: () => import("./animTest/index.vue"),
-            meta: {
-                keepAlive: true,
-            },
-        },
-        {
-            name: "scrollTest",
-            path: "/scrollTest",
-            component: () => import("./scrollTest/index.vue"),
-        },
+    {
+      name: "animTest",
+      path: "/animTest",
+      component: () => import("./animTest/index.vue"),
+      meta: {
+        keepAlive: true,
+      },
+    },
+    {
+      name: "scrollTest",
+      path: "/scrollTest",
+      component: () => import("./scrollTest/index.vue")
+    },
+    {
+        name: 'bdGolf',
+        path:  '/bdGolf',
+        component: () => import('./golf/index.vue')
+    }
 
-        // {
-        //     name: "weekly",
-        //     path: "/weekly",
-        //     component: () => import("./weekly/weekly.vue"),
-        // },
-        // {
-        //     name: "weeklyContent",
-        //     path: "/weeklyContent",
-        //     component: () => import("./weekly/content.vue"),
-        // },
-    ],
+    // {
+    //     name: "weekly",
+    //     path: "/weekly",
+    //     component: () => import("./weekly/weekly.vue"),
+    // },
+    // {
+    //     name: "weeklyContent",
+    //     path: "/weeklyContent",
+    //     component: () => import("./weekly/content.vue"),
+    // },
+  ]
 });
 
 // router.beforeEach((to, from, next) => {
