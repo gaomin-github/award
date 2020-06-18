@@ -4,15 +4,13 @@ import store from "./store/index";
 import mock from "./mock/index.js";
 // import './axios.js';
 // mock数据
-
 import eruda from "eruda";
+
 if (process.env.NODE_ENV === "development") {
-    // import("eruda").then(() => {
     eruda.init();
-    // });
+    Vue.use(VueRouter);
 }
 import App from "./app.vue";
-Vue.use(VueRouter);
 // import xianEstateDemo from './xian-estate/index.vue'
 const router = new VueRouter({
     mode: "history",
