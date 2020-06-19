@@ -1,12 +1,12 @@
 const path = require("path");
 const webpack = require("webpack");
-const { CleanWebpackPlugin } = require("clean-webpack-plugin");
-const HtmlWebpackPlugin = require("html-webpack-plugin");
 // 进度条
 const ProgressBarPlugin = require('progress-bar-webpack-plugin')
+// css提取
+const MinCssExtractPlugin = require('mini-css-extract-plugin');
+
 // css压缩
 const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');
-// const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 // js压缩
 const TerserPlugin = require('terser-webpack-plugin');
 // 多线程编译，加快打包速度
@@ -16,7 +16,13 @@ const happyLoaderId = 'happypack-for-react-babel-loader';
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 // preload
 const PreloadWebpackPlugin = require('preload-webpack-plugin');
-const VueLoaderPlugin = require("vue-loader/lib/plugin");
+// inject内容修改
+
+// const ScriptExtHtmlWebpackPlugin = require('script-ext-html-webpack-plugin')
+
+
+// 自定义上传模拟插件
+const UploadMockPlugin = require('./uploadMock.js')
 const merge = require('webpack-merge');
 
 const baseWebpackConfig = require('./webpack.base');
@@ -27,7 +33,7 @@ const prodWebpackConfig = merge(baseWebpackConfig, {
         chunkFilename: "award_dist/js/[name].[chunkhash].js",
         crossOriginLoading: "anonymous",
         path: path.resolve(__dirname, "../built"),
-        publicPath: "./",
+        publicPath: "./",       //和生成文件inject到html的路径有关
     },
     devtool: "inline-source-map",
     externals: {
@@ -45,23 +51,27 @@ const prodWebpackConfig = merge(baseWebpackConfig, {
                 id: happyLoaderId
             },
             include: '/../src'
+        }, {
+            test: /\.(css|scss)$/,
+            use: [{
+                loader: MinCssExtractPlugin.loader,
+                options: {
+                    publicPath: '../../',
+                }
+            }, 'css-loader', "postcss-loader", "sass-loader"],
+            exclude: /node_modules/,
+            include: [
+                path.resolve(__dirname, "../src"),
+                path.resolve(__dirname, "../common/components"),
+            ],
         }]
     },
     plugins: [
-
-        new webpack.DefinePlugin({
-            "process.env": {
-                NODE_ENV: '"production"',
-            },
+        // new ScriptExtHtmlWebpackPlugin({ defaultAttribute: 'defer' }),
+        new MinCssExtractPlugin({
+            filename: 'award_dist/css/[name].css',
+            chunkFilename: 'award_dist/css/[id].css'
         }),
-        new CleanWebpackPlugin(),
-        new HtmlWebpackPlugin({
-            filename: "./index.html",
-            title: "award project",
-            template: "./template.prod.html",
-            inject: true,
-        }),
-        new VueLoaderPlugin(),
         new webpack.ProvidePlugin({
             Vue: ["vue/dist/vue.esm.js", "default"],
         }),
@@ -113,25 +123,8 @@ const prodWebpackConfig = merge(baseWebpackConfig, {
                     comments: false
                 }
             }
-        })
-            //  new UglifyJsPlugin({
-            //     cache: true,
-            //     parallel: true,
-            //     sourceMap: true,
-            //     uglifyOptions: {
-            //         comments: false,
-            //         warnings: false,
-            //         compress: {
-            //             unused: true,
-            //             dead_code: true,
-            //             collapse_vars: true,
-            //             reduce_vars: true
-            //         },
-            //         output: {
-            //             comments: false
-            //         }
-            //     }
-            // })
+        }),
+        new UploadMockPlugin()
         ]
     }
 });
@@ -149,5 +142,4 @@ if (process.env.npm_config_report) {
     }))
 }
 
-prodWebpackConfig.plugins.push()
 module.exports = prodWebpackConfig;

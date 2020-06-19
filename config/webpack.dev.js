@@ -1,14 +1,10 @@
 const path = require("path");
 const webpack = require("webpack");
 
-const { CleanWebpackPlugin } = require("clean-webpack-plugin");
-const HtmlWebpackPlugin = require("html-webpack-plugin");
-// const ProgressBarPlugin=require('progress-bar-webpack-plugin')
-const VueLoaderPlugin = require("vue-loader/lib/plugin");
-
 const merge = require('webpack-merge');
 
 const baseWebpackConfig = require('./webpack.base.js');
+
 const devWebpackConfig = merge(baseWebpackConfig, {
     mode: "development",
     output: {
@@ -38,20 +34,23 @@ const devWebpackConfig = merge(baseWebpackConfig, {
         },
     },
     devtool: "inline-source-map",
+    module: {
+        rules: [
+            {
+                test: /\.(css|scss)$/,
+                use: ['style-loader', 'css-loader', 'postcss-loader', 'sass-loader'],
+                include: [
+                    path.resolve(__dirname, '../src'),
+                    path.resolve(__dirname, '../common/components'),
+                ]
+            }
+        ]
+    },
     plugins: [
-        new CleanWebpackPlugin(),
-        new HtmlWebpackPlugin({
-            filename: "./index.html",
-            title: "award project",
-            template: "./template.dev.html",
-        }),
         new webpack.HotModuleReplacementPlugin(),
-        new VueLoaderPlugin(),
         new webpack.ProvidePlugin({
             Vue: ["vue/dist/vue.esm.js", "default"],
         }),
-        // new ProgressBarPlugin(),
-
     ],
 })
 module.exports = devWebpackConfig;
