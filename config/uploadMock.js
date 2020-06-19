@@ -10,15 +10,14 @@ uploadMockPlugin.prototype.apply = function (compiler) {
         let assetList = Object.keys(compilation.assets);
         console.log(assetList[0], 12)
         assetList.forEach(assetPath => {
-            let pathArr = assetPath.split('/');
-            let destPath = assetPath.replace(pathArr[pathArr.length - 1], `copy_${pathArr[pathArr.length - 1]}`);
-            console.log(destPath, 15)
-            fs.rename(path.join(__dirname, '../', `built/${assetPath}`), path.join(__dirname, '../', `copy/${destPath}`), (err) => {
+            // let pathArr = assetPath.split('/');
+            // let destPath = assetPath.replace(pathArr[pathArr.length - 1], `copy_${pathArr[pathArr.length - 1]}`);
+            fs.rename(path.join(__dirname, '../', `built/${assetPath}`), path.join(__dirname, '../', `copy/${assetPath}`), (err) => {
                 if (err) {
                     console.log(err, 14)
                     return;
                 };
-                fs.stat(path.join(__dirname, '../', `copy/${destPath}`), (error, stats) => {
+                fs.stat(path.join(__dirname, '../', `copy/${assetPath}`), (error, stats) => {
                     if (error) {
                         console.log(error, 19)
                         return;

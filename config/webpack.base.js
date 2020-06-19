@@ -3,7 +3,6 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 const VueLoaderPlugin = require("vue-loader/lib/plugin");
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 
-
 module.exports = {
     entry: {
         main: ['./src/app.js']
@@ -59,21 +58,6 @@ module.exports = {
                     path.resolve(__dirname, "../common/components"),
                 ],
             },
-            // {
-            //     test: /\.(css|scss)$/,
-            //     use: process.env.NODE_ENV !== 'development' ? [{
-            //         loader: MinCssExtractPlugin.loader,
-            //         options: {
-            //             publicPath: '../../',
-            //             // outputPath: '../built/award_dist/css/',
-            //         }
-            //     }, 'css-loader', "postcss-loader", "sass-loader"] : ["style-loader", "css-loader", "postcss-loader", "sass-loader"],
-            //     exclude: /node_modules/,
-            //     include: [
-            //         path.resolve(__dirname, "../src"),
-            //         path.resolve(__dirname, "../common/components"),
-            //     ],
-            // }
         ],
     },
     plugins: [

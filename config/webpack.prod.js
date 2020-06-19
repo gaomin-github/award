@@ -4,7 +4,6 @@ const webpack = require("webpack");
 const ProgressBarPlugin = require('progress-bar-webpack-plugin')
 // css提取
 const MinCssExtractPlugin = require('mini-css-extract-plugin');
-
 // css压缩
 const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 // js压缩
@@ -33,6 +32,7 @@ const prodWebpackConfig = merge(baseWebpackConfig, {
         chunkFilename: "award_dist/js/[name].[chunkhash].js",
         crossOriginLoading: "anonymous",
         path: path.resolve(__dirname, "../built"),
+        // publicPath: 'www.baidu.com/'
         publicPath: "./",       //和生成文件inject到html的路径有关
     },
     devtool: "inline-source-map",
@@ -124,7 +124,7 @@ const prodWebpackConfig = merge(baseWebpackConfig, {
                 }
             }
         }),
-        new UploadMockPlugin()
+            // new UploadMockPlugin()
         ]
     }
 });
