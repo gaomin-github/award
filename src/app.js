@@ -7,95 +7,101 @@ import mock from "./mock/index.js";
 import eruda from "eruda";
 
 if (process.env.NODE_ENV === "development") {
-    eruda.init();
-    Vue.use(VueRouter);
+  eruda.init();
+  Vue.use(VueRouter);
 }
 import App from "./app.vue";
 // import xianEstateDemo from './xian-estate/index.vue'
 const router = new VueRouter({
-    mode: "history",
-    routes: [
-        // {
-        //   path: "",
-        //   component: () => import("./index.vue")
-        // },
-        {
-            path: "/cloud",
-            component: () => import("./cloud/index.vue"),
-        },
-        {
-            path: "/turnTable",
-            component: () => import("./turn-table/index.vue"),
-        },
-        {
-            path: "/lottieDemo",
-            component: () => import("./lottieDemo/index.vue"),
-        },
-        {
-            // 方块创建动画
-            path: "/threeDemo",
-            component: () => import("./threeDemo/demo1.vue"),
-        },
-        {
-            // 模型转粒子
-            path: "/granulesDemo",
-            component: () => import("./granules/index.vue"),
-        },
-        {
-            // 西安
-            name: "gxEstate",
-            path: "/gxEstate",
-            component: () => import("./xian-estate/index.vue"),
-            meta: {
-                keepAlive: true,
-            },
-        },
-        {
-            // 西安area中的building
-            name: "gxBuilding",
-            path: "/gxBuilding",
-            component: () => import("./xian-estate/area.vue"),
-        },
-        {
-            name: "weekly",
-            path: "/weekly",
-            component: () => import("./weekly/index.vue"),
-        },
+  mode: "history",
+  routes: [
+    // {
+    //   path: "",
+    //   component: () => import("./index.vue")
+    // },
+    {
+      path: "/cloud",
+      component: () => import("./cloud/index.vue"),
+    },
+    {
+      path: "/turnTable",
+      component: () => import("./turn-table/index.vue"),
+    },
+    {
+      path: "/lottieDemo",
+      component: () => import("./lottieDemo/index.vue"),
+    },
+    {
+      // 方块创建动画
+      path: "/threeDemo",
+      component: () => import("./threeDemo/demo1.vue"),
+    },
+    {
+      // 模型转粒子
+      path: "/granulesDemo",
+      component: () => import("./granules/index.vue"),
+    },
+    {
+      // 西安
+      name: "gxEstate",
+      path: "/gxEstate",
+      component: () => import("./xian-estate/index.vue"),
+      meta: {
+        keepAlive: true,
+      },
+    },
+    {
+      // 西安area中的building
+      name: "gxBuilding",
+      path: "/gxBuilding",
+      component: () => import("./xian-estate/area.vue"),
+    },
+    {
+      name: "weekly",
+      path: "/weekly",
+      component: () => import("./weekly/index.vue"),
+    },
 
-        {
-            name: "animTest",
-            path: "/animTest",
-            component: () => import("./animTest/index.vue"),
-            meta: {
-                keepAlive: true,
-            },
-        },
-        {
-            name: "scrollTest",
-            path: "/scrollTest",
-            component: () => import("./scrollTest/index.vue")
-        },
-        {
-            name: 'bdGolf',
-            path: '/bdGolf',
-            component: () => import('./golf/index.vue')
-        }, {
-            name: 'gdGolf',
-            path: '/gdGolf',
-            component: () => import('./gdGolf/index.vue')
-        }
+    {
+      name: "animTest",
+      path: "/animTest",
+      component: () => import("./animTest/index.vue"),
+      meta: {
+        keepAlive: true,
+      },
+    },
+    {
+      name: "scrollTest",
+      path: "/scrollTest",
+      component: () => import("./scrollTest/index.vue"),
+    },
+    {
+      name: "bdGolf",
+      path: "/bdGolf",
+      component: () => import("./golf/index.vue"),
+    },
+    {
+      name: "gdGolf",
+      path: "/gdGolf",
+      component: () => import("./gdGolf/index.vue"),
+    },
+    {
+      name: "login",
+      path: "/login",
+      component: () => import("./login/index.vue"),
+    },
 
-        // {
-        //     name: "weekly",
-        //     path: "/weekly",
-        //     component: () => import("./weekly/weekly.vue"),
-        // },
-        // {
-        //     name: "weeklyContent",
-        //     path: "/weeklyContent",
-        //     component: () => import("./weekly/content.vue"),
-        // },
-    ]
+    // {
+    //     name: "weekly",
+    //     path: "/weekly",
+    //     component: () => import("./weekly/weekly.vue"),
+    // },
+    // {
+    //     name: "weeklyContent",
+    //     path: "/weeklyContent",
+    //     component: () => import("./weekly/content.vue"),
+    // },
+  ],
 });
 
 // router.beforeEach((to, from, next) => {
@@ -104,13 +110,13 @@ const router = new VueRouter({
 // mock数据
 // import("./mock/index.js");
 let vm = new Vue({
-    el: "#app",
-    components: {
-        App: App,
-    },
-    template: "<App/>",
-    router,
-    mock,
-    store,
-    // router: SelfRoutes
+  el: "#app",
+  components: {
+    App: App,
+  },
+  template: "<App/>",
+  router,
+  mock,
+  store,
+  // router: SelfRoutes
 });
