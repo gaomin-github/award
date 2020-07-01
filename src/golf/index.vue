@@ -8,7 +8,7 @@ import request from "request";
 import testData from "./testData.js";
 // import mapvgl from "mapvgl";
 const AK = "o2KPqsZArcRSLQGiGyFz5Dgaz7UikZHI";
-const Point = [106.477734, 29.562986];
+const Point = [[116.336985,40.034488],[116.333756,40.031116]];
 export default {
   data() {
     return {

@@ -17,11 +17,16 @@ export default {
       entityObjs: [],
       pathData: [],
       pointObj: null,
+      mapBound:[], //地图边界
+      mapBoundObj:null,
+      boundsList:[]
     };
   },
   async mounted() {
     await this._initMapScript();
+    await this._initMapBounds()
     await this._initMapUi();
+    this._initAreaBounds()
     this._initPathData();
     // 创建path实例
     await this._initPathObj();
@@ -45,14 +50,61 @@ export default {
         document.head.appendChild(mapScriptEl);
       });
     },
+    async _initMapBounds(){
+        // 地图边界
+        // this.mapBound=[[116.336985+0.3,40.034488-0.1],[116.333756-0.3,40.031116+0.1]]
+        let top=[116.33963,40.036883];
+        let bottom=[116.328472,40.027008]
+        this.mapBound=[top,bottom]
+        this.mapBoundObj=new AMap.Bounds(...this.mapBound)
+        this.mapObj.setBounds(this.mapBoundObj)
+    },
+    async _initAreaBounds(){
+        let layer=new AMap.LabelsLayer({
+            rejectMapMask:true,
+            collision:true,
+            animation:true
+        })
+        let bounds1=[[116.333847,40.033358],[116.336459,40.033367],[116.336872,40.033342],[116.33684,40.033034],[116.336792,40.032993],[116.336792,40.032993],[116.336754,40.033001],[116.335966,40.032948],[116.335199,40.032931],[116.334705,40.032911],[116.334394,40.032919],[116.334249,40.03287],[116.334212,40.032808],[116.33419,40.032541],[116.334158,40.032529],[116.333954,40.032533],[116.333766,40.032516],[116.333799,40.032788],[116.333815,40.032829],[116.333831,40.033055],[116.333847,40.033358]]
+        this.boundsList.push(bounds1)
+        this.boundsList.map(bound=>{
+            let polygonOptions={
+                map:this.mapObj,
+                strokeColor:'rgba(200,0,0,0.5)',
+                strokeWidth:2,
+                fillColor:'rgba(0,0,0,0)'
+            }
+            let polygon=new AMap.Polygon(polygonOptions);
+            polygon.setPath(bound);
+            let label_new = new AMap.LabelMarker({
+                position:bounds1[5],
+                zooms:[3,20],
+                name:'biaozhu1',
+                text:{
+                  content:'标注1',
+                  zooms:[3,20],
+                  style:{
+                      fontSize:20,
+                      fillColor:'rgba(255,255,255,1)'
+                  }
+                },
+                
+            });
+         layer.add(label_new);
+        })
+        this.mapObj.add(layer)
+        this.mapObj.setFitView()
+    },
     _initMapContainer() {
       this.mapObj = new AMap.Map("map-container", {
-        zoom: 17,
+          layers:[new AMap.TileLayer.Satellite()],
+          zooms:[14,16],
+        // zoom: 17,
         // pitch: 74, //俯视角度
         // viewMode: "3D",
-        center: [106.471445, 29.563047],
-        zoomEnable: false,
-        dragEnable: false,
+        // center: [106.471445, 29.563047],
+        // zoomEnable: false,
+        // dragEnable: false,
         mapStyle: "amap://styles/light", //设置地图的显示样式
       });
     },
