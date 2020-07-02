@@ -1,6 +1,7 @@
 <template>
   <div class="gdGolf-wrapper">
     <div class="map-container" id="map-container"></div>
+    <help-info ref="help-info"></help-info>
   </div>
 </template>
 <script>
@@ -9,6 +10,9 @@ import testData from "./testData.js";
 const Web_Ak = "17569efbd54a284b8bd0ce338ae71616",
   Front_Ak = "ed769065a3d834f8f814990328914744";
 export default {
+    components:{
+        helpInfo:()=>import('./coms/help.vue')
+    },
   data() {
     return {
       gardens: [],
@@ -19,14 +23,22 @@ export default {
       pointObj: null,
       mapBound:[], //地图边界
       mapBoundObj:null,
-      boundsList:[]
+      boundsList:[],
+      mapInfoWin:null,  //地图帮助窗口
     };
   },
   async mounted() {
+    //   地图引入
     await this._initMapScript();
+    // 地图边界
     await this._initMapBounds()
+    // 帮助弹窗
+    this._initInfoWin()
+    // ui组件
     await this._initMapUi();
+    // 区域边界
     this._initAreaBounds()
+    // 路径
     this._initPathData();
     // 创建path实例
     await this._initPathObj();
@@ -58,6 +70,17 @@ export default {
         this.mapBound=[top,bottom]
         this.mapBoundObj=new AMap.Bounds(...this.mapBound)
         this.mapObj.setBounds(this.mapBoundObj)
+    },
+    _initInfoWin(){
+        let that=this;
+        // import('./coms/help.vue').then(module=>{
+        //     console.log(module.innerHTML,72)
+            that.mapInfoWin=new AMap.InfoWindow({
+                position:new AMap.LngLat(116.333847,40.033358),
+                content:this.$refs['help-info'].$el
+            })
+            that.mapInfoWin.open(this.mapObj)
+        // })
     },
     async _initAreaBounds(){
         let layer=new AMap.LabelsLayer({
