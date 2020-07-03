@@ -2,6 +2,7 @@ const path = require("path");
 const MinCssExtractPlugin = require("mini-css-extract-plugin");
 
 module.exports = {
+    
   entry: {
     main: ["./src/app.js"],
   },
@@ -38,7 +39,8 @@ module.exports = {
         ],
         options: {
           esModule: false,
-          name: "award_dist/imgs/[name].[ext]",
+          name: "imgs/[name].[ext]",
+          publicPath:'../',
           limit: 10000,
         },
       },
