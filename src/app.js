@@ -77,6 +77,11 @@ const router = new VueRouter({
       path: "/scrollTest",
       component: () => import("./scrollTest/index.vue"),
     },
+    {
+      name: "img-canvas",
+      path: "/img-canvas",
+      component: () => import("./img-canvas/index.vue"),
+    },
 
     // {
     //     name: "weekly",
