@@ -29,7 +29,8 @@ const devWebpackConfig = merge(baseWebpackConfig, {
         proxy: {
             "/xian": "http://localhost:9081",
             "/task": "http://localhost:9081",
-            '/common': 'http://localhost:9081'
+            '/common': 'http://localhost:9081',
+            '/backend_rbac': 'http://localhost:9081',
         },
     },
     devtool: "inline-source-map",

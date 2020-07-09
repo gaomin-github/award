@@ -26,7 +26,8 @@ module.exports = {
             request: path.resolve(__dirname, "../utils/request.js"),
             "lottie-web": "lottie-web/build/player/lottie.js",
             lib: path.resolve(__dirname, "../common/lib"),
-            components: path.resolve(__dirname, '../common/components')
+            components: path.resolve(__dirname, '../common/components'),
+            views: path.resolve(__dirname, '../src/views')
         },
     },
     module: {
