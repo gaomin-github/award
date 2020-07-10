@@ -1,9 +1,11 @@
 <template>
   <div class="rbac-wrapper">
-    <template v-if="loginStatus">
-      <side-bar></side-bar>
-      <router-view></router-view>
-    </template>
+    <div class="container" v-if="loginStatus">
+      <side-bar class="side-bar"></side-bar>
+      <div class="center">
+        <router-view></router-view>
+      </div>
+    </div>
     <div class="login" v-else>
       <input type="text" v-model="userInfo.userId" />
       <input type="password" v-model="userInfo.password" />
@@ -71,5 +73,15 @@ export default {
     border: 1px rgba(55, 105, 195, 1) solid;
     border-radius: 5px;
   }
+}
+.container {
+  display: flex;
+}
+.side-bar {
+  width: 100px;
+  flex-shrink: 1;
+}
+.center {
+  flex: 1;
 }
 </style>

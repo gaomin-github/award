@@ -1,12 +1,17 @@
 <template>
   <div class="sidebar-wrapper">
-    <div v-for="item in menuList" :key="item.id"></div>
+    <div v-for="item in menuList" :key="item.id">
+      <menu-node :nodeParam="item" />
+    </div>
   </div>
 </template>
 <script>
 import { mapState, mapGetters } from "vuex";
 import request from "request";
 export default {
+  components: {
+    menuNode: () => import("./menuNode")
+  },
   data() {
     return {
       menuList: []
