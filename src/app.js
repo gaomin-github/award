@@ -6,10 +6,10 @@ import mock from "./mock/index.js";
 // mock数据
 import eruda from "eruda";
 
-if (process.env.NODE_ENV === "development") {
-    eruda.init();
-    Vue.use(VueRouter);
-}
+// if (process.env.NODE_ENV === "development") {
+eruda.init();
+// }
+Vue.use(VueRouter);
 import App from "./app.vue";
 // import xianEstateDemo from './xian-estate/index.vue'
 const router = new VueRouter({
@@ -62,40 +62,24 @@ const router = new VueRouter({
             component: () => import("./weekly/index.vue"),
         },
 
-<<<<<<< HEAD
-        {
-            name: "animTest",
-            path: "/animTest",
-            component: () => import("./animTest/index.vue"),
-            meta: {
-                keepAlive: true,
+            {
+                  name: "animTest",
+                  path: "/animTest",
+                  component: () => import("./animTest/index.vue"),
+                  meta: {
+                        keepAlive: true,
+                  },
             },
-        },
-        {
-            name: "scrollTest",
-            path: "/scrollTest",
-            component: () => import("./scrollTest/index.vue"),
-        },
-=======
-    {
-      name: "animTest",
-      path: "/animTest",
-      component: () => import("./animTest/index.vue"),
-      meta: {
-        keepAlive: true,
-      },
-    },
-    {
-      name: "scrollTest",
-      path: "/scrollTest",
-      component: () => import("./scrollTest/index.vue"),
-    },
-    {
-      name: "img-canvas",
-      path: "/img-canvas",
-      component: () => import("./img-canvas/index.vue"),
-    },
->>>>>>> 490aa1ff9ab204f12dafaf3390f0b55612fee691
+            {
+                  name: "scrollTest",
+                  path: "/scrollTest",
+                  component: () => import("./scrollTest/index.vue"),
+            },
+            {
+                  name: "img-canvas",
+                  path: "/img-canvas",
+                  component: () => import("./img-canvas/index.vue"),
+            },
 
         // {
         //     name: "weekly",
