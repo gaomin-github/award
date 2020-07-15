@@ -1,15 +1,18 @@
 <template>
   <div class="img-canvas-wrapper" ref="img-canvas">
-    img canvas
     <!-- <div class="content">
       <img src="./test.png" />
     </div>-->
     <!-- <div class="btn" @click="saveMobileImg">保存移动端测试图片</div> -->
-    <div class="content" ref="content">this img test</div>
-    <div class="btn">
-      <div class="hidden-img" ref="hidden_img">
-        <img src="./test.png" />
-      </div>保存测试图片
+    <div class="content" ref="content">
+      this img test
+      <div class="content-item" v-for="item in liSize" :key="item">thsi is {{item}} info test</div>
+    </div>
+    <div class="btn" @click="saveMobileImg">
+      <!-- <div class="hidden-img">
+        <img src="./test.png" ref="hidden_img" />
+      </div>-->
+      保存测试图片
     </div>
     <!-- <div class="btn" @click="savePage">双击保存图片</div> -->
   </div>
@@ -19,8 +22,12 @@ import html2canvas from "html2canvas";
 export default {
   data() {
     return {
+      liSize: 10,
       testImgUrl: require("./test.png")
     };
+  },
+  mounted() {
+    this._initCurrentImg();
   },
   methods: {
     savePage() {
@@ -47,7 +54,17 @@ export default {
       URL.revokeObjectURL(url);
     },
     // 当前页面保存为图片下载(需兼容pc和移动端)
-    _initCurrentImg() {}
+    _initCurrentImg() {
+      html2canvas(document.body, {
+        width: 375,
+        height: 640,
+        backgroundColor: "rgba(200,200,200,1)",
+        scale: 2
+      }).then(canvas => {
+        // let imgData = canvas.toDataURL("image/png", 1);
+        // this.$refs["hidden_img"].src = imgData;
+      });
+    }
   }
 };
 </script>
@@ -68,14 +85,19 @@ section {
   flex: 1;
   flex-shrink: 1;
 }
+.content-item {
+  line-height: 36px;
+  font-size: 22px;
+}
 .btn {
   position: relative;
   flex-shrink: 1;
   width: 80%;
+  height: 52px;
   line-height: 52px;
   border-radius: 15px;
   margin: 10px 10%;
-  background: rgba(55, 115, 175, 1);
+  // background: rgba(55, 115, 175, 1);
   color: rgba(255, 255, 255, 1);
   border: 1px rgba(35, 95, 155, 1) solid;
   font-size: 16px;
@@ -85,7 +107,7 @@ section {
   position: absolute;
   width: 100%;
   height: 100%;
-  opacity: 0;
+  opacity: 1;
   border: 1px black solid;
   left: 0;
   top: 0;
