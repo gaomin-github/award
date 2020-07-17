@@ -33,10 +33,11 @@ export default {
         url: "/backend_rbac/userAuth",
         method: "get",
         params: {
-          userId: userInfo.userId
+          // userId: userInfo.userId
         }
       });
-      if (res.status === 200) {
+      console.log(res, 39);
+      if (res.status === 200 && res.data.status) {
         this.menuList = res.data;
       }
     }

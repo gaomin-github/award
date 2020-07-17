@@ -15,6 +15,7 @@
 </template>
 <script>
 import { mapMutations } from "vuex";
+import request from "request";
 export default {
   components: {
     sideBar: () => import("./coms/sidebar.vue")
@@ -42,11 +43,24 @@ export default {
         this.loginStatus = false;
       }
     },
-    handleLogin() {
-      let userInfo = { userId: this.userInfo.userId, token: Math.random() };
-      localStorage.setItem("userInfo", JSON.stringify(userInfo));
-      this.loginStatus = true;
-      this.updateUserInfo(userInfo);
+    async handleLogin() {
+      let res = await request({
+        url: "/backend_rbac/userAuth",
+        method: "post",
+        params: {
+          userId: this.userInfo.userId,
+          password: this.userInfo.password
+        },
+        data: {
+          userId: this.userInfo.userId,
+          password: this.userInfo.password
+        }
+      });
+      console.log(res, 55);
+      // let userInfo = { userId: this.userInfo.userId, token: Math.random() };
+      // localStorage.setItem("userInfo", JSON.stringify(userInfo));
+      // this.loginStatus = true;
+      // this.updateUserInfo(userInfo);
     }
   }
 };
@@ -55,23 +69,26 @@ export default {
 .login {
   display: flex;
   flex-direction: column;
-  margin: 40px;
+  width: 400px;
+  margin: 300px auto;
   input {
-    line-height: 38px;
+    line-height: 48px;
     appearance: none;
     margin-top: 15px;
     outline: none;
     border: 1px rgba(193, 193, 193, 1) solid;
     border-radius: 5px;
+    font-size: 26px;
   }
   button {
-    line-height: 32px;
+    line-height: 52px;
     appearance: none;
     margin-top: 15px;
     color: rgba(255, 255, 255, 1);
     background: rgba(55, 155, 205, 1);
     border: 1px rgba(55, 105, 195, 1) solid;
     border-radius: 5px;
+    font-size: 26px;
   }
 }
 .container {

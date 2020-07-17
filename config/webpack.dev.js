@@ -31,6 +31,7 @@ const devWebpackConfig = merge(baseWebpackConfig, {
             "/task": "http://localhost:9081",
             '/common': 'http://localhost:9081',
             '/backend_rbac': 'http://localhost:9081',
+            '/tvclass/api/v1/': 'http://stag.bssmini.pandora.xiaomi.com/tvclass/api/v1/'
         },
     },
     devtool: "inline-source-map",

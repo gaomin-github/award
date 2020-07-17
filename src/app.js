@@ -1,13 +1,13 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
 import store from "./store/index";
-import mock from "./mock/index.js";
+// import mock from "./mock/index.js";
 // import './axios.js';
 // mock数据
 import eruda from "eruda";
 
 if (process.env.NODE_ENV === "development") {
-    eruda.init();
+    // eruda.init();
     Vue.use(VueRouter);
 }
 import App from "./app.vue";
@@ -32,7 +32,7 @@ let vm = new Vue({
     },
     template: "<App/>",
     router,
-    mock,
+    // mock,
     store,
     // router: SelfRoutes
 });

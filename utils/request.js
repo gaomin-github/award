@@ -12,14 +12,22 @@ request.interceptors.request.use(config => {
 })
 
 request.interceptors.response.use(response => {
-  if (response.status === 401) {
-    // 登录失效
-    // 清理token
-    // 路由重定向
-    location.reload();
-    return;
-  }
+  // console.log(response, 15)
+  // if (response.status === 401) {
+  // 登录失效
+  // 清理token
+  // 路由重定向
+  // location.reload();
+  // return;
+  // }
   return response;
+}, error => {
+  if (error.response.status === 401 || error.response.statusText === 'Unauthorized') {
+    // 清理登录信息
+    localStorage.clear();
+    store.commit('rbac/updateUserInfo', null)
+    // location.reload();
+  }
 })
 
 export default request;
