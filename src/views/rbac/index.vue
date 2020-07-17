@@ -1,7 +1,9 @@
 <template>
   <div class="rbac-wrapper">
     <div class="container" v-if="loginStatus">
-      <side-bar class="side-bar"></side-bar>
+      <div class="side-bar">
+        <side-bar></side-bar>
+      </div>
       <div class="center">
         <router-view></router-view>
       </div>
@@ -26,7 +28,11 @@ export default {
         userId: "",
         password: ""
       },
-      loginStatus: false
+      loginStatus: false,
+      errTip: {
+        use: false,
+        msg: ""
+      }
     };
   },
   mounted() {
@@ -45,27 +51,55 @@ export default {
     },
     async handleLogin() {
       let res = await request({
-        url: "/backend_rbac/userAuth",
+        url: "/backend_rbac/login",
         method: "post",
-        params: {
-          userId: this.userInfo.userId,
-          password: this.userInfo.password
-        },
+        // params: {
+        //   userId: this.userInfo.userId,
+        //   password: this.userInfo.password
+        // },
         data: {
           userId: this.userInfo.userId,
           password: this.userInfo.password
         }
       });
-      console.log(res, 55);
-      // let userInfo = { userId: this.userInfo.userId, token: Math.random() };
-      // localStorage.setItem("userInfo", JSON.stringify(userInfo));
-      // this.loginStatus = true;
-      // this.updateUserInfo(userInfo);
+      if (res.status !== 200) {
+        console.log("请求异常");
+        this.errTip = {
+          use: true,
+          msg: "请求异常"
+        };
+        return;
+      }
+      if (!res.data.status) {
+        console.log("登录失败");
+        this.errTip = {
+          use: true,
+          msg: res.data.msg
+        };
+      }
+      // 登录成功
+      localStorage.setItem(
+        "userInfo",
+        JSON.stringify({
+          userId: this.userInfo.userId,
+          token: res.headers["authorization"]
+        })
+      );
+      this.updateUserInfo({
+        userId: this.userInfo.userId,
+        token: res.headers["authorization"]
+      });
+      this.loginStatus = true;
+      return;
     }
   }
 };
 </script>
-<style lang="scss">
+<style lang="scss" scoped>
+.rbac-wrapper {
+  width: 100%;
+  height: 100%;
+}
 .login {
   display: flex;
   flex-direction: column;
@@ -93,12 +127,20 @@ export default {
 }
 .container {
   display: flex;
+  flex-direction: row;
+  width: 100%;
+  height: 100%;
 }
 .side-bar {
-  width: 100px;
+  // width: 230px;
+  height: 100%;
+
   flex-shrink: 1;
+  border: 1px black solid;
 }
 .center {
   flex: 1;
+  flex-shrink:1;
+  border:1px red solid;
 }
 </style>

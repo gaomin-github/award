@@ -2,7 +2,8 @@ const state = () => ({
   userInfo: {
     userId: '',
     token: ''
-  }
+  },
+  // sideBarSpread: true
 })
 
 const getters = {
@@ -24,7 +25,10 @@ const mutations = {
   updateUserInfo(state, params) {
     console.log(params, 'params', 25)
     state.userInfo = params
-  }
+  },
+  // updateSideBarStatusr(state, param) {
+  //   state.sideBarStatus = param;
+  // }
 }
 
 export default {

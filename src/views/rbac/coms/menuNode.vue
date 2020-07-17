@@ -1,6 +1,9 @@
 <template>
   <div :class="[`menu-node-wrapper`, `menu-${nodeParam.path?nodeParam.path.length:0}`]">
-    <div class="label" @click="handleToggle">{{nodeParam.name}},{{nodeParam.title}}</div>
+    <div class="label" @click="handleToggle">
+      <!-- {{nodeParam.name}} -->
+      ,{{nodeParam.title}}
+      </div>
     <template v-if="nodeParam.children&&expandStatus">
       <menu-node v-for="item in nodeParam.children" :key="item.id" :nodeParam="item"></menu-node>
     </template>
@@ -45,7 +48,7 @@ export default {
   padding-left: 15px;
 }
 .menu-0 {
-  color: rgba(233, 233, 233, 1);
+  color: rgba(33, 33, 33, 1);
   font-size: 16px;
   font-weight: 500;
 }

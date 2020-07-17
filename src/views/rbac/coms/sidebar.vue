@@ -1,7 +1,14 @@
 <template>
   <div class="sidebar-wrapper">
+    <template v-if="hasSpread">
+
     <div v-for="item in menuList" :key="item.id">
       <menu-node :nodeParam="item" />
+    </div>
+    </template>
+    <div class="btn" @click="changeStatus">
+      <template v-if="hasSpread">《《</template>
+      <template v-else>》》</template>
     </div>
   </div>
 </template>
@@ -14,7 +21,8 @@ export default {
   },
   data() {
     return {
-      menuList: []
+      menuList: [],
+      hasSpread: true
     };
   },
   computed: {
@@ -32,17 +40,33 @@ export default {
       let res = await request({
         url: "/backend_rbac/userAuth",
         method: "get",
-        params: {
-          // userId: userInfo.userId
-        }
+        params: {}
       });
-      console.log(res, 39);
-      if (res.status === 200 && res.data.status) {
+      console.log(res, 38);
+      if (res.status === 200 && res.data) {
         this.menuList = res.data;
+        return;
       }
+    },
+    changeStatus() {
+      this.hasSpread = !this.hasSpread;
     }
   }
 };
 </script>
 <style lang="scss" scoped>
+.sidebar-wrapper {
+  width: 100%;
+  height: 100%;
+  font-size: 24px;
+  position: relative;
+  padding-right:50px;
+}
+.btn {
+  position: absolute;
+  right: 5px;
+  top: 10px;
+  padding: 5px 10px;
+  font-size: 18px;
+}
 </style>
