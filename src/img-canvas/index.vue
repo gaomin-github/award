@@ -1,8 +1,8 @@
 <template>
   <div class="img-canvas-wrapper" ref="img-canvas">
-    <!-- <div class="content">
+    <div class="content">
       <img src="./test.png" />
-    </div>-->
+    </div>
     <!-- <div class="btn" @click="saveMobileImg">保存移动端测试图片</div> -->
     <div class="content" ref="content">
       this img test
