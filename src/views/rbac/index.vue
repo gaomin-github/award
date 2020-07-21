@@ -5,7 +5,7 @@
         <side-bar></side-bar>
       </div>
       <div class="center">
-        <router-view></router-view>
+        <!-- <router-view></router-view> -->
       </div>
     </div>
     <div class="login" v-else>
@@ -130,6 +130,7 @@ export default {
   flex-direction: row;
   width: 100%;
   height: 100%;
+  background: rgba(23, 123, 223, 0.2);
 }
 .side-bar {
   // width: 230px;
@@ -140,7 +141,9 @@ export default {
 }
 .center {
   flex: 1;
-  flex-shrink:1;
-  border:1px red solid;
+  flex-shrink: 1;
+  border: 1px red solid;
+  background: url("./a.png") 0 0 no-repeat;
+  background-size: 100% auto;
 }
 </style>
