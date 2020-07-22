@@ -10,9 +10,9 @@ import testData from "./testData.js";
 const Web_Ak = "17569efbd54a284b8bd0ce338ae71616",
   Front_Ak = "ed769065a3d834f8f814990328914744";
 export default {
-    components:{
-        helpInfo:()=>import('./coms/help.vue')
-    },
+  components: {
+    helpInfo: () => import("./coms/help.vue")
+  },
   data() {
     return {
       gardens: [],
@@ -21,23 +21,24 @@ export default {
       entityObjs: [],
       pathData: [],
       pointObj: null,
-      mapBound:[], //地图边界
-      mapBoundObj:null,
-      boundsList:[],
-      mapInfoWin:null,  //地图帮助窗口
+      mapBound: [], //地图边界
+      mapBoundObj: null,
+      boundsList: [],
+      mapInfoWin: null, //地图帮助窗口
+      carIcon: require("./imgs/arrow_car.png")
     };
   },
   async mounted() {
     //   地图引入
     await this._initMapScript();
     // 地图边界
-    await this._initMapBounds()
+    await this._initMapBounds();
     // 帮助弹窗
-    this._initInfoWin()
+    // this._initInfoWin();
     // ui组件
     await this._initMapUi();
-    // 区域边界
-    this._initAreaBounds()
+    // 区域边界(画出的自定义边界范围)
+    // this._initAreaBounds();
     // 路径
     this._initPathData();
     // 创建path实例
@@ -45,7 +46,7 @@ export default {
     // path数据化
     // 创建point实例
     await this._initPointObj();
-    this._initHistoryPath();
+    // this._initHistoryPath();
     // point数据化
     // this._initPointData();
   },
@@ -62,73 +63,94 @@ export default {
         document.head.appendChild(mapScriptEl);
       });
     },
-    async _initMapBounds(){
-        // 地图边界
-        // this.mapBound=[[116.336985+0.3,40.034488-0.1],[116.333756-0.3,40.031116+0.1]]
-        let top=[116.33963,40.036883];
-        let bottom=[116.328472,40.027008]
-        this.mapBound=[top,bottom]
-        this.mapBoundObj=new AMap.Bounds(...this.mapBound)
-        this.mapObj.setBounds(this.mapBoundObj)
+    async _initMapBounds() {
+      // 地图边界
+      // this.mapBound=[[116.336985+0.3,40.034488-0.1],[116.333756-0.3,40.031116+0.1]]
+      let top = [113.4059776512935, 23.45351783532674];
+      let bottom = [113.4381468860794, 23.47010251374073];
+      this.mapBound = [top, bottom];
+      this.mapBoundObj = new AMap.Bounds(...this.mapBound);
+      this.mapObj.setBounds(this.mapBoundObj);
     },
-    _initInfoWin(){
-        let that=this;
-        // import('./coms/help.vue').then(module=>{
+    _initInfoWin() {
+      let that = this;
+      import("./coms/help.vue").then(module => {
         //     console.log(module.innerHTML,72)
-            that.mapInfoWin=new AMap.InfoWindow({
-                position:new AMap.LngLat(116.333847,40.033358),
-                content:this.$refs['help-info'].$el
-            })
-            that.mapInfoWin.open(this.mapObj)
-        // })
+        that.mapInfoWin = new AMap.InfoWindow({
+          position: new AMap.LngLat(116.333847, 40.033358),
+          content: this.$refs["help-info"].$el
+        });
+        that.mapInfoWin.open(this.mapObj);
+      });
     },
-    async _initAreaBounds(){
-        let layer=new AMap.LabelsLayer({
-            rejectMapMask:true,
-            collision:true,
-            animation:true
-        })
-        let bounds1=[[116.333847,40.033358],[116.336459,40.033367],[116.336872,40.033342],[116.33684,40.033034],[116.336792,40.032993],[116.336792,40.032993],[116.336754,40.033001],[116.335966,40.032948],[116.335199,40.032931],[116.334705,40.032911],[116.334394,40.032919],[116.334249,40.03287],[116.334212,40.032808],[116.33419,40.032541],[116.334158,40.032529],[116.333954,40.032533],[116.333766,40.032516],[116.333799,40.032788],[116.333815,40.032829],[116.333831,40.033055],[116.333847,40.033358]]
-        this.boundsList.push(bounds1)
-        this.boundsList.map(bound=>{
-            let polygonOptions={
-                map:this.mapObj,
-                strokeColor:'rgba(200,0,0,0.5)',
-                strokeWidth:2,
-                fillColor:'rgba(0,0,0,0)'
+    async _initAreaBounds() {
+      let layer = new AMap.LabelsLayer({
+        rejectMapMask: true,
+        collision: true,
+        animation: true
+      });
+      let bounds1 = [
+        [116.333847, 40.033358],
+        [116.336459, 40.033367],
+        [116.336872, 40.033342],
+        [116.33684, 40.033034],
+        [116.336792, 40.032993],
+        [116.336792, 40.032993],
+        [116.336754, 40.033001],
+        [116.335966, 40.032948],
+        [116.335199, 40.032931],
+        [116.334705, 40.032911],
+        [116.334394, 40.032919],
+        [116.334249, 40.03287],
+        [116.334212, 40.032808],
+        [116.33419, 40.032541],
+        [116.334158, 40.032529],
+        [116.333954, 40.032533],
+        [116.333766, 40.032516],
+        [116.333799, 40.032788],
+        [116.333815, 40.032829],
+        [116.333831, 40.033055],
+        [116.333847, 40.033358]
+      ];
+      this.boundsList.push(bounds1);
+      this.boundsList.map(bound => {
+        let polygonOptions = {
+          map: this.mapObj,
+          strokeColor: "rgba(200,0,0,0.5)",
+          strokeWidth: 2,
+          fillColor: "rgba(0,0,0,0)"
+        };
+        let polygon = new AMap.Polygon(polygonOptions);
+        polygon.setPath(bound);
+        let label_new = new AMap.LabelMarker({
+          position: bounds1[5],
+          zooms: [3, 20],
+          name: "biaozhu1",
+          text: {
+            content: "标注1",
+            zooms: [3, 20],
+            style: {
+              fontSize: 20,
+              fillColor: "rgba(255,255,255,1)"
             }
-            let polygon=new AMap.Polygon(polygonOptions);
-            polygon.setPath(bound);
-            let label_new = new AMap.LabelMarker({
-                position:bounds1[5],
-                zooms:[3,20],
-                name:'biaozhu1',
-                text:{
-                  content:'标注1',
-                  zooms:[3,20],
-                  style:{
-                      fontSize:20,
-                      fillColor:'rgba(255,255,255,1)'
-                  }
-                },
-                
-            });
-         layer.add(label_new);
-        })
-        this.mapObj.add(layer)
-        this.mapObj.setFitView()
+          }
+        });
+        layer.add(label_new);
+      });
+      this.mapObj.add(layer);
+      this.mapObj.setFitView();
     },
     _initMapContainer() {
       this.mapObj = new AMap.Map("map-container", {
-          layers:[new AMap.TileLayer.Satellite()],
-          zooms:[14,16],
+        // layers: [new AMap.TileLayer.Satellite()],
+        zooms: [14, 16],
         // zoom: 17,
         // pitch: 74, //俯视角度
         // viewMode: "3D",
         // center: [106.471445, 29.563047],
         // zoomEnable: false,
         // dragEnable: false,
-        mapStyle: "amap://styles/light", //设置地图的显示样式
+        mapStyle: "amap://styles/light" //设置地图的显示样式
       });
     },
     async _initMapUi() {
@@ -157,8 +179,8 @@ export default {
         o.path.setData([
           {
             name: `路线${index}`,
-            path: [...o.trackData],
-          },
+            path: [...o.trackData]
+          }
         ]);
         let newLoc = o.trackData[o.trackData.length - 1];
         let new_long = Number(newLoc[0]) + Math.random() * 0.0001;
@@ -196,7 +218,7 @@ export default {
           PathSimplifier,
           $
         ) {
-          that.pathData.forEach((o) => {
+          that.pathData.forEach((o, index) => {
             let pathObj = new PathSimplifier({
               zIndex: 100,
               map: that.mapObj,
@@ -211,26 +233,26 @@ export default {
                   radius: 0,
                   fillStyle: "rgba(0,0,0,0)",
                   strokeStyle: "rgba(0,0,0,0)",
-                  lineWidth: 0,
+                  lineWidth: 0
                 },
                 startPointStyle: {
                   radius: 0,
                   fillStyle: "#109618",
                   lineWidth: 1,
-                  strokeStyle: "#eeeeee",
+                  strokeStyle: "#eeeeee"
                 },
                 endPointStyle: {
                   radius: 0,
                   fillStyle: "#109618",
                   lineWidth: 1,
-                  strokeStyle: "#eeeeee",
+                  strokeStyle: "#eeeeee"
                 },
                 getPathStyle: () => {
                   return {
                     pathLineStyle: {
                       strokeStyle: "rgba(188,133,133,1)",
-                      lineWidth: 2,
-                    },
+                      lineWidth: 2
+                    }
                   };
                 },
                 pathNavigatorStyle: {
@@ -248,16 +270,16 @@ export default {
                     strokeStyle: "rgba(8, 126, 196, 1)",
                     borderWidth: 1,
                     borderStyle: "#eeeeee",
-                    dirArrowStyle: false,
-                  },
-                },
+                    dirArrowStyle: false
+                  }
+                }
                 // renderAllPointsIfNumberBelow: 100
-              },
+              }
             });
 
             that.entityObjs.push({
               path: pathObj,
-              trackData: o,
+              trackData: o
             });
           });
           // cosnole.log()
@@ -276,7 +298,7 @@ export default {
         });
       });
     },
-    _initPointObj(point_location) {
+    _initPointObj(point_location, index) {
       let that = this;
       return new Promise((resolve, reject) => {
         AMapUI.load(["ui/misc/PointSimplifier", "lib/$"], function(
@@ -307,61 +329,119 @@ export default {
               pointStyle: {
                 fillStyle: null,
                 width: 15,
-                height: 15,
+                height: 15
               },
+              // pointStyle: {
+              //   content: PointSimplifier.Render.Canvas.getImageContent(
+              //     // that.carIcon,
+              //     "./static/imgs/arrow_car.png",
+              //     // "https://webapi.amap.com/theme/v1.3/markers/n/mark_b1.png",
+              //     function onload() {
+              //       that.pointObj.renderLater();
+              //     },
+              //     function onerror(e) {
+              //       console.log("图片加载失败");
+              //     }
+              //   ),
+              //   width: 15,
+              //   height: 27,
+              //   offset: ["-50%", "-100%"]
+              // },
               topNAreaStyle: null,
               getGroupId: function(item, idx) {
                 //随机返回一个组ID
                 return Math.ceil(10 * Math.random());
               },
               groupStyleOptions: function(gid) {
-                var radius = 2 + 25 * Math.random();
                 return {
-                  pointStyle:
-                    radius > 0
-                      ? {
-                          content: function(ctx, x, y, width, height) {
-                            var p = {
-                              x: x + width / 2,
-                              y: y + height / 2,
-                              radius: radius,
-                            };
-
-                            ctx.beginPath();
-                            var gradient = ctx.createRadialGradient(
-                              p.x,
-                              p.y,
-                              0,
-                              p.x,
-                              p.y,
-                              p.radius
-                            );
-                            gradient.addColorStop(0, "rgba(217,120,0,1)");
-                            gradient.addColorStop(1, "rgba(217,120,0,0.2)");
-                            ctx.fillStyle = gradient;
-                            ctx.arc(p.x, p.y, p.radius, Math.PI * 2, false);
-                            ctx.fill();
-                          },
-
-                          //fillStyle: colors[gid % colors.length],
-                          width: radius * 2,
-                          height: radius * 2,
-                        }
-                      : null,
-                  pointHardcoreStyle: {
-                    width: radius * 2 + 3,
-                    height: radius * 2 + 3,
-                  },
+                  // pointStyle: {
+                  //   content: PointSimplifier.Render.Canvas.getImageContent(
+                  //     // that.carIcon,
+                  //     "./static/imgs/arrow_car.png",
+                  //     // "https://webapi.amap.com/theme/v1.3/markers/n/mark_b1.png",
+                  //     function onload() {
+                  //       console.log("point render");
+                  //       that.pointObj.renderLater();
+                  //     },
+                  //     function onerror(e) {
+                  //       console.log("图片加载失败");
+                  //     }
+                  //   ),
+                  //   width: 10,
+                  //   height: 15,
+                  //   offset: ["-50%", "-100%"]
+                  // }
+                  pointStyle: {
+                    content: function(ctx, x, y, width, height) {
+                      let radius = 8 + 5 * Math.random();
+                      let imgObj = new Image();
+                      imgObj.src = that.carIcon;
+                      ctx.drawImage(
+                        imgObj,
+                        x + 0,
+                        y + 0,
+                        5 + radius,
+                        10 + radius
+                      );
+                    },
+                    width: 10,
+                    height: 15,
+                    offset: ["-50%", "-100%"]
+                  }
                 };
               },
+              // groupStyleOptions: function(gid) {
+              //   var radius = 2 + 25 * Math.random();
+              //   return {
+              //     pointStyle:
+              //       radius > 0
+              //         ? {
+              //             content: function(ctx, x, y, width, height) {
+              //               var p = {
+              //                 x: x + width / 2,
+              //                 y: y + height / 2,
+              //                 radius: radius
+              //               };
+
+              //               ctx.beginPath();
+              //               var gradient = ctx.createRadialGradient(
+              //                 p.x,
+              //                 p.y,
+              //                 0,
+              //                 p.x,
+              //                 p.y,
+              //                 p.radius
+              //               );
+              //               gradient.addColorStop(0, "rgba(217,120,0,1)");
+              //               gradient.addColorStop(1, "rgba(217,120,0,0.2)");
+              //               ctx.fillStyle = gradient;
+              //               ctx.arc(p.x, p.y, p.radius, Math.PI * 2, false);
+              //               ctx.fill();
+              //             },
+
+              //             // fillStyle: colors[gid % colors.length],
+              //             width: radius * 2,
+              //             height: radius * 2
+              //           }
+              //         : null,
+              // pointHardcoreStyle: {
+              //   width: radius * 2 + 3,
+              //   height: radius * 2 + 3
+              // },
+              pointHardcoreStyle: {
+                width: Math.random() * 50 + 3,
+                height: Math.random() * 50 + 3
+              },
+              //   };
+              // },
               endPointStyle: {
                 width: 26,
-                height: 26,
+                height: 26
               },
               hoverTitleStyle: {
-                position: "top",
-              },
-            },
+                position: "top"
+              }
+            }
           });
           setInterval(function() {
             that.pointObj.render();
@@ -379,7 +459,7 @@ export default {
       //     "106.475919, 29.565165",
       //   ]);
       let pointLocs = [];
-      this.entityObjs.map((o) => {
+      this.entityObjs.map(o => {
         let locObj = o.trackData[o.trackData.length - 1];
         pointLocs.push(`${locObj[0]},${locObj[1]}`);
       });
@@ -389,8 +469,8 @@ export default {
     _initLocation(locationStr) {
       console.log(locationStr, 154);
       return locationStr.split(",");
-    },
-  },
+    }
+  }
 };
 </script>
 <style lang="scss" scoped>
