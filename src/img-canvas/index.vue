@@ -1,7 +1,7 @@
 <template>
   <div class="img-canvas-wrapper" ref="img-canvas">
     <div class="content">
-      <img src="./test.png" />
+      <img src="./imgs/test.png" />
     </div>
     <!-- <div class="btn" @click="saveMobileImg">保存移动端测试图片</div> -->
     <div class="content" ref="content">
@@ -23,11 +23,14 @@ export default {
   data() {
     return {
       liSize: 10,
-      testImgUrl: require("./test.png")
+      testImgUrl: require("./imgs/test.png"),
+      icoUrl: require("./imgs/fav1.png")
     };
   },
   mounted() {
     this._initCurrentImg();
+    document.title = "img-canvas 测试页面";
+    this._initIco();
   },
   methods: {
     savePage() {
@@ -64,6 +67,13 @@ export default {
         // let imgData = canvas.toDataURL("image/png", 1);
         // this.$refs["hidden_img"].src = imgData;
       });
+    },
+    _initIco() {
+      let linkEl = document.createElement("link");
+      linkEl.type = "image/x-icon";
+      linkEl.rel = "shortcut icon";
+      linkEl.href = this.icoUrl;
+      document.getElementsByTagName("head")[0].appendChild(linkEl);
     }
   }
 };
