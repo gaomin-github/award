@@ -1,7 +1,10 @@
 <template>
   <div class="gdGolf-wrapper">
     <div class="map-container" id="map-container"></div>
-    <help-info ref="help-info"></help-info>
+    <!-- <help-info ref="help-info"></help-info> -->
+    <div class="bottom">
+      <img src="./imgs/bg.png" />
+    </div>
   </div>
 </template>
 <script>
@@ -143,6 +146,8 @@ export default {
     _initMapContainer() {
       this.mapObj = new AMap.Map("map-container", {
         // layers: [new AMap.TileLayer.Satellite()],
+        // mapStyle: "amap://styles/light",
+        mapStyle: "amap://styles/cd222232a6e0ba54dd6c92974cacfce7",
         zooms: [14, 16],
         // zoom: 17,
         // pitch: 74, //俯视角度
@@ -152,6 +157,7 @@ export default {
         // dragEnable: false,
         mapStyle: "amap://styles/light" //设置地图的显示样式
       });
+      // this.mapObj.setMapStyle("amap://styles/38671b90dc06f424aa16610ef0ca3bbc");
     },
     async _initMapUi() {
       return new Promise((resolve, reject) => {
@@ -477,9 +483,20 @@ export default {
 .gdGolf-wrapper {
   width: 100%;
   height: 100%;
+  display: flex;
+  flex-direction: column;
 }
 .map-container {
+  flex-shrink: 1;
   width: 100%;
   height: 500px;
+}
+.bottom {
+  flex-shrink: 1;
+  flex: 1;
+  border: 1px red solid;
+  background: url("./imgs/bg.png") 0 0 no-repeat;
+  background-size: 100% auto;
+  overflow: hidden;
 }
 </style>
