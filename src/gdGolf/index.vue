@@ -148,14 +148,14 @@ export default {
         // layers: [new AMap.TileLayer.Satellite()],
         // mapStyle: "amap://styles/light",
         mapStyle: "amap://styles/cd222232a6e0ba54dd6c92974cacfce7",
-        zooms: [14, 16],
+        zooms: [14, 16]
         // zoom: 17,
         // pitch: 74, //俯视角度
         // viewMode: "3D",
         // center: [106.471445, 29.563047],
         // zoomEnable: false,
         // dragEnable: false,
-        mapStyle: "amap://styles/light" //设置地图的显示样式
+        // mapStyle: "amap://styles/light" //设置地图的显示样式
       });
       // this.mapObj.setMapStyle("amap://styles/38671b90dc06f424aa16610ef0ca3bbc");
     },
@@ -495,7 +495,7 @@ export default {
   flex-shrink: 1;
   flex: 1;
   border: 1px red solid;
-  background: url("./imgs/bg.png") 0 0 no-repeat;
+  // background: url("./imgs/bg.png") 0 0 no-repeat;
   background-size: 100% auto;
   overflow: hidden;
 }
