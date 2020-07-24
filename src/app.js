@@ -62,24 +62,30 @@ const router = new VueRouter({
             component: () => import("./weekly/index.vue"),
         },
 
-            {
-                  name: "animTest",
-                  path: "/animTest",
-                  component: () => import("./animTest/index.vue"),
-                  meta: {
-                        keepAlive: true,
-                  },
+        {
+            name: "animTest",
+            path: "/animTest",
+            component: () => import("./animTest/index.vue"),
+            meta: {
+                keepAlive: true,
             },
-            {
-                  name: "scrollTest",
-                  path: "/scrollTest",
-                  component: () => import("./scrollTest/index.vue"),
-            },
-            {
-                  name: "img-canvas",
-                  path: "/img-canvas",
-                  component: () => import("./img-canvas/index.vue"),
-            },
+        },
+        {
+            name: "scrollTest",
+            path: "/scrollTest",
+            component: () => import("./scrollTest/index.vue"),
+        },
+        {
+            name: "img-canvas",
+            path: "/img-canvas",
+            component: () => import("./img-canvas/index.vue"),
+        },
+        {
+            name: "webgl-img",
+            path: "/webgl-img",
+            component: () => import("./views/webgl-img/index.vue"),
+
+        }
 
         // {
         //     name: "weekly",

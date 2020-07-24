@@ -32,6 +32,10 @@ module.exports = {
     module: {
         rules: [
             {
+                test: /\.glsl$/,
+                loader: 'raw-loader'
+            },
+            {
                 test: /\.(jpg|png|jpeg|gif)$/,
                 loader: "url-loader",
                 include: [
