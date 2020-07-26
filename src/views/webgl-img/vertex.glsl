@@ -7,6 +7,7 @@ varying vec2 v_texCoord;
 
 void main() {
    // convert the rectangle from pixels to 0.0 to 1.0
+   //1像素的纹理坐标
    vec2 zeroToOne = a_position / u_resolution;
 
    // convert from 0->1 to 0->2

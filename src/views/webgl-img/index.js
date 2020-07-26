@@ -19,17 +19,29 @@ export default {
   },
   async mounted() {
 
-    let imgObj = await require('./page_bg.jpeg');
-    this.imgUrl = imgObj;
+    // let imgObj = await require('./page_bg.jpeg');
+    // this.imgUrl = imgObj;
     // console.log(imgObj, 13)
     let imgEl = new Image(200, 100);
+    // imgEl.crossOrigin = 'anonymous'
     // imgEl.src = 'https://webglfundamentals.org/webgl/resources/leaves.jpg'
-    imgEl.src = imgObj
+    // imgEl.src = './page_bg.jpeg'
+    let data = require('./page_bg.jpeg')
+    console.log(data, 30)
+    imgEl.src = data;
+    this.imgObj = imgEl;
+    // imgEl.src = require('./page_bg.jpeg')
+    // imgEl.src = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQJN2ChU-7Nnrzo6M18VkvHhpF1WfVB9EKsDh74jaVX2c1rwAWa&s"
+    // this.imgObj = imgEl;
+    // this._initCopy()
 
-    this.imgObj = imgEl
-    // this._initImgRender()
+    imgEl.onload = () => {
+      console.log(imgEl, 30)
+      // this.imgObj = imgEl
+      // this._initCopy()
+      this._initImgRender()
+    }
     console.log(this.imgObj, 27)
-    this._initCopy()
   },
   methods: {
     _initImgRender() {
@@ -38,19 +50,20 @@ export default {
       this._renderImg()
     },
     _initShader() {
-
-      let canvasEl = this.$refs.canva;
+      console.log(this.$refs, 53)
+      let canvasEl = this.$refs['myCanva'];
+      console.log(canvasEl, 55)
       let gl = this.gl = canvasEl.getContext('webgl');
       let shaders = {
         vertex: require('./vertex.glsl'),
         frag: require('./frag.glsl')
       }
       let vertexShader = this.vertexShader = gl.createShader(gl.VERTEX_SHADER);
-      gl.shaderSource(vertexShader, shaders.vertex);
+      gl.shaderSource(vertexShader, shaders.vertex.default);
       gl.compileShader(vertexShader);
 
       let fragShader = this.fragShader = gl.createShader(gl.FRAGMENT_SHADER);
-      gl.shaderSource(fragShader, shaders.frag);
+      gl.shaderSource(fragShader, shaders.frag.default);
       gl.compileShader(fragShader);
 
       let program = this.program = gl.createProgram();
@@ -58,8 +71,8 @@ export default {
       gl.attachShader(program, fragShader);
       gl.linkProgram(program);
       let test = gl.getProgramParameter(program, gl.LINK_STATUS)
-      console.log(test, 54)
-      console.log(gl.getShaderInfoLog(vertexShader), 55)
+      // console.log(test, 54)
+      // console.log(gl.getShaderInfoLog(vertexShader), 55)
 
       this.positionALoc = gl.getAttribLocation(program, 'a_position');
       this.coorLoc = gl.getAttribLocation(program, 'a_texCoord');
@@ -70,11 +83,11 @@ export default {
       gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer)
       gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([
         0.0, 0.0,
-        650.0, 0.0,
-        650, 890,
-        650, 890,
+        320.0, 0.0,
+        320, 200,
+        320, 200,
         0.0, 0.0,
-        0.0, 890.0
+        0.0, 200.0
       ]), gl.STATIC_DRAW)
 
       let colorBuffer = this.colorBuffer = gl.createBuffer();
@@ -105,10 +118,7 @@ export default {
 
       let gl = this.gl;
       gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
-      console.log('gl.canvas.width', gl.canvas.width)
-      console.log('gl.canvas.height', gl.canvas.height)
-      console.log(this.coorLoc, 100)
-      gl.clearColor(0, 0, 0, 0);
+      gl.clearColor(0, 0, 10, 0);
       gl.clear(gl.COLOR_BUFFER_BIT);
       gl.useProgram(this.program)
 

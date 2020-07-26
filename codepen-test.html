@@ -60,17 +60,27 @@
   // from https://webglfundamentals.org/webgl/webgl-2d-image.html
 
 
-  "use strict";
 
   async function main() {
     var image = new Image();
+    // image.crossOrigin = 'anonymous'
+    // image.crossorigin = 'anonymous'
     // let imgUrl = await import('./page_bg.jpeg')
     // console.log(imgUrl, 68)
+    // require('./page_bg.jpeg')
+    // .then(o => {
+    //   console.log(o, 68)
+    // })
+    // import('./page_bg.jpeg').then(module => {
+    //   console.log(module, 70)
+    // })
+    // image.src = "https://webglfundamentals.org/webgl/resources/leaves.jpg"
     image.src = "./page_bg.jpeg";
     // image.src = imgUrl
     // requestCORSIfNotSameOrigin(image, "https://webglfundamentals.org/webgl/resources/leaves.jpg")
     // image.src = "https://webglfundamentals.org/webgl/resources/leaves.jpg";
     image.onload = function () {
+
       console.log(image, 71)
       render(image);
     };
