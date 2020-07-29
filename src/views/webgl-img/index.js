@@ -1,9 +1,10 @@
-{/* <script id="ss">
 
-</script> */}
+import { mapState, mapMutations } from 'vuex';
 export default {
   data() {
     return {
+      type_keys: ['a', 'b', 'c'],
+      type_list: [],
       imgUrl: '',
       gl: null,
       imgObj: null,
@@ -17,7 +18,11 @@ export default {
       colorBuffer: null,
     }
   },
+  computed: {
+    ...mapState('webgl', ['id'])
+  },
   async mounted() {
+    this._initTypeList()
 
     // let imgObj = await require('./page_bg.jpeg');
     // this.imgUrl = imgObj;
@@ -44,6 +49,7 @@ export default {
     console.log(this.imgObj, 27)
   },
   methods: {
+    ...mapMutations('webgl', ['updateId']),
     _initImgRender() {
       this._initShader();
       this._initTexture();
@@ -243,6 +249,23 @@ export default {
       var count = 6;
       gl.drawArrays(primitiveType, offset, count);
 
+    },
+    updateState() {
+      this.updateId(Math.random())
+    },
+    _initTypeList() {
+      let num = Math.random();
+      this.$set(this.type_list, num, {
+        key: num,
+        type: num * 10 / 2 > 2 ? num * 10 / 2 > 3 ? 'a' : 'b' : 'c'
+      })
+      // this.$set('type_list', this.type_list)
+      // this.type_list = this.type_list;
+      setTimeout(this._initTypeList, 5000);
+    },
+    getTypeNum(param) {
+      let list = Object.keys(this.type_list).filter(o => this.type_list[o].type === param);
+      return list.length;
     }
   }
 }
