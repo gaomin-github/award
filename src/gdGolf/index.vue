@@ -45,7 +45,7 @@ export default {
     // 路径
     this._initPathData();
     // 创建path实例
-    await this._initPathObj();
+    // await this._initPathObj();
     // path数据化
     // 创建point实例
     await this._initPointObj();
@@ -189,8 +189,8 @@ export default {
           }
         ]);
         let newLoc = o.trackData[o.trackData.length - 1];
-        let new_long = Number(newLoc[0]) + Math.random() * 0.0001;
-        let new_lang = Number(newLoc[1]) + Math.random() * 0.0001;
+        let new_long = Number(newLoc[0]) + 0.0001;
+        let new_lang = Number(newLoc[1]) + 0.0001;
         o.trackData.push([new_long, new_lang]);
         if (o.trackData.length > 10) {
           o.trackData = o.trackData.slice(
@@ -208,9 +208,9 @@ export default {
       //     },
       //   ]);
 
-      setTimeout(() => {
-        this._initHistoryPath();
-      }, 1000);
+      // setTimeout(() => {
+      //   this._initHistoryPath();
+      // }, 1000);
     },
     _initCurMarker() {},
     _initPathObj() {
@@ -379,16 +379,19 @@ export default {
                   // }
                   pointStyle: {
                     content: function(ctx, x, y, width, height) {
-                      let radius = 8 + 5 * Math.random();
+                      let radius = 0;
                       let imgObj = new Image();
                       imgObj.src = that.carIcon;
                       ctx.drawImage(
                         imgObj,
                         x + 0,
                         y + 0,
-                        5 + radius,
-                        10 + radius
+                        55 + radius,
+                        60 + radius
                       );
+                      ctx.font = "bold 32px Arial";
+                      ctx.fillStyle = "white";
+                      ctx.fillText(Math.random(), x, y);
                     },
                     width: 10,
                     height: 15,
@@ -396,80 +399,50 @@ export default {
                   }
                 };
               },
-              // groupStyleOptions: function(gid) {
-              //   var radius = 2 + 25 * Math.random();
-              //   return {
-              //     pointStyle:
-              //       radius > 0
-              //         ? {
-              //             content: function(ctx, x, y, width, height) {
-              //               var p = {
-              //                 x: x + width / 2,
-              //                 y: y + height / 2,
-              //                 radius: radius
-              //               };
-
-              //               ctx.beginPath();
-              //               var gradient = ctx.createRadialGradient(
-              //                 p.x,
-              //                 p.y,
-              //                 0,
-              //                 p.x,
-              //                 p.y,
-              //                 p.radius
-              //               );
-              //               gradient.addColorStop(0, "rgba(217,120,0,1)");
-              //               gradient.addColorStop(1, "rgba(217,120,0,0.2)");
-              //               ctx.fillStyle = gradient;
-              //               ctx.arc(p.x, p.y, p.radius, Math.PI * 2, false);
-              //               ctx.fill();
-              //             },
-
-              //             // fillStyle: colors[gid % colors.length],
-              //             width: radius * 2,
-              //             height: radius * 2
-              //           }
-              //         : null,
-              // pointHardcoreStyle: {
-              //   width: radius * 2 + 3,
-              //   height: radius * 2 + 3
-              // },
               pointHardcoreStyle: {
                 width: Math.random() * 50 + 3,
                 height: Math.random() * 50 + 3
-              },
-              //   };
-              // },
-              endPointStyle: {
-                width: 26,
-                height: 26
-              },
-              hoverTitleStyle: {
-                position: "top"
               }
+              // endPointStyle: {
+              //   width: 26,
+              //   height: 26
+              // },
+              // hoverTitleStyle: {
+              //   position: "top"
+              // }
             }
           });
-          setInterval(function() {
-            that.pointObj.render();
-          }, 500);
+          // setInterval(function() {
+          //   that.pointObj.render();
+          // }, 500);
           that._initPointData();
           return resolve();
         });
       });
     },
     _initPointData() {
+      console.log("_initPointObj", 421);
+      this.pointObj.setData([
+        `${113.4311468860794 + Math.random() * 0.0002},
+        ${23.465010251374073 + Math.random() * 0.0002}`
+      ]);
       //   this.pointObj.setData([
       //     "106.471445, 29.563047",
       //     "106.471619, 29.563165",
       //     "106.478919, 29.566165",
       //     "106.475919, 29.565165",
       //   ]);
-      let pointLocs = [];
-      this.entityObjs.map(o => {
-        let locObj = o.trackData[o.trackData.length - 1];
-        pointLocs.push(`${locObj[0]},${locObj[1]}`);
-      });
-      this.pointObj.setData(pointLocs);
+      // let pointLocs = [];
+
+      // this.entityObjs.map(o => {
+      //   let locObj = o.trackData[o.trackData.length - 1];
+      //   pointLocs.push(
+      //     `${locObj[0] + Math.random() * 0.0004},${locObj[1] +
+      //       Math.random() * 0.0004}`
+      //   );
+      // });
+      // this.pointObj.setData(pointLocs);
+      setTimeout(this._initPointData, 3000);
     },
     _initPolineObj() {},
     _initLocation(locationStr) {
