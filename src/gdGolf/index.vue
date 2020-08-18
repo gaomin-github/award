@@ -28,10 +28,12 @@ export default {
       mapBoundObj: null,
       boundsList: [],
       mapInfoWin: null, //地图帮助窗口
-      carIcon: require("./imgs/arrow_car.png")
+      carIcon: require("./imgs/arrow_car.png"),
+      devicePixelRatio: 1
     };
   },
   async mounted() {
+    this.devicePixelRatio = window.devicePixelRatio;
     //   地图引入
     await this._initMapScript();
     // 地图边界
@@ -379,6 +381,7 @@ export default {
                   // }
                   pointStyle: {
                     content: function(ctx, x, y, width, height) {
+                      // console.log(x, y, width, height, 382);
                       let radius = 0;
                       let imgObj = new Image();
                       imgObj.src = that.carIcon;
@@ -386,10 +389,12 @@ export default {
                         imgObj,
                         x + 0,
                         y + 0,
-                        55 + radius,
-                        60 + radius
+                        // width + 15,
+                        // height + 15
+                        (25 + radius) * that.devicePixelRatio,
+                        (30 + radius) * that.devicePixelRatio
                       );
-                      ctx.font = "bold 32px Arial";
+                      ctx.font = `bold ${16 * that.devicePixelRatio}px Arial`;
                       ctx.fillStyle = "white";
                       ctx.fillText(Math.random(), x, y);
                     },
