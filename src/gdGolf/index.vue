@@ -29,7 +29,8 @@ export default {
       boundsList: [],
       mapInfoWin: null, //地图帮助窗口
       carIcon: require("./imgs/arrow_car.png"),
-      devicePixelRatio: 1
+      devicePixelRatio: 1,
+      marker: null
     };
   },
   async mounted() {
@@ -50,7 +51,7 @@ export default {
     // await this._initPathObj();
     // path数据化
     // 创建point实例
-    await this._initPointObj();
+    await this._initPointObj([113.4311468860794, 23.465010251374073]);
     // this._initHistoryPath();
     // point数据化
     // this._initPointData();
@@ -150,7 +151,8 @@ export default {
         // layers: [new AMap.TileLayer.Satellite()],
         // mapStyle: "amap://styles/light",
         mapStyle: "amap://styles/cd222232a6e0ba54dd6c92974cacfce7",
-        zooms: [14, 16]
+        zooms: [14, 16],
+        doubleClickZoom: false
         // zoom: 17,
         // pitch: 74, //俯视角度
         // viewMode: "3D",
@@ -309,124 +311,145 @@ export default {
     _initPointObj(point_location, index) {
       let that = this;
       return new Promise((resolve, reject) => {
-        AMapUI.load(["ui/misc/PointSimplifier", "lib/$"], function(
-          PointSimplifier,
-          $
-        ) {
-          that.pointObj = new PointSimplifier({
-            zIndex: 115,
-            autoSetFitView: false,
+        AMapUI.loadUI(["overlay/SimpleMarker"], function(SimpleMarker) {
+          let marker = (that.marker = new SimpleMarker({
+            iconLabel: {
+              innerHTML: "new car",
+              style: {
+                color: "white"
+              }
+            },
+            //自定义图标地址
+            iconStyle: that.carIcon,
+
+            //设置基点偏移
+            offset: new AMap.Pixel(-19, -60),
+
             map: that.mapObj,
-            getPosition: function(item) {
-              if (!item) {
-                return null;
-              }
 
-              var parts = item.split(",");
-
-              //返回经纬度
-              return [parseFloat(parts[0]), parseFloat(parts[1])];
-            },
-            getHoverTitle: function(dataItem, idx) {
-              return `${idx}:${dataItem}`;
-            },
-            renderConstructor: PointSimplifier.Render.Canvas.GroupStyleRender,
-
-            renderOptions: {
-              eventSupport: false, //禁止事件,对性能更友好
-              pointStyle: {
-                fillStyle: null,
-                width: 15,
-                height: 15
-              },
-              // pointStyle: {
-              //   content: PointSimplifier.Render.Canvas.getImageContent(
-              //     // that.carIcon,
-              //     "./static/imgs/arrow_car.png",
-              //     // "https://webapi.amap.com/theme/v1.3/markers/n/mark_b1.png",
-              //     function onload() {
-              //       that.pointObj.renderLater();
-              //     },
-              //     function onerror(e) {
-              //       console.log("图片加载失败");
-              //     }
-              //   ),
-              //   width: 15,
-              //   height: 27,
-              //   offset: ["-50%", "-100%"]
-              // },
-              topNAreaStyle: null,
-              getGroupId: function(item, idx) {
-                //随机返回一个组ID
-                return Math.ceil(10 * Math.random());
-              },
-              groupStyleOptions: function(gid) {
-                return {
-                  // pointStyle: {
-                  //   content: PointSimplifier.Render.Canvas.getImageContent(
-                  //     // that.carIcon,
-                  //     "./static/imgs/arrow_car.png",
-                  //     // "https://webapi.amap.com/theme/v1.3/markers/n/mark_b1.png",
-                  //     function onload() {
-                  //       console.log("point render");
-                  //       that.pointObj.renderLater();
-                  //     },
-                  //     function onerror(e) {
-                  //       console.log("图片加载失败");
-                  //     }
-                  //   ),
-                  //   width: 10,
-                  //   height: 15,
-                  //   offset: ["-50%", "-100%"]
-                  // }
-                  pointStyle: {
-                    content: function(ctx, x, y, width, height) {
-                      // console.log(x, y, width, height, 382);
-                      let radius = 0;
-                      let imgObj = new Image();
-                      imgObj.src = that.carIcon;
-                      ctx.drawImage(
-                        imgObj,
-                        x + 0,
-                        y + 0,
-                        // width + 15,
-                        // height + 15
-                        (25 + radius) * that.devicePixelRatio,
-                        (30 + radius) * that.devicePixelRatio
-                      );
-                      ctx.font = `bold ${16 * that.devicePixelRatio}px Arial`;
-                      ctx.fillStyle = "white";
-                      ctx.fillText(Math.random(), x, y);
-                    },
-                    width: 10,
-                    height: 15,
-                    offset: ["-50%", "-100%"]
-                  }
-                };
-              },
-              pointHardcoreStyle: {
-                width: Math.random() * 50 + 3,
-                height: Math.random() * 50 + 3
-              }
-              // endPointStyle: {
-              //   width: 26,
-              //   height: 26
-              // },
-              // hoverTitleStyle: {
-              //   position: "top"
-              // }
-            }
+            showPositionPoint: true,
+            position: [
+              parseFloat(point_location[0]),
+              parseFloat(point_location[1])
+            ],
+            zIndex: 100
+          }));
+          marker.on("click", function() {
+            console.log(`marker click:${new Date().getTime()}`);
+            let newP = [
+              113.4311468860794 + 0.001 * Math.random(),
+              23.465010251374073 + 0.001 * Math.random()
+            ];
+            console.log(newP, 342);
+            marker.setPosition(newP);
+            marker.setAnimation("AMAP_ANIMATION_BOUNCE");
+            setTimeout(() => {
+              marker.setAnimation("AMAP_ANIMATION_NONE");
+            }, 3000);
           });
-          // setInterval(function() {
-          //   that.pointObj.render();
-          // }, 500);
-          that._initPointData();
-          return resolve();
         });
+
+        // AMapUI.load(["ui/misc/PointSimplifier", "lib/$"], function(
+        //   PointSimplifier,
+        //   $
+        // ) {
+        //   that.pointObj = new PointSimplifier({
+        //     zIndex: 115,
+        //     autoSetFitView: false,
+        //     map: that.mapObj,
+        //     getPosition: function(item) {
+        //       if (!item) {
+        //         return null;
+        //       }
+        //       var parts = item.split(",");
+        //       //返回经纬度
+        //       return [parseFloat(parts[0]), parseFloat(parts[1])];
+        //     },
+        //     getHoverTitle: function(dataItem, idx) {
+        //       return `${idx}:${dataItem}`;
+        //     },
+        //     renderConstructor: PointSimplifier.Render.Canvas.GroupStyleRender,
+        //     renderOptions: {
+        //       eventSupport: false, //禁止事件,对性能更友好
+        //       pointStyle: {
+        //         fillStyle: null,
+        //         width: 15,
+        //         height: 15
+        //       },
+        //       // pointStyle: {
+        //       //   content: PointSimplifier.Render.Canvas.getImageContent(
+        //       //     // that.carIcon,
+        //       //     "./static/imgs/arrow_car.png",
+        //       //     // "https://webapi.amap.com/theme/v1.3/markers/n/mark_b1.png",
+        //       //     function onload() {
+        //       //       that.pointObj.renderLater();
+        //       //     },
+        //       //     function onerror(e) {
+        //       //       console.log("图片加载失败");
+        //       //     }
+        //       //   ),
+        //       //   width: 15,
+        //       //   height: 27,
+        //       //   offset: ["-50%", "-100%"]
+        //       // },
+        //       topNAreaStyle: null,
+        //       getGroupId: function(item, idx) {
+        //         //随机返回一个组ID
+        //         return Math.ceil(10 * Math.random());
+        //       },
+        //       groupStyleOptions: function(gid) {
+        //         return {
+        //           pointStyle: {
+        //             content: function(ctx, x, y, width, height) {
+        //               // console.log(x, y, width, height, 382);
+        //               let radius = 0;
+        //               let imgObj = new Image();
+        //               imgObj.src = that.carIcon;
+        //               ctx.drawImage(
+        //                 imgObj,
+        //                 x + 0,
+        //                 y + 0,
+        //                 // width + 15,
+        //                 // height + 15
+        //                 (25 + radius) * that.devicePixelRatio,
+        //                 (30 + radius) * that.devicePixelRatio
+        //               );
+        //               ctx.font = `bold ${16 * that.devicePixelRatio}px Arial`;
+        //               ctx.fillStyle = "white";
+        //               ctx.fillText(Math.random(), x, y);
+        //             },
+        //             width: 10,
+        //             height: 15,
+        //             offset: ["-50%", "-100%"]
+        //           }
+        //         };
+        //       },
+        //       pointHardcoreStyle: {
+        //         width: Math.random() * 50 + 3,
+        //         height: Math.random() * 50 + 3
+        //       }
+        //       // endPointStyle: {
+        //       //   width: 26,
+        //       //   height: 26
+        //       // },
+        //       // hoverTitleStyle: {
+        //       //   position: "top"
+        //       // }
+        //     }
+        //   });
+        //   that.pointObj.on("click", function() {
+        //     console.log(`point click current:${new Date().getTime()}`);
+        //   });
+        //   // setInterval(function() {
+        //   //   that.pointObj.render();
+        //   // }, 500);
+        //   that._initPointData();
+        //   return resolve();
+        // });
       });
     },
     _initPointData() {
-      console.log("_initPointObj", 421);
+      // console.log("_initPointObj", 421);
       this.pointObj.setData([
         `${113.4311468860794 + Math.random() * 0.0002},
         ${23.465010251374073 + Math.random() * 0.0002}`
@@ -447,7 +470,7 @@ export default {
       //   );
       // });
       // this.pointObj.setData(pointLocs);
-      setTimeout(this._initPointData, 3000);
+      // setTimeout(this._initPointData, 3000);
     },
     _initPolineObj() {},
     _initLocation(locationStr) {
