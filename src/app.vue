@@ -1,10 +1,10 @@
 <template>
   <section class="app">
     <!-- app.vue -->
-    <keep-alive>
+    <!-- <keep-alive>
       <router-view v-if="$route.meta.keepAlive"></router-view>
     </keep-alive>
-    <router-view v-if="!$route.meta.keepAlive"></router-view>
+    <router-view v-if="!$route.meta.keepAlive"></router-view> -->
   </section>
 </template>
 <script>
