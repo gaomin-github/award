@@ -7,6 +7,12 @@ module.exports = {
   entry: {
     main: ["./src/app.js"],
   },
+  externals: {
+    vue: "Vue",
+    // 'vuex': 'Vuex',
+    // 'vue-router': 'VueRouter',
+    // 'element-ui': 'ELEMENT'
+  },
   node: {
     fs: "empty",
     net: "empty",
@@ -41,8 +47,8 @@ module.exports = {
         ],
         options: {
           esModule: false,
-          name: "award_dist/imgs/[name].[ext]",
-          limit: 10000,
+          name: "award_dist/imgs/[name][hash:7].[ext]",
+          limit: 100,
         },
       },
       {

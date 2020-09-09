@@ -1,6 +1,11 @@
 <template>
   <section class="app">
-    this is vue first page test
+    this is app wrapper
+    <!-- this is vue first page test -->
+    <!-- <test class="test"></test> -->
+
+    <!-- <anim-test class="test"></anim-test> -->
+
     <!-- app.vue
     <keep-alive>
       <router-view v-if="$route.meta.keepAlive"></router-view>
@@ -10,7 +15,18 @@
 </template>
 <script>
 export default {
+  // components: {
+  // test: () => import("./test.vue"),
+  // animTest: () => import("./animTest/index.vue"),
+  // test1: () => import("./test1.vue"),
+  // },
   name: "App",
+  data() {
+    return {};
+  },
+  mounted() {
+    console.log(new Date().getTime() - performance.timing.navigationStart, 27);
+  },
 };
 </script>
 <style lang="scss">
@@ -32,5 +48,9 @@ section {
 .app {
   height: 100%;
   overflow: hidden;
+}
+.test {
+  width: 100%;
+  height: 600px;
 }
 </style>

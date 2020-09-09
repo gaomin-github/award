@@ -1,4 +1,5 @@
 const HtmlWebpackPlugin = require("html-webpack-plugin");
+const { apply } = require("file-loader");
 
 function htmlMock() {}
 
@@ -8,17 +9,17 @@ htmlMock.prototype.beforeHtmlGeneration = function beforeHtmlGeneration(
   callback
 ) {
   let self = this;
+  console.log(pluginArgs.assets, 11);
   if (pluginArgs.assets && pluginArgs.assets["js"]) {
     pluginArgs.assets["js"] = pluginArgs.assets["js"].map((o) => {
-      console.log(o, 14);
       return `${o}.gz`;
     });
   }
-  if (pluginArgs.assets && pluginArgs.assets["css"]) {
-    pluginArgs.assets["css"] = pluginArgs.assets["css"].map((o) => {
-      return `${o}.gz`;
-    });
-  }
+  // if (pluginArgs.assets && pluginArgs.assets["css"]) {
+  //   pluginArgs.assets["css"] = pluginArgs.assets["css"].map((o) => {
+  //     return `${o}.gz`;
+  //   });
+  // }
   console.log(pluginArgs.assets, 19);
   callback(null, pluginArgs);
 };
@@ -56,29 +57,7 @@ htmlMock.prototype.registerHook = function registerHook(compilation) {
   }
 };
 
-// htmlMock.prototype.thisCompilation = function thisCompilation(
-//   compiler,
-//   compilation
-// ) {
-//   compiler.hooks.compilation.tap(
-//     "HtmlWebpackPluginHooks",
-//     this.registerHook.bind(this)
-//   );
-// };
-
-// htmlMock.prototype.afterPlugin = function afterPlugin(compiler) {
-//   if (compiler.hooks) {
-//     compiler.hooks.thisCompilation.tap(
-//       "htmlMock",
-//       this.thisCompilation.bind(this, compiler)
-//     );
-//   } else {
-//     compiler.plugin(
-//       "this-compilation",
-//       this.thisCompilation.bind(this, compiler)
-//     );
-//   }
-// };
+// gin
 
 htmlMock.prototype.apply = function apply(compiler) {
   //   if (compiler.hooks) {
@@ -87,8 +66,16 @@ htmlMock.prototype.apply = function apply(compiler) {
 
   compiler.hooks.afterCompile.tap(
     "HtmlWebpackPluginHooks",
+    // this._printAsset.bind(this)
+    // compiler.hooks.emit.tap(
     this.registerHook.bind(this)
   );
+};
+htmlMock.prototype._printAsset = function _printAsset(compilation) {
+  const { assets } = compilation;
+  Object.keys(assets).map((assetName) => {
+    console.log(assetName, 76);
+  });
 };
 
 module.exports = htmlMock;

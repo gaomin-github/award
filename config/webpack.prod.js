@@ -20,6 +20,7 @@ const PreloadWebpackPlugin = require("preload-webpack-plugin");
 
 const CompressionWebpackPlugin = require("compression-webpack-plugin");
 // const ScriptExtHtmlWebpackPlugin = require('script-ext-html-webpack-plugin')
+// const HtmlWebpackPlugin = require("html-webpack-plugin");
 
 const htmlMock = require("./htmlMock.js");
 // 自定义上传模拟插件
@@ -77,27 +78,70 @@ const prodWebpackConfig = merge(baseWebpackConfig, {
     ],
   },
   plugins: [
+    // new HtmlWebpackPlugin({
+    //   filename: "./index.html",
+    //   title: "award project",
+    //   template: `./template.${
+    //     process.env.NODE_ENV !== "development" ? "prod" : "dev"
+    //   }.html`,
+    //   inject: true,
+    //   // minify: {
+    //   //     removeComments: true,
+    //   //     collapseWhitespace: true,
+    //   //     removeAttributeQuotes: true
+    //   // },
+    //   // chunksSortMode: 'dependency'
+    // }),
+
     // new ScriptExtHtmlWebpackPlugin({ defaultAttribute: 'defer' }),
     new MinCssExtractPlugin({
       filename: "award_dist/css/[name].css",
-      chunkFilename: "award_dist/css/[id].css",
+      chunkFilename: "award_dist/css/[id][hash:7].css",
     }),
     new webpack.ProvidePlugin({
       Vue: ["vue/dist/vue.esm.js", "default"],
     }),
-    new htmlMock(),
     new CompressionWebpackPlugin({
+      // algorithm(input, compressOptions, callback) {
+      // console.log(input, 106);
+      // },
+      // filename(info) {
+      //   console.log(info.path, 109);
+      //   return `${info.path}.gz${info.query}`;
+      // },
       filename: "[path].gz[query]",
+      // filename: "[path]",
+
       algorithm: "gzip",
-      test: /.(js|css)$/,
+      test: /.(js|css|png)$/,
       threshold: 200,
       minRatio: 0.8,
     }),
+    // new htmlMock(),
     // new ProgressBarPlugin(),
-    // new PreloadWebpackPlugin({
-    //   rel: "preload",
-    //   as: "script",
-    // }),
+
+    new PreloadWebpackPlugin({
+      include: "initial",
+      rel: "preload",
+      as(entry) {
+        // console.log(entry, 127);
+        if (/\.(css|scss)$/.test(entry)) return "style";
+        // if (/\.(png|jpeg|gif)$/.test(entry)) return "image";
+        if (/\.js$/) return "script";
+      },
+    }),
+    new PreloadWebpackPlugin({
+      include: "allAssets",
+      // include: "asyncChunks",
+      exclude: "",
+      rel: "prefetch",
+      as(entry) {
+        // console.log(entry, 139);
+        // if (/\.(css|scss)$/.test(entry)) return "style";
+        // if (/\.(png|jpeg|gif)$/.test(entry)) return 'image';
+        // if (/\.js$/) return "script";
+      },
+    }),
   ],
   //   optimization: {
   //     splitChunks: {
@@ -148,20 +192,20 @@ const prodWebpackConfig = merge(baseWebpackConfig, {
   //   },
 });
 
-// if (process.env.npm_config_report) {
-//   prodWebpackConfig.plugins.push(
-//     new BundleAnalyzerPlugin({
-//       analyzerMode: "server",
-//       analyzerHost: "localhost",
-//       analyzerPort: 8090,
-//       reportFilename: "report.html",
-//       defaultSizes: "parsed",
-//       generateStatsFile: false,
-//       statsFilename: "stats.json",
-//       statsOptions: null,
-//       logLevel: "info",
-//     })
-//   );
-// }
+if (process.env.npm_config_report) {
+  prodWebpackConfig.plugins.push(
+    new BundleAnalyzerPlugin({
+      analyzerMode: "server",
+      analyzerHost: "localhost",
+      analyzerPort: 8090,
+      reportFilename: "report.html",
+      defaultSizes: "parsed",
+      generateStatsFile: false,
+      statsFilename: "stats.json",
+      statsOptions: null,
+      logLevel: "info",
+    })
+  );
+}
 
 module.exports = prodWebpackConfig;
