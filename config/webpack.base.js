@@ -7,14 +7,15 @@ module.exports = {
   externals: {
     vue: "Vue",
   },
-  entry: {
-    // main: ['./src/app.js']
-    main: ["./src/test_app.js"],
-  },
   node: {
     fs: "empty",
     net: "empty",
     tls: "empty",
+  },
+  // target: "node",
+  entry: {
+    // main: ['./src/app.js']
+    main: ["./src/test_app.js"],
   },
   stats: {
     modules: false,

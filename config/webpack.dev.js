@@ -7,6 +7,7 @@ const baseWebpackConfig = require("./webpack.base.js");
 const devWebpackConfig = merge(baseWebpackConfig, {
   mode: "development",
   output: {
+    // libraryTarget: "commonjs2",
     filename: "[name].[hash].js",
     path: path.resolve(__dirname, "../dev_built"),
     chunkFilename: `[name].[hash].js`,
