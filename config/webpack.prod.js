@@ -18,10 +18,11 @@ const PreloadWebpackPlugin = require('preload-webpack-plugin');
 // inject内容修改
 
 // const ScriptExtHtmlWebpackPlugin = require('script-ext-html-webpack-plugin')
-
+// 资源管理
+const ManifestPlugin = require('webpack-manifest-plugin');
 
 // 自定义上传模拟插件
-const UploadMockPlugin = require('./uploadMock.js')
+// const UploadMockPlugin = require('./uploadMock.js')
 const merge = require('webpack-merge');
 
 const baseWebpackConfig = require('./webpack.base');
@@ -69,8 +70,8 @@ const prodWebpackConfig = merge(baseWebpackConfig, {
     plugins: [
         // new ScriptExtHtmlWebpackPlugin({ defaultAttribute: 'defer' }),
         new MinCssExtractPlugin({
-            filename: 'award_dist/css/[name].css',
-            chunkFilename: 'award_dist/css/[id].css'
+            filename: 'award_dist/css/[name].[contenthash:8].css',
+            chunkFilename: 'award_dist/css/[id].[contenthash:8].css'
         }),
         new webpack.ProvidePlugin({
             Vue: ["vue/dist/vue.esm.js", "default"],
@@ -80,28 +81,35 @@ const prodWebpackConfig = merge(baseWebpackConfig, {
             rel: 'preload',
             as: 'script'
         }),
+        new ManifestPlugin()
+        // new MinCssExtractPlugin({
+        //     filename: '[name].[contenthash:8].css',
+        //     chunkFilename: '[id].[contenthash:8].css'
+        // })
     ],
     optimization: {
-        splitChunks: {
-            cacheGroups: {
-                vendor: {
-                    name: 'vendor',
-                    test: /[\\/]node_modules[\\/]/,
-                    // maxSize: 5000,
-                    chunks: 'initial',
-                    priority: 10,
-                },
-                common: {
-                    name: 'common',
-                    minChunks: 2,
-                    test: /[\\/]src[\\/]/,
-                    // minSize: 1024,
-                    chunks: 'async',
-                    priority: 5,
-                    reuseExistingChunk: true,
-                }
-            }
-        },
+        // splitChunks: {
+        // chunks: 'all'
+
+        // cacheGroups: {
+        //     vendor: {
+        //         name: 'vendor',
+        //         test: /[\\/]node_modules[\\/]/,
+        //         // maxSize: 5000,
+        //         chunks: 'initial',
+        //         priority: 10,
+        //     },
+        //     common: {
+        //         name: 'common',
+        //         minChunks: 2,
+        //         test: /[\\/]src[\\/]/,
+        //         // minSize: 1024,
+        //         chunks: 'async',
+        //         priority: 5,
+        //         reuseExistingChunk: true,
+        //     }
+        // }
+        // },
         minimizer: [new OptimizeCssAssetsPlugin({
             cssProcessor: require('cssnano'),
             cssProcessorOptions: { discardComments: { removeAll: true } }
