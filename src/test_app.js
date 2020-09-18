@@ -1,17 +1,19 @@
 // import Vue from "vue";
-console.log("this is test_app init", 2);
+// console.log("this is test_app init", 2);
+// console.log(Vue, 3);
 // Vue.component("App", {
 //   template: () => import("./test_index.vue"),
 // });
-import test_index from "./test_index.vue";
-console.log(Vue, 3);
+// import test_index from "./test_index.vue";
+import eruda from "eruda";
+eruda.init();
+
 let vm = new Vue({
   el: "#app",
-  // render: (h) => h(test_index),
   components: {
-    test_index: () => import("./test_index"),
+    App: () => import("./test_index.vue"),
   },
-  template: "<test_index/>",
+  template: "<App/>",
   // template: "<h1>this is test_app h1</h1>",
 
   //   router,
@@ -19,5 +21,4 @@ let vm = new Vue({
   //   store,
   // router: SelfRoutes
 });
-// vm.component("test_index", test_index);
-console.log(vm, 15);
+// console.log(vm, 15);

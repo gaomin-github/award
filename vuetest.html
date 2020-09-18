@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>vueTest</title>
+</head>
+
+<body>
+
+</body>
+<script>
+  function uDom({ data }) {
+    let keys = Object.keys(data)
+    keys.map(key => {
+
+      Object.defineProperty(data, key, {
+        set(newval) {
+          console.log(data[key])
+        },
+        get() {
+          return data[key]
+        }
+      })
+    })
+  }
+  let user1 = new uDom({
+    data: {
+      id: '123',
+      name: '用户1'
+    }
+  })
+  user1.id = '223'
+</script>
+
+</html>

@@ -1,7 +1,7 @@
 const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const VueLoaderPlugin = require("vue-loader/lib/plugin");
-const { CleanWebpackPlugin } = require("clean-webpack-plugin");
+// const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 
 module.exports = {
   externals: {
@@ -51,12 +51,44 @@ module.exports = {
       },
       {
         test: /\.(ts|js)?$/,
-        loader: "babel-loader",
+        use: [{
+
+          loader: 'webpack-dists-loader',
+          options: {
+            debug: {
+              env: ['development'],
+              tag: 'debug'
+            },
+            online: {
+              env: ['production'],
+              tag: 'online',
+              // specials: {
+              //   'gear': 'gear'
+              // }
+            }
+          }
+        }, { loader: 'babel-loader' }],
         exclude: /(node_modules|bower_components)/,
       },
       {
         test: /\.(vue)?$/,
-        loader: "vue-loader",
+        use: [{
+
+          loader: 'webpack-dists-loader',
+          options: {
+            debug: {
+              env: ['development'],
+              tag: 'debug'
+            },
+            online: {
+              env: ['production'],
+              tag: 'online',
+              specials: {
+                'gear': 'gear'
+              }
+            }
+          }
+        }, { loader: "vue-loader" }],
         exclude: /node_modules/,
         include: [
           path.resolve(__dirname, "../src"),
@@ -66,14 +98,14 @@ module.exports = {
     ],
   },
   plugins: [
-    new CleanWebpackPlugin(),
+    // new CleanWebpackPlugin(),
     new VueLoaderPlugin(),
     new HtmlWebpackPlugin({
       filename: "./index.html",
       title: "award project",
       template: `./template.${
         process.env.NODE_ENV !== "development" ? "prod" : "dev"
-      }.html`,
+        }.html`,
       inject: true,
       // minify: {
       //     removeComments: true,
