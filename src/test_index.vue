@@ -6,13 +6,13 @@
   </section>
 </template>
 <script>
-import { name, data, changeName } from "./9_test/module_import.js";
-let {
-  r_name,
-  r_data,
-  r_changeName,
-  r_changeData
-} = require("./9_test/module_require.js");
+// import { name, data, changeName } from "./9_test/module_import.js";
+// let {
+//   r_name,
+//   r_data,
+//   r_changeName,
+//   r_changeData
+// } = require("./9_test/module_require.js");
 export default {
   components: {
     test2: () => import("./test_com2.vue")
@@ -20,7 +20,7 @@ export default {
   mounted() {
     // console.log("test_index.vue mounted", 9);
     setTimeout(() => {
-      console.log(name, data);
+      // console.log(name, data);
     }, 1000);
   },
   methods: {

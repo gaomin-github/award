@@ -7,27 +7,28 @@
   </section>
 </template>
 <script>
-import { jsonpReqTest } from "./9_test/jsonp.js";
+// import { jsonpReqTest } from "./9_test/jsonp.js";
 import { importId } from "./9_test/uDom.js";
 
-import { name, data, changeName } from "./9_test/module_import.js";
-let {
-  r_name,
-  r_data,
-  r_changeName,
-  r_changeData
-} = require("./9_test/module_require.js");
+// import { name, data, changeName } from "./9_test/module_import.js";
+// let {
+//   r_name,
+//   r_data,
+//   r_changeName,
+//   r_changeData
+// } = require("./9_test/module_require.js");
 
 export default {
-  mounted() {
-    /*<dev>*/
-    console.log("this is debug log", 22);
-    /*</dev>*/
-    /*<gear>*/
-    console.log("this is online log", 22);
-    /*</gear>*/
-  },
+  mounted() {},
   methods: {
+    webpackdistTest() {
+      /*<dev>*/
+      console.log("this is debug log", 22);
+      /*</dev>*/
+      /*<gear>*/
+      console.log("this is online log", 22);
+      /*</gear>*/
+    },
     async jsonpReq() {
       // console.log("jsonpReqTest");
       let res = await jsonpReqTest();
