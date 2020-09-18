@@ -39,6 +39,55 @@ let b = clone(a);
 b.data.owner.number = "002";
 // console.log("a", a.data.owner);
 // console.log("b", b.data.owner);
-function compare(a,b){
-    if((a===null||a==='undefined')&&(a===null||a==='undefined'))
+function compare(a, b) {
+  if ((a === null || a === "undefined") && (a === null || a === "undefined"))
+    return true;
+  if (a === null || a === "undefined" || a === null || a === "undefined")
+    return false;
+  if (typeof a === "function" || typeof b === "function") return false;
+  if (typeof a !== "object" && typeof b !== "object") return a === b;
+  if (!(typeof a === "object" && typeof b === "object")) return false;
+  if (
+    Object.keys(a)
+      .sort()
+      .join("") !==
+    Object.keys(b)
+      .sort()
+      .join("")
+  )
+    return false;
+  for (let i in a) {
+    if (a[i] && b[i]) {
+      let bol = compare(a[i], b[i]);
+      if (bol) {
+        continue;
+      }
+      return false;
+    }
+  }
+  return true;
 }
+console.log(
+  compare(
+    {
+      id: 1,
+      name: 2,
+      data: {
+        id: 1,
+        num: {
+          label: "aa",
+        },
+      },
+    },
+    {
+      name: 2,
+      id: 1,
+      data: {
+        id: 1,
+        num: {
+          label: "aa",
+        },
+      },
+    }
+  )
+);
