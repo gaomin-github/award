@@ -50,12 +50,44 @@ module.exports = {
       },
       {
         test: /\.(ts|js)?$/,
-        loader: "babel-loader",
+        use: [{
+
+          loader: 'webpack-dists-loader',
+          options: {
+            debug: {
+              env: ['development'],
+              tag: 'debug'
+            },
+            online: {
+              env: ['production'],
+              tag: 'online',
+              // specials: {
+              //   'gear': 'gear'
+              // }
+            }
+          }
+        }, { loader: 'babel-loader' }],
         exclude: /(node_modules|bower_components)/,
       },
       {
         test: /\.(vue)?$/,
-        loader: "vue-loader",
+        use: [{
+
+          loader: 'webpack-dists-loader',
+          options: {
+            debug: {
+              env: ['development'],
+              tag: 'debug'
+            },
+            online: {
+              env: ['production'],
+              tag: 'online',
+              specials: {
+                'gear': 'gear'
+              }
+            }
+          }
+        }, { loader: "vue-loader" }],
         exclude: /node_modules/,
         include: [
           path.resolve(__dirname, "../src"),
