@@ -1,16 +1,14 @@
 <template>
   <section class="test2-wrapper">
-    <section class="btn-list-item" @click="changeImportHandler">
-      test2 import
-    </section>
-    <section class="btn-list-item" @click="changeRequireHandler">
-      test2 require
-    </section>
+    <section class="btn-list-item" @click="changeImportHandler">test2 import</section>
+    <section class="btn-list-item" @click="changeRequireHandler">test2 require</section>
 
     <section class="btn-list-item" @click="jsonpReq">jsonp test</section>
     <div class="username" id="username"></div>
     <div class="userid" id="userid"></div>
     <div class="info" id="info"></div>
+    <canvas class="canvas" id="canvas" width="100" height="100"></canvas>
+    <canvas class="canvas1" id="canvas1" width="150" height="100"></canvas>
   </section>
 </template>
 <script>
@@ -26,9 +24,24 @@
 
 export default {
   mounted() {
-    this._inituDom();
+    // this._inituDom();
+    this._initCanvas();
   },
   methods: {
+    _initCanvas() {
+      let canvasEl = document.getElementById("canvas");
+      let context = canvasEl.getContext("2d");
+      context.beginPath();
+      context.moveTo(0, 0);
+      context.lineTo(100, 100);
+      context.stroke();
+      let canvasEl2 = document.getElementById("canvas1");
+      let context2 = canvasEl2.getContext("2d");
+      context2.beginPath();
+      context2.moveTo(0, 0);
+      context2.lineTo(100, 100);
+      context2.stroke();
+    },
     _inituDom() {
       import("./9_test/uDom.js");
     },
@@ -57,10 +70,10 @@ export default {
       r_changeName("com2");
       r_changeData({
         id: "test2",
-        name: "test2",
+        name: "test2"
       });
-    },
-  },
+    }
+  }
 };
 </script>
 <style lang="scss" scoped>
@@ -91,5 +104,8 @@ export default {
   line-height: 30px;
   font-size: 20px;
   color: green;
+}
+canvas {
+  border: 1px red solid;
 }
 </style>
