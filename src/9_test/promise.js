@@ -1,44 +1,39 @@
-
-function myhandlerAsync(urls, max) {
-  return new Promise(async (resolve, reject) => {
-    if (urls.length <= max) {
-      let res = batchReq(urls);
-      return resolve(res)
-    }
-    let curUrls = urls.splice(0, max);
-    let curRes = await batchReq(curUrls);
-    let nextRes = await myhandlerAsync(urls, max);
-    return resolve(curRes.concat(nextRes))
-  })
+function myPromise(callback) {
+  this.state = 'pending';
+  this.res = '';
+  this.reason = ''
+  callback(this.resolve, this.reject)
 }
 
-async function batchReq(urls) {
-  let task = []
-  while (urls && urls.length > 0) {
-    task.push(myReq(urls.splice(0, 1)))
+myPromise.prototype.resolve = function (res) {
+  if (this.state === 'pending') {
+    this.state = 'fulfil'
+    this.res = res;
+  }
+}
+
+myPromise.prototype.reject = function (res) {
+  if (this.state === 'pending') {
+    this.state = 'reject'
+    this.reson = reson;
+  }
+}
+// 问题：如何知道函数执行结束。回调函数，自己会调用resolve
+myPromise.prototype.then = function (callback) {
+  if (this.state === 'fulfil') {
+    return new Promise(callback)
   }
 
-  let res = await Promise.all(task)
-  return res;
-}
-function myReq(param) {
-  return new Promise((resolve, reject) => {
-    let execTime = Number(Math.random().toString().substring(3, 7))
-    console.log('start', param, 20, execTime)
-    setTimeout(() => {
-      console.log('-end-', param, 20, execTime)
-
-      return resolve({
-        param,
-        execTime
-      })
-    }, execTime)
-  })
 }
 
-async function exe() {
-
-  let res = await myhandlerAsync(['a', 'b', 'c', 'd', 'e'], 2)
-  console.log(res, 37)
+function asyncFun(resolve, reject) {
+  setTimeout(() => {
+    console.log('async execute', 11)
+    return resolve()
+  }, 2000)
 }
-exe()
+
+let pro1 = new myPromise(asyncFun)
+// pro1.then((res) => {
+//   console.log('26', res)
+// })
