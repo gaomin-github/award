@@ -1,37 +1,50 @@
-function myhandlerAsync(urls, max) {
-  return new Promise(async (resolve, reject) => {
-    if (urls.length <= max) {
-      let res = batchReq(urls);
-      return resolve(res)
+promiseAll = function (promises) {
+  let resList = [],
+    count = 0,
+    newp = [];
+  newP = promises.map(o => {
+    return {
+      index: count++,
+      handler: o
     }
-    let curUrls = urls.splice(0, max);
-    let curRes = await batchReq(curUrls);
-    let nextRes = await myhandlerAsync(urls, max);
-    return resolve(curRes.concat(nextRes))
+  })
+  return new Promise((resolve, reject) => {
+    newP.forEach(o => {
+      let curPromise = o.handler
+      console.log(o.index, 14)
+      curPromise.then((res) => {
+        resList[o.index] = res;
+        console.log(res, 23)
+
+        count--;
+        console.log(count, 20)
+
+        if (count === 0) {
+          resolve(resList)
+
+        }
+      }, (err) => {
+        console.log('reject', 27)
+        return reject(err)
+      }).catch(e => {
+        console.log('error', 30)
+
+        reject('error')
+      })
+    });
+
   })
 }
 
-async function batchReq(urls) {
-  let task = [], res = []
-  let i = 0;
-  while (i < urls.length) {
-    task.push({
-      handler: myReq(urls.slice(i, i + 1))
-    })
-    i++;
-  }
-  for (let i = 0; i < urls.length; i++) {
-    res[i] = await task[i].handler
-  }
-  return res;
-}
 function myReq(param) {
   return new Promise((resolve, reject) => {
     let execTime = Number(Math.random().toString().substring(3, 7))
-    console.log('start', param, 20, execTime, `curtime:${new Date().getTime()}`)
+    // console.log('start', param, 20, execTime, `curtime:${new Date().getTime()}`)
     setTimeout(() => {
       console.log('-end-', param, 20, execTime, `curtime:${new Date().getTime()}`)
-
+      if (execTime > 5000) {
+        return reject('timeout')
+      }
       return resolve({
         param,
         execTime
@@ -39,10 +52,19 @@ function myReq(param) {
     }, execTime)
   })
 }
-
+// 优雅处理async/await 异常 ,参考：
+// https://juejin.im/post/6844903895748050958
 async function exe() {
+  let reqError;
+  let res = await promiseAll([myReq('a'), myReq('b'), myReq('c')]).catch(e => {
+    reqError = e;
+    console.log(e, 59)
+  })
+  if (!e) {
 
-  let res = await myhandlerAsync(['a', 'b', 'c'], 2)
+  }
   console.log(res, 37)
+  // console.log(JSON.stringify(res), 37)
+
 }
 exe()
