@@ -28,7 +28,35 @@ function fibo(n) {
   }
   return result;
 }
+// 方法一.重新定义函数
 fibo = memorize1(fibo)
 // console.log(fibo(36))
-console.log(fibo(36))
+console.log(fibo(46))
 
+// 方法二.不使用函数名。使用arguments.callee(num-1)；注意：严格模式下会报错
+function fibo2(n) {
+  let result;
+  if (n === 1) {
+    result = 0;
+  } else if (n === 2) {
+
+    result = 1;
+  } else {
+    result = arguments.calleebo(n - 1) + arguments.callee(n - 2)
+  }
+  return result;
+}
+
+// 方式三 匿名函数命名
+let fibo3 = function fibo(n) {
+  let result;
+  if (n === 1) {
+    result = 0;
+  } else if (n === 2) {
+
+    result = 1;
+  } else {
+    result = f(n - 1) + f(n - 2)
+  }
+  return result;
+}
