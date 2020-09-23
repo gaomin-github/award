@@ -1,5 +1,6 @@
 
 // 惰性函数，只调用一次
+// 使用场景：判断当前ios或者iphone，取页面宽高，判断兼容性支持
 // 解决方案2，立即执行函数+闭包
 let once1 = (function () {
   let task = null;
