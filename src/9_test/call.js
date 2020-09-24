@@ -5,41 +5,38 @@ let foo = {
 function print() {
   console.log(this.label);
 }
-// print.call(foo);
-
-// 1.获取调用mycall的函数。利用原型/构造函数。this指向当前对象(创建对象的研究？)
+// 问题1：如何获取执行mycall的函数
+// 1）利用实例的constructor指向构造函数
 function MyFunction(label) {
   // this.label = label;
-  console.log(this.label, "label", 13);
+  console.log(this.label, "printTest1", 13);
 }
-// let MyFunction=new Function('label',console.log(this.lab))
-MyFunction.prototype.myCall = function() {
+let myFunc1 = new MyFunction("myFunc1");
+MyFunction.prototype.myCall = function () {
+  let params = Array.prototype.slice.call(arguments);
+  let curObj = params[0] || Window;
+  params.splice(0, 1);
+  curObj.fn = this.constructor;
+  curObj.fn(...params);
+  delete curObj.fn;
+};
+let dataObj = {
+  label: "dataObj",
+};
+myFunc1.myCall(dataObj, 'age')
+// 2）利用原生对象实例，this指向当前函数
+Function.prototype.myCall = function () {
   let params = Array.prototype.slice.call(arguments);
   let curObj = params[0] || Window;
   params.splice(0, 1);
   curObj.fn = this;
-  // console.log(arguments.callee, 21);
-  // curObj.fn = arguments.callee;
-
-  curObj.fn(...params);
-  // delete curObj.fn;
-};
-// 原型实现对象
-function MyFunc1(label) {
-  console.log(this.label);
+  eval(`curObj.fn(${params})`)
+  delete curObj.fn;
 }
-MyFunc1.prototype = new MyFunction();
-let funcObj1 = new MyFunc1("funcObj1");
-// myFunc1=new MyFunction("myFunc1");
-let dataObj = {
-  label: "dataObj",
-};
-funcObj1.myCall(dataObj, "age");
-function printCall() {
-  console.log(this.label, 31);
+function printTest2() {
+  console.log(this.label, 'printTest2')
 }
-// printCall.myCall(dataObj, "name", "label");
-
+printTest2.myCall(dataObj)
 // 2.传参处理
 // call传参(obj, p1, p2, p3)
 // 可以用扩展运算法实现
