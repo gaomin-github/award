@@ -8,12 +8,17 @@ function print() {
 // print.call(foo);
 
 // 1.获取调用mycall的函数。利用原型/构造函数。this指向当前对象
-Function.prototype.myCall = function(obj, param) {
+Function.prototype.myCall = function (obj, param) {
+
   obj.fn = this;
   obj.fn();
   // delete obj.fn;
 };
-// 2.传参
+// 2.传参处理
+// call传参(obj, p1, p2, p3)
+// 可以用扩展运算法实现
+// 可以eval(`fn(${arr})`)实现
+// bind传参(obj, [p1, p2, p3])
 
 // let i = 1;
 // function callTest() {
