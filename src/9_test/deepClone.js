@@ -64,6 +64,8 @@ b.data.owner.print();
 // b.data.owner.number = "002";
 // console.log("a", a.data.owner);
 // console.log("b", b.data.owner);
+// 循环引用时的深度比较？（需改进）
+// 实现参考：https://github.com/mqyqingfeng/Blog/issues/41
 function compare(a, b) {
   if ((a === null || a === "undefined") && (a === null || a === "undefined"))
     return true;
