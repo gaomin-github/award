@@ -6,21 +6,12 @@ function curryFun(func) {
   let paramLen = func.length,
     paramList = [];
   curResult = null;
-<<<<<<< HEAD
   let cb = function() {
-    let args = Array.from(arguments);
-    paramList.push(...args);
-
-    if (paramList.length === paramLen) {
-      return func(...paramList);
-=======
-  let cb = function () {
     // console.log(this, 10)
     let args = Array.from(arguments);
     paramList.push(...args);
     if (paramList.length >= paramLen) {
       return func.bind(this)(...paramList);
->>>>>>> f5d8da352613b4af40e9c5fe33a02e8678514e28
     } else {
       return cb.bind(this);
     }
@@ -35,9 +26,7 @@ function printName(a, b, c, d) {
   let result = args.join("_");
   return `${this.name}_${result}`;
 }
-<<<<<<< HEAD
-// let newPrint = curryFun(printName);
-// let newRes = newPrint("2", "5");
+// 第一种this丢失，通过调用时绑定bind可以避免
 let TestData = function(name) {
   this.name = name;
   this.print = function(a, b, c, d, e) {
@@ -46,25 +35,8 @@ let TestData = function(name) {
 };
 let testObj1 = new TestData("张三");
 let testObj2 = new TestData("李四");
-let testPrint1 = curryFun(testObj1.print.bind(testObj1));
-let testPrint1Res = testPrint1(1)(3)(5, 7)(9);
-console.log(testPrint1Res);
-
-let testPrint2 = curryFun(testObj1.print.bind(testObj2));
-let testPrint2Res = testPrint2(2)(4)(6, 8)(0);
-console.log(testPrint2Res);
-=======
-// 第一种this丢失，通过调用时绑定bind可以避免
-let TestData = function (name) {
-  this.name = name
-  this.print = function (a, b, c, d, e) {
-    return `${this.name}:${a}_${b}_${c}_${d}_${e}`
-  }
-}
-let testObj1 = new TestData('张三')
-let testObj2 = new TestData('李四')
-let testPrint1 = curryFun(testObj1.print)
-let testPrint1Res = testPrint1.bind(testObj1)(1)(3)(5, 7)(9)
+let testPrint1 = curryFun(testObj1.print);
+let testPrint1Res = testPrint1.bind(testObj1)(1)(3)(5, 7)(9);
 console.log(testPrint1Res);
 
 // let testPrint2 = curryFun(testObj1.print.bind(testObj2))
@@ -80,6 +52,3 @@ console.log(testPrint1Res);
 // console.log(myobj1.print('1')('2', '3')('4', '5'))
 // let myobj2 = new MyObj('李四')
 // console.log(myobj2.print('6', '7', '8', '9', '0'))
-
-
->>>>>>> f5d8da352613b4af40e9c5fe33a02e8678514e28
