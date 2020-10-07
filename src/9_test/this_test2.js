@@ -21,4 +21,4 @@ function repeat(func, times, wait) {
   }
 }
 const repeatFunc = repeat(console.log, 4, 3000);
-3;
+// 3.hash表结构，解决冲突的办法，hash函数有什么类型
