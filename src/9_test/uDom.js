@@ -25,8 +25,8 @@ function uDom({ data, init }) {
 }
 
 function Watcher(key, fun) {
-  let deps = (this.deps = []);
-  if (deps[key]) return;
+  // let deps = (this.deps = []);
+  // if (deps[key]) return;
   Dep.target = this;
   console.log(Dep.target);
   fun();
