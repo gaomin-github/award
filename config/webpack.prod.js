@@ -19,19 +19,12 @@ const PreloadWebpackPlugin = require("preload-webpack-plugin");
 // inject内容修改
 
 // const ScriptExtHtmlWebpackPlugin = require('script-ext-html-webpack-plugin')
-<<<<<<< HEAD
-
-// 自定义上传模拟插件
-const UploadMockPlugin = require("./uploadMock.js");
-const merge = require("webpack-merge");
-=======
 // 资源管理
 const ManifestPlugin = require('webpack-manifest-plugin');
 
 // 自定义上传模拟插件
 // const UploadMockPlugin = require('./uploadMock.js')
 const merge = require('webpack-merge');
->>>>>>> d700e4d1295af6c6ab114c786127a9a45fc1725c
 
 const baseWebpackConfig = require("./webpack.base");
 const prodWebpackConfig = merge(baseWebpackConfig, {
@@ -70,83 +63,6 @@ const prodWebpackConfig = merge(baseWebpackConfig, {
             options: {
               publicPath: "../../",
             },
-<<<<<<< HEAD
-          },
-          "css-loader",
-          "postcss-loader",
-          "sass-loader",
-        ],
-        exclude: /node_modules/,
-        include: [
-          path.resolve(__dirname, "../src"),
-          path.resolve(__dirname, "../common/components"),
-        ],
-      },
-    ],
-  },
-  plugins: [
-    // new ScriptExtHtmlWebpackPlugin({ defaultAttribute: 'defer' }),
-    new MinCssExtractPlugin({
-      filename: "award_dist/css/[name].css",
-      chunkFilename: "award_dist/css/[id].css",
-    }),
-    new webpack.ProvidePlugin({
-      //   Vue: ["vue/dist/vue.esm.js", "default"],
-    }),
-    new ProgressBarPlugin(),
-    new PreloadWebpackPlugin({
-      rel: "preload",
-      as: "script",
-    }),
-  ],
-  optimization: {
-    splitChunks: {
-      cacheGroups: {
-        vendor: {
-          name: "vendor",
-          test: /[\\/]node_modules[\\/]/,
-          // maxSize: 5000,
-          chunks: "initial",
-          priority: 10,
-        },
-        common: {
-          name: "common",
-          minChunks: 2,
-          test: /[\\/]src[\\/]/,
-          // minSize: 1024,
-          chunks: "async",
-          priority: 5,
-          reuseExistingChunk: true,
-        },
-      },
-    },
-    minimizer: [
-      new OptimizeCssAssetsPlugin({
-        cssProcessor: require("cssnano"),
-        cssProcessorOptions: { discardComments: { removeAll: true } },
-      }),
-      new TerserPlugin({
-        cache: true,
-        parallel: true,
-        sourceMap: true,
-        terserOptions: {
-          comments: false,
-          warnings: false,
-          compress: {
-            unused: true,
-            dead_code: true,
-            collapse_vars: true,
-            reduce_vars: true,
-          },
-          output: {
-            comments: false,
-          },
-        },
-      }),
-      // new UploadMockPlugin()
-    ],
-  },
-=======
             include: '/../src'
         }, {
             test: /\.(css|scss)$/,
@@ -231,7 +147,6 @@ const prodWebpackConfig = merge(baseWebpackConfig, {
             // new UploadMockPlugin()
         ]
     }
->>>>>>> d700e4d1295af6c6ab114c786127a9a45fc1725c
 });
 if (process.env.npm_config_report) {
   prodWebpackConfig.plugins.push(
