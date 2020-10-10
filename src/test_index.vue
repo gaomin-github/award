@@ -1,9 +1,10 @@
 <template>
   <section class="test-wrapper">
-    {{ timeMsg }}
+    <!-- {{ timeMsg }} -->
     <!-- <section class="btn-list-item" @click="changeImportHandler">test_index import</section>
     <section class="btn-list-item" @click="changeRequireHandler">test_index require</section>-->
-    <test2></test2>
+    <safe-test></safe-test>
+    <!-- <test2></test2> -->
   </section>
 </template>
 <script>
@@ -17,10 +18,11 @@
 export default {
   components: {
     test2: () => import("./test_com2.vue"),
+    safeTest: () => import("./safe_test.vue")
   },
   data() {
     return {
-      timeMsg: "",
+      timeMsg: ""
     };
   },
   mounted() {
@@ -63,10 +65,10 @@ export default {
       r_changeName("com1");
       r_changeData({
         id: "index",
-        name: "index",
+        name: "index"
       });
-    },
-  },
+    }
+  }
 };
 </script>
 <style lang="scss" scoped>

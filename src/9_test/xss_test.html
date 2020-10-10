@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>xss test</title>
+</head>
+
+<body>
+  <div class="info1">this is print info1</div>
+  <script>
+    let txt = location.search;
+    txt = txt.substring(5, txt.length);
+    let infoEl1 = document.getElementsByClassName('info1')[0]
+    infoEl1.innerHTML = txt;
+
+    console.log(txt, 13)
+  </script>
+</body>
+
+</html>
