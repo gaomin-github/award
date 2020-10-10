@@ -10,23 +10,23 @@
 function singleNode(val) {
   return {
     val,
-    next: null
-  }
+    next: null,
+  };
 }
 function singleLinkList() {
   this.head = {
     next: null,
-    val: null
-  }
+    val: null,
+  };
 }
-singleLinkList.prototype.insert = function (val) {
+singleLinkList.prototype.insert = function(val) {
   let curNode = this.head;
   while (curNode.next) {
     curNode = curNode.next;
   }
-  curNode.next = new singleNode(val)
-}
-singleLinkList.prototype.remove = function (val) {
+  curNode.next = new singleNode(val);
+};
+singleLinkList.prototype.remove = function(val) {
   let curNode = this.head;
   while (curNode.next) {
     let preNode = curNode;
@@ -37,38 +37,82 @@ singleLinkList.prototype.remove = function (val) {
       return;
     }
   }
-  curNode.next = new singleNode(val)
-
-}
-singleLinkList.prototype.print = function () {
+};
+singleLinkList.prototype.print = function() {
   let curNode = this.head;
   while (curNode.next) {
     curNode = curNode.next;
-    console.log(curNode.val)
+    console.log(curNode.val);
   }
-}
-let list1 = new singleLinkList()
+};
+let list1 = new singleLinkList();
 function addLink() {
-  list1.insert(1)
-  list1.insert(2)
-  list1.insert(3)
-  list1.insert(4)
+  list1.insert(1);
+  list1.insert(2);
+  list1.insert(3);
+  list1.insert(4);
 }
-addLink()
+addLink();
 // list1.print()
 
-list1.remove(4)
-console.log('remove-----------')
+list1.remove(4);
+console.log("remove-----------");
 // list1.print()
 
 function DoubleNode(val) {
   return {
     val,
     pre: null,
-    next: null
-  }
+    next: null,
+  };
 }
 
-function doubleList() {
-  // this.head
+function DoubleList() {
+  this.head = {
+    val: null,
+    pre: null,
+    next: null,
+  };
 }
+DoubleList.prototype.insert = function(val) {
+  let curNode = this.head;
+  while (curNode.next) {
+    curNode = curNode.next;
+  }
+  let newNode = new DoubleNode(val);
+  newNode.pre = curNode;
+  curNode.next = newNode;
+};
+// 链表插入，指定插入位置
+DoubleList.prototype.insertIndex = function(val, index) {};
+DoubleList.prototype.print = function() {
+  let curNode = this.head;
+  while (curNode.next) {
+    curNode = curNode.next;
+    console.log(curNode.val);
+  }
+};
+DoubleList.prototype.remove = function(val) {
+  let curNode = this.head;
+  while (curNode.next) {
+    let preNode = curNode;
+    curNode = curNode.next;
+    // 引用类型比较，需要再改进
+    if (curNode.val === val) {
+      preNode.next = curNode.next;
+      if (curNode.next) {
+        curNode.next.pre = preNode;
+      }
+      return;
+    }
+  }
+};
+let list2 = new DoubleList();
+list2.insert(1);
+list2.insert(2);
+list2.insert(3);
+list2.insert(4);
+list2.print();
+console.log("double remove----");
+list2.remove(4);
+list2.print();
