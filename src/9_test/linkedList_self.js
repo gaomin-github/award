@@ -46,12 +46,7 @@ singleLinkList.prototype.print = function () {
   }
 };
 let list1 = new singleLinkList();
-function addLink() {
-  list1.insert(1);
-  list1.insert(2);
-  list1.insert(3);
-  list1.insert(4);
-}
+// list1.init([1, 2, 3, 4])
 // addLink();
 // // list1.print()
 // list1.remove(4);
@@ -111,11 +106,8 @@ DoubleList.prototype.remove = function (val) {
     }
   }
 };
-// let list2 = new DoubleList();
-// list2.insert(1);
-// list2.insert(2);
-// list2.insert(3);
-// list2.insert(4);
+let list2 = new DoubleList();
+list2.init([1, 2, 3, 4])
 // // list2.print();
 // console.log("double remove----");
 // list2.remove(4);
@@ -201,7 +193,34 @@ OrderLinkedList.prototype.insert = function (val) {
   newNode.next.pre = curNode;
   curNode.next = newNode;
 }
-
 let orderList1 = new OrderLinkedList()
-orderList1.init([3, 5, 10, 9, 21, 14, 0])
-orderList1.print()
+orderList1.init([0, 1, 2])
+let orderList2 = new OrderLinkedList()
+orderList2.init([3, 4, 5])
+
+function mergeOrderLink(l1, l2) {
+  let newLink = new OrderLinkedList()
+  let l1_node = l1.head;
+  while (l1_node.next && l1_node.next.val !== null) {
+    l1_node = l1_node.next
+    newLink.insert(l1_node.val)
+    console.log(l1_node.val, 207)
+  }
+  // if (l1_node.val) {
+  //   newLink.insert(l1_node.val)
+  // }
+
+  // let l2_node = l2.head;
+  // while (l2_node.next && l2_node.next.val !== null) {
+  //   l2_node = l2_node.next
+  //   newLink.insert(l2_node.val)
+  // }
+  // if (l2_node.val) {
+  //   newLink.insert(l2_node.val)
+  // }
+  return newLink;
+}
+let newLinkedList = mergeOrderLink(orderList1, orderList2)
+console.log(newLinkedList, 223)
+newLinkedList.print()
+
