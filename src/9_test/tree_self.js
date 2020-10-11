@@ -1,0 +1,6 @@
+function MyTree() {
+
+}
+function BinaryTreeNode() {
+
+}
