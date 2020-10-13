@@ -9,6 +9,8 @@ func.bind()
 // 4.正则，日期类型
 // 实现参考：
 // http://www.alloyteam.com/2017/08/12978/
+// 5.正则，时间，函数的拷贝
+  // 正则，时间都需要重新创建；函数拷贝返回当前函数
 function clone(oriObj) {
   let originObj = oriObj;
   let deepClone = function (obj) {
@@ -67,9 +69,9 @@ b.data.owner.print();
 // 循环引用时的深度比较？（需改进）
 // 实现参考：https://github.com/mqyqingfeng/Blog/issues/41
 function compare(a, b) {
-  if ((a === null || a === "undefined") && (a === null || a === "undefined"))
+  if ((a === null || a === undefined) && (a === null || a === undefined))
     return true;
-  if (a === null || a === "undefined" || a === null || a === "undefined")
+  if (a === null || a === undefined || a === null || a === undefined)
     return false;
   if (typeof a === "function" || typeof b === "function") return false;
   if (typeof a !== "object" && typeof b !== "object") return a === b;
