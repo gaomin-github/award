@@ -4,7 +4,7 @@
     <!-- <section class="btn-list-item" @click="changeImportHandler">test_index import</section>
     <section class="btn-list-item" @click="changeRequireHandler">test_index require</section>-->
     <safe-test></safe-test>
-    <change-test></change-test>
+    <!-- <change-test></change-test> -->
     <!-- <test2></test2> -->
   </section>
 </template>
