@@ -1,14 +1,14 @@
 {
-<<<<<<< HEAD
-  "main.js": "./award_dist/js/main.855198dea181900dcf99.js",
-  "./index.html": "././index.html"
-=======
-  "main.js": "./award_dist/js/main.6fd5288127b048a4b9f6.js",
-  "award_dist/css/1.073f814f.css": "./award_dist/css/1.073f814f.css",
-  "award_dist/js/1.37102f347557fc1e216d.js": "./award_dist/js/1.37102f347557fc1e216d.js",
-  "award_dist/css/2.1d156549.css": "./award_dist/css/2.1d156549.css",
-  "award_dist/js/2.0a6365c5182c12b04c23.js": "./award_dist/js/2.0a6365c5182c12b04c23.js",
+  "main.js": "./award_dist/js/main.8bece940b022f13064bc.js",
+  "award_dist/css/1.0b907e46.css": "./award_dist/css/1.0b907e46.css",
+  "award_dist/js/1.7296af47906373d15f4c.js": "./award_dist/js/1.7296af47906373d15f4c.js",
+  "award_dist/css/2.bcb598f5.css": "./award_dist/css/2.bcb598f5.css",
+  "award_dist/js/2.03463c58affa4d5dc4cd.js": "./award_dist/js/2.03463c58affa4d5dc4cd.js",
+  "award_dist/css/3.65e33e8f.css": "./award_dist/css/3.65e33e8f.css",
+  "award_dist/js/3.7330edc2dda416e0db47.js": "./award_dist/js/3.7330edc2dda416e0db47.js",
+  "award_dist/js/4.1bfe1eab002d840cc52a.js": "./award_dist/js/4.1bfe1eab002d840cc52a.js",
+  "award_dist/js/5.95b704a1720f4709ba04.js": "./award_dist/js/5.95b704a1720f4709ba04.js",
+  "award_dist/js/6.0a0ab72b651e7278095e.js": "./award_dist/js/6.0a0ab72b651e7278095e.js",
   "./index.html": "././index.html",
-  "award_dist/js/main.6fd5288127b048a4b9f6.js.LICENSE.txt": "./award_dist/js/main.6fd5288127b048a4b9f6.js.LICENSE.txt"
->>>>>>> d700e4d1295af6c6ab114c786127a9a45fc1725c
+  "award_dist/js/main.8bece940b022f13064bc.js.LICENSE.txt": "./award_dist/js/main.8bece940b022f13064bc.js.LICENSE.txt"
 }

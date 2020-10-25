@@ -56,15 +56,6 @@ const prodWebpackConfig = merge(baseWebpackConfig, {
         include: "/../src",
       },
       {
-        test: /\.(css|scss)$/,
-        use: [
-          {
-            loader: MinCssExtractPlugin.loader,
-            options: {
-              publicPath: "../../",
-            },
-            include: '/../src'
-        }, {
             test: /\.(css|scss)$/,
             use: [{
                 loader: MinCssExtractPlugin.loader,

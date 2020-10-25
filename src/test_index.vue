@@ -1,5 +1,6 @@
 <template>
   <section class="test-wrapper">
+    <router-view></router-view>
     <!-- {{ timeMsg }} -->
     <!-- <section class="btn-list-item" @click="changeImportHandler">test_index import</section>
     <section class="btn-list-item" @click="changeRequireHandler">test_index require</section>-->
