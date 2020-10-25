@@ -1,12 +1,18 @@
 <template>
   <div class="safe-wrapper">
     安全测试
-    <input type="text" :value="getInputVal()" />
+    <input type="text" v-model="inputValue" />
+    {{inputValue}}
     <div class="alert" ref="info1">alert_info</div>
   </div>
 </template>
 <script>
 export default {
+  data(){
+    return {
+      inputValue:''
+    }
+  },
   mounted() {
     let domEl = this.$refs["info1"];
     // console.log(domEl, 20);

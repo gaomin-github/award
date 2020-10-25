@@ -23,8 +23,10 @@ function MyNew(func, param) {
   let obj = new Object();
   let newObj = func.call(obj, 'myNew', 12)
   obj.__proto__ = func.prototype;
+  // return  obj;
+
   return newObj || obj;
 }
 
 let funObj = MyNew(MyFunction, 'funObj', 22)
-console.log(funObj, 18)
+console.log(funObj.msg, 18)

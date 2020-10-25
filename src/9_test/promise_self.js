@@ -10,14 +10,23 @@
 // 2.错误处理
 // 利用try catch各处添加
 // 3.catch方法，finally方法；静态resolve和reject方法，静态all方法，静态race方法；
+
 // es5实现静态方法和内部方法重名？
+// 2020-10-16 2141修改问题
+// 1）链式调用，没有return值也被传递下去了
+// 原因：给每隔promise的callback传递resolve和reject时没有绑定当前promise。导致调用方法异常 ，取不到state值；
+// resolve和then方法，用了箭头函数声明；导致this指向的永远是最初创建的第一个promise实例；
+
+// 2020-10-19 未修改问题
+// 1）未遵循事件循环机制
 function myPromise(callback) {
   this.state = "pending";
   this.res = "";
   this.reason = "";
   this.resolveTasks = [];
   this.failTasks = [];
-  this.resolve = (res) => {
+  this.resolve = function(res){
+    // console.log(res,21,this.state)
     try {
       if (this.state === "pending") {
         this.state = "fulfil";
@@ -33,7 +42,8 @@ function myPromise(callback) {
       reject(err);
     }
   };
-  this.then = (callback, failCallback) => {
+  this.then = function(callback, failCallback){
+
     try {
       // console.log(typeof callback, 27);
       if (typeof callback !== "function") {
@@ -41,6 +51,9 @@ function myPromise(callback) {
       }
       let that = this;
       return new myPromise((resolve) => {
+        // console.log('then register',43)
+        // console.log(that.state,47)
+
         // console.log();
         if (that.state === "pending") {
           that.resolveTasks.push((param) => {
@@ -52,7 +65,10 @@ function myPromise(callback) {
             reject(res);
           });
         } else if (that.state === "fulfil") {
+          // console.log(res,54)
+
           let res = callback(that.res);
+          // console.log(res,56)
           resolve(res);
         } else if (that.state === "reject") {
           let res = failCallback(that.reson);
@@ -86,7 +102,7 @@ function myPromise(callback) {
     );
   };
   try {
-    callback(this.resolve, this.reject);
+    callback(this.resolve.bind(this), this.reject.bind(this));
   } catch (err) {
     this.reject(err);
   }
@@ -106,20 +122,41 @@ myPromise.reject = function(err) {
 
 // 问题：如何知道函数执行结束?回调函数，自己会调用resolve
 let np1 = new myPromise((resolve, reject) => {
-  return resolve("np1");
+    console.log('np1',119)
+    return resolve("np1");
 });
-np1.then((res) => {
-  console.log(res, 82);
+np1.then((res1) => {
+  console.log(res1, 82);
+})
+.then(res=>{
+  console.log(res,121)
 });
-np1.then((res) => {
-  console.log(res, 85);
-});
-np1.then((res) => {
-  console.log(res, 88);
-});
-np1.then((res) => {
-  console.log(res, 91);
-});
+// console.log(a,126)
+// np1.then((res2) => {
+//   console.log(res2, 85);
+// });
+// np1.then((res) => {
+//   console.log(res, 88);
+// });
+// np1.then((res) => {
+//   console.log(res, 91);
+// });
+
+// let np2=new Promise((resolve,reject)=>{
+//   setTimeout(()=>{
+//     return resolve('np2')
+//   },1000)
+// })
+// console.log(np2)
+// console.log('141-----------------')
+// np2.then(res=>{
+//   console.log(res,131)
+// }).then(res=>{
+//   console.log(res,133)
+//   console.log(np2,148)
+// })
+// console.log(np2)
+console.log('151-----------------')
 
 // np1
 //   .then((res) => {
