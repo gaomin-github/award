@@ -5,9 +5,26 @@
 //   template: () => import("./test_index.vue"),
 // });
 // import test_index from "./test_index.vue";
-import eruda from "eruda";
-eruda.init();
+// import VueRouter from "vue-router";
 
+// import eruda from "eruda";
+// import VueRouter from "vue-router";
+// eruda.init();
+// import _ from 'lodash';
+// window['_']=_
+Vue.use(VueRouter)
+const router = new VueRouter({
+  mode: "history",
+  routes: [
+    // {
+    //   path:'/test1',
+    //   component:()=>import('./test_com1.vue')
+    // },
+    {
+          path: "/test3",
+          component: () => import("./test_index3.vue"),
+      }
+    ]})
 let vm = new Vue({
   el: "#app",
   components: {
@@ -16,7 +33,7 @@ let vm = new Vue({
   template: "<App/>",
   // template: "<h1>this is test_app h1</h1>",
 
-  //   router,
+    router,
   //   mock,
   //   store,
   // router: SelfRoutes

@@ -1,14 +1,11 @@
 {
-<<<<<<< HEAD
-  "main.js": "./award_dist/js/main.855198dea181900dcf99.js",
-  "./index.html": "././index.html"
-=======
-  "main.js": "./award_dist/js/main.6fd5288127b048a4b9f6.js",
-  "award_dist/css/1.073f814f.css": "./award_dist/css/1.073f814f.css",
-  "award_dist/js/1.37102f347557fc1e216d.js": "./award_dist/js/1.37102f347557fc1e216d.js",
-  "award_dist/css/2.1d156549.css": "./award_dist/css/2.1d156549.css",
-  "award_dist/js/2.0a6365c5182c12b04c23.js": "./award_dist/js/2.0a6365c5182c12b04c23.js",
+  "vendor.js": "./award_dist/js/vendor.ceab65780c9ea311be3b.js",
+  "main.js": "./award_dist/js/main.a7e7e379bc411a51f716.js",
+  "runtime~main.js": "./award_dist/js/runtime~main.df3d35c9243eb3c8b942.js",
+  "award_dist/css/3.97b3d524.css": "./award_dist/css/3.97b3d524.css",
+  "award_dist/js/3.041af921e3651d33c9cb.js": "./award_dist/js/3.041af921e3651d33c9cb.js",
+  "award_dist/css/4.d8ef2a08.css": "./award_dist/css/4.d8ef2a08.css",
+  "award_dist/js/4.a9ae9f4c832b2354252f.js": "./award_dist/js/4.a9ae9f4c832b2354252f.js",
   "./index.html": "././index.html",
-  "award_dist/js/main.6fd5288127b048a4b9f6.js.LICENSE.txt": "./award_dist/js/main.6fd5288127b048a4b9f6.js.LICENSE.txt"
->>>>>>> d700e4d1295af6c6ab114c786127a9a45fc1725c
+  "award_dist/js/vendor.ceab65780c9ea311be3b.js.LICENSE.txt": "./award_dist/js/vendor.ceab65780c9ea311be3b.js.LICENSE.txt"
 }

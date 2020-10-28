@@ -1,8 +1,8 @@
 <template>
   <div class="safe-wrapper">
     安全测试
-    <input type="text" v-model="inputValue" />
-    {{inputValue}}
+    <input type="text" :value="getInputVal()" />
+    {{getInputVal()}}
     <div class="alert" ref="info1">alert_info</div>
   </div>
 </template>
@@ -26,12 +26,13 @@ export default {
       // let searchParams = new URLSearchParams(window.location.href);
       // console.log(searchParams, 13);
       // let txt = searchParams.get("txt");
-      let txt = location.href;
+      let txt = location.search;
+      txt =decodeURIComponent(txt.substring(1, txt.length));
+      // eval(txt)
       console.log(txt, 15);
-
-      txt = txt.substring(5, txt.length);
       // this.$ref.alert_info.innerHTML = txt;
-      //
+      // document.body.
+      // document.body.appendChild(txt);
       return txt;
       // return 123;
     }
