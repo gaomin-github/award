@@ -27,6 +27,7 @@ const ManifestPlugin = require('webpack-manifest-plugin');
 const merge = require('webpack-merge');
 
 const baseWebpackConfig = require("./webpack.base");
+const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 const prodWebpackConfig = merge(baseWebpackConfig, {
   mode: "production",
   output: {
@@ -77,42 +78,44 @@ const prodWebpackConfig = merge(baseWebpackConfig, {
             chunkFilename: 'award_dist/css/[id].[contenthash:8].css'
         }),
         new webpack.ProvidePlugin({
-            Vue: ["vue/dist/vue.esm.js", "default"],
+            // Vue: ["vue/dist/vue.esm.js", "default"],
         }),
         new ProgressBarPlugin(),
         new PreloadWebpackPlugin({
             rel: 'preload',
             as: 'script'
         }),
-        new ManifestPlugin()
+        new ManifestPlugin(),
+        new CleanWebpackPlugin()
         // new MinCssExtractPlugin({
         //     filename: '[name].[contenthash:8].css',
         //     chunkFilename: '[id].[contenthash:8].css'
         // })
     ],
     optimization: {
-        // splitChunks: {
-        // chunks: 'all'
+        runtimeChunk:true,
+        splitChunks: {
+        chunks: 'all',
 
-        // cacheGroups: {
-        //     vendor: {
-        //         name: 'vendor',
-        //         test: /[\\/]node_modules[\\/]/,
-        //         // maxSize: 5000,
-        //         chunks: 'initial',
-        //         priority: 10,
-        //     },
-        //     common: {
-        //         name: 'common',
-        //         minChunks: 2,
-        //         test: /[\\/]src[\\/]/,
-        //         // minSize: 1024,
-        //         chunks: 'async',
-        //         priority: 5,
-        //         reuseExistingChunk: true,
-        //     }
-        // }
-        // },
+        cacheGroups: {
+            vendor: {
+                name: 'vendor',
+                test: /[\\/]node_modules[\\/]/,
+                // maxSize: 5000,
+                chunks: 'all',
+                priority: 10,
+            },
+            common: {
+                name: 'common',
+                minChunks: 2,
+                test: /[\\/]src[\\/]/,
+                minSize: 0,
+                chunks: 'async',
+                priority: 5,
+                reuseExistingChunk: true,
+            }
+        }
+        },
         minimizer: [new OptimizeCssAssetsPlugin({
             cssProcessor: require('cssnano'),
             cssProcessorOptions: { discardComments: { removeAll: true } }

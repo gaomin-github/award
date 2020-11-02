@@ -17,6 +17,7 @@ function once2() {
   once2.task = new Date()
   return once2.task;
 }
+
 // 解决方案4（终极方案）
 function once4() {
   let task = new Date();

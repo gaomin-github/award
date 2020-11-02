@@ -8,6 +8,11 @@
 </template>
 <script>
 export default {
+  data(){
+    return {
+      inputValue:''
+    }
+  },
   mounted() {
     let domEl = this.$refs["info1"];
     // console.log(domEl, 20);

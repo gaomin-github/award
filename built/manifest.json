@@ -1,14 +1,11 @@
 {
-  "main.js": "./award_dist/js/main.8bece940b022f13064bc.js",
-  "award_dist/css/1.0b907e46.css": "./award_dist/css/1.0b907e46.css",
-  "award_dist/js/1.7296af47906373d15f4c.js": "./award_dist/js/1.7296af47906373d15f4c.js",
-  "award_dist/css/2.bcb598f5.css": "./award_dist/css/2.bcb598f5.css",
-  "award_dist/js/2.03463c58affa4d5dc4cd.js": "./award_dist/js/2.03463c58affa4d5dc4cd.js",
-  "award_dist/css/3.65e33e8f.css": "./award_dist/css/3.65e33e8f.css",
-  "award_dist/js/3.7330edc2dda416e0db47.js": "./award_dist/js/3.7330edc2dda416e0db47.js",
-  "award_dist/js/4.1bfe1eab002d840cc52a.js": "./award_dist/js/4.1bfe1eab002d840cc52a.js",
-  "award_dist/js/5.95b704a1720f4709ba04.js": "./award_dist/js/5.95b704a1720f4709ba04.js",
-  "award_dist/js/6.0a0ab72b651e7278095e.js": "./award_dist/js/6.0a0ab72b651e7278095e.js",
+  "vendor.js": "./award_dist/js/vendor.ceab65780c9ea311be3b.js",
+  "main.js": "./award_dist/js/main.a7e7e379bc411a51f716.js",
+  "runtime~main.js": "./award_dist/js/runtime~main.df3d35c9243eb3c8b942.js",
+  "award_dist/css/3.97b3d524.css": "./award_dist/css/3.97b3d524.css",
+  "award_dist/js/3.041af921e3651d33c9cb.js": "./award_dist/js/3.041af921e3651d33c9cb.js",
+  "award_dist/css/4.d8ef2a08.css": "./award_dist/css/4.d8ef2a08.css",
+  "award_dist/js/4.a9ae9f4c832b2354252f.js": "./award_dist/js/4.a9ae9f4c832b2354252f.js",
   "./index.html": "././index.html",
-  "award_dist/js/main.8bece940b022f13064bc.js.LICENSE.txt": "./award_dist/js/main.8bece940b022f13064bc.js.LICENSE.txt"
+  "award_dist/js/vendor.ceab65780c9ea311be3b.js.LICENSE.txt": "./award_dist/js/vendor.ceab65780c9ea311be3b.js.LICENSE.txt"
 }

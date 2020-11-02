@@ -4,9 +4,11 @@
   </section>
 </template>
 <script>
+  // import{printInfo} from './module_test.js'
 
 export default {
   mounted() {
+    // printInfo()
   },
   methods: {
    

@@ -6,3 +6,7 @@ function feeSplit(str) {
   return res;
 }
 console.log(feeSplit('1234567890'))
+
+// 匹配url中的key对应的value
+let searchStr=''
+searchStr.match(/(?<=ie=)\w+\b/g)
