@@ -55,11 +55,11 @@ const templateList=[{
     type:'compile',
     path:'./package.json',
 }
-// ,{
-//     label:'dev template',
-//     type:'copy',
-//     path:'../template.dev.html',
-// }
+,{
+    label:'dev template',
+    type:'copy',
+    path:'../template.dev.html',
+}
 ]
 
 // package.json相关
@@ -94,27 +94,31 @@ function _handleConfigFile(fromPath,destPath){
 /* 文件夾拷貝
  */
 function _handleFolderTemplate(fromPath,destPath){
-    fs.access(destPath,function(err){
-        if(err){
-            // 创建文件夹
-            fs.mkdirSync(destPath);
-        }
-        fs.readdir(fromPath,(err,paths)=>{
+    try{
+        fs.access(destPath,function(err){
             if(err){
-                console.log('readdir error')
-            }else{
-                console.log(paths,106)
-                paths.forEach(o=>{
-                    
-                    let stat=fs.lstatSync(path.join(fromPath,o));
-                    if(stat.isDirectory()){
-                        _handleFolderTemplate(path.join(fromPath,o))
-                    }else{
-
-                        fs.writeFileSync(path.join(destPath,o),fs.readFileSync(path.join(fromPath,o)))
-                    }
-                })
+                // 创建文件夹
+                fs.mkdirSync(destPath);
             }
+            fs.readdir(fromPath,(err,paths)=>{
+                if(err){
+                    console.log('readdir error')
+                }else{
+                    console.log(paths,106)
+                    paths.forEach(o=>{
+                        
+                        let stat=fs.lstatSync(path.join(fromPath,o));
+                        if(stat.isDirectory()){
+                            _handleFolderTemplate(path.join(fromPath,o),path.join(destPath,o))
+                        }else{
+    
+                            fs.writeFileSync(path.join(destPath,o),fs.readFileSync(path.join(fromPath,o)))
+                        }
+                    })
+                }
+            })
         })
-    })
+    }catch(error){
+        console.log('_handleFolderTemplate',error,122)
+    }
 }
