@@ -32,6 +32,7 @@ const devWebpackConfig = merge(baseWebpackConfig, {
       "/task": "http://localhost:9081",
       "/common": "http://localhost:9081",
     },
+<<<<<<< HEAD
   },
   devtool: "inline-source-map",
   module: {
@@ -44,6 +45,43 @@ const devWebpackConfig = merge(baseWebpackConfig, {
           path.resolve(__dirname, "../common/components"),
         ],
       },
+=======
+    devServer: {
+        historyApiFallback: true,
+        clientLogLevel: "info",
+        host: "0.0.0.0",
+        port: "8090",
+        open: false,
+        contentBase: path.resolve(__dirname, "../"),
+        publicPath: "/",
+        disableHostCheck: true,
+        proxy: {
+            "/xian": "http://localhost:9081",
+            "/task": "http://localhost:9081",
+            '/common': 'http://localhost:9081',
+            '/backend_rbac': 'http://localhost:9081',
+            '/tvclass/api/v1/': 'http://stag.bssmini.pandora.xiaomi.com/tvclass/api/v1/'
+        },
+    },
+    devtool: "inline-source-map",
+    module: {
+        rules: [
+            {
+                test: /\.(css|scss)$/,
+                use: ['style-loader', 'css-loader', 'postcss-loader', 'sass-loader'],
+                include: [
+                    path.resolve(__dirname, '../src'),
+                    path.resolve(__dirname, '../common/components'),
+                ]
+            }
+        ]
+    },
+    plugins: [
+        new webpack.HotModuleReplacementPlugin(),
+        new webpack.ProvidePlugin({
+            Vue: ["vue/dist/vue.esm.js", "default"],
+        }),
+>>>>>>> 828c520c7403649e266f1de45af0a93f7ff8a891
     ],
   },
   plugins: [

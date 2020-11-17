@@ -1,0 +1,21 @@
+export const cardList=[{
+    index:'0',
+    bgUrl:'',
+    cardUrl:'',
+    title:''
+},{
+    index:'0',
+    bgUrl:'',
+    cardUrl:'',
+    title:''
+},{
+    index:'0',
+    bgUrl:'',
+    cardUrl:'',
+    title:''
+},{
+    index:'0',
+    bgUrl:'',
+    cardUrl:'',
+    title:''
+}]

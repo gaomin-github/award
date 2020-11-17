@@ -33,6 +33,7 @@ module.exports = {
       lib: path.resolve(__dirname, "../common/lib"),
       components: path.resolve(__dirname, "../common/components"),
     },
+<<<<<<< HEAD
   },
   module: {
     rules: [
@@ -47,6 +48,29 @@ module.exports = {
           esModule: false,
           name: "award_dist/imgs/[name].[ext]",
           limit: 10000,
+=======
+    node: {
+        fs: 'empty',
+        net: 'empty',
+        tls: 'empty'
+    },
+    stats: {
+        modules: false,
+        children: false,
+        chunks: false,
+        chunkModules: false
+    },
+    resolve: {
+        extensions: [`.js`, ".json", ".vue"],
+        alias: {
+            // vue$: "vue/dist/vue.esm.js",
+            TagCanvas: path.resolve(__dirname, "../common/lib/tagcanvas.js"),
+            request: path.resolve(__dirname, "../utils/request.js"),
+            "lottie-web": "lottie-web/build/player/lottie.js",
+            lib: path.resolve(__dirname, "../common/lib"),
+            components: path.resolve(__dirname, '../common/components'),
+            views: path.resolve(__dirname, '../src/views')
+>>>>>>> 828c520c7403649e266f1de45af0a93f7ff8a891
         },
       },
       {
