@@ -71,6 +71,12 @@ let base_routes = new VueRouter({
       component: () => import("../scrollTest/index.vue"),
     },
     rbac_base_route,
+    {
+      name: 'cardswitch',
+      path: '/cardswitch',
+      component: () => import('../views/cardswitch/index.vue'),
+      children: []
+    }
     // () => import('./router/index.js')
 
     // {
