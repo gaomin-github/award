@@ -5,15 +5,15 @@
 
         </div>
         <!-- 卡片 -->
+        <img class="container_bg" :src="actBgUrl"/>
+
         <div class="container" >
-            <img class="container_bg" :src="actBgUrl"/>
             <div class="content" ref="container">
                 <template v-if="curList&&curList.length>0" >
                 
                     <div class="cards" :style="{transform:`translateX(${transformX}px`}">
                         <div v-for="(item,index) in curList" :key="item.index" class="cards-item" @mouseover="handleMouseOver(item,index)" @mouseleave="handleMouseLeave" :ref="`pic_${item.index}`">
                             <img :class="['cards-item-pic',actCardId==item.index?'cards-item-pic-active':'']" :src="item.cardUrl"/>
-                            <!-- {{item}} -->
                         </div>
                     </div>
                     
@@ -39,7 +39,7 @@
                 transformX:0,
                 timerTask:null,
                 hasLock:false,  //锁定动画触发；
-                actBgUrl:'',
+                actBgUrl:require('./imgs/01.png'),
             }
         },
         computed:{
@@ -62,7 +62,7 @@
         methods:{
             handleMouseLeave(){
                 // setTimeout(()=>{
-                    if(this.hasLock) return;
+                    // if(this.hasLock) return;
                     this.actCardId=-1;
                 // },1000)
             },
@@ -164,7 +164,6 @@
 <style lang="scss" scoped>
     div{
         display: block;
-        box-sizing: border-box;
         /* overflow: hidden; */
 
     }
@@ -172,7 +171,9 @@
         width:100%;
         height:100%;
         display: flex;
-        flex-direction:column;
+        flex-direction:column;       
+         position:relative;
+
     }
     .info{
         height: 100px;
@@ -188,13 +189,17 @@
         width:100%;
         margin:0 auto;
         flex:1;
-        border:1px red solid;
-        overflow: visible;
-        position:relative;
+        /* overflow: visible; */
+        padding:0px 20px;
 
     }
     .content{
-        padding:0px 20px;
+        /* border:1px red solid; */
+        box-sizing: border-box;
+        width:100%;
+        height:100%;
+        overflow: hidden;
+
     }
     .container_bg{
         position: absolute;
@@ -203,6 +208,7 @@
         height:100%;
     }
     .cards{
+        margin-right:30px;
         width:100%;
         height:100%;
         display: flex; 
@@ -226,6 +232,7 @@
         }
         /* flex-direction: column; */
     }
+    
     .cards-item-pic-active{
         transform: scale(1.1,1.1);
         border:2px white solid;
