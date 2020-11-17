@@ -20,17 +20,24 @@ const router = new VueRouter({
     //   path:'/test1',
     //   component:()=>import('./test_com1.vue')
     // },
+    // {
+    //       path: "/test3",
+    //       component: () => import("./test_index3.vue"),
+    //   }
     {
-          path: "/test3",
-          component: () => import("./test_index3.vue"),
-      }
+      path: "/moduleTest",
+      component: () => import("./module_test/index.vue"),
+  }
     ]})
 let vm = new Vue({
   el: "#app",
   components: {
-    App: () => import("./test_index.vue"),
+    ModuleTest: () => import("./module_test/index.vue")
+    // App: () => import("./test_index.vue"),
   },
-  template: "<App/>",
+  template: "<Module-Test/>",
+
+  // template: "<App/>",
   // template: "<h1>this is test_app h1</h1>",
 
     router,

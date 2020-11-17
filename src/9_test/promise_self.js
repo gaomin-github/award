@@ -42,6 +42,7 @@ function myPromise(callback) {
       reject(err);
     }
   };
+  
   this.then = function(callback, failCallback){
 
     try {
