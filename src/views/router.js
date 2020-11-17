@@ -6,6 +6,9 @@ let routes = new VueRouter({
   routes: [{
     path: 'rbac',
     component: () => import('./rbac/index.vue')
+  },{
+    path:'cardswitch',
+    component:()=>import('./cardswitch')
   }]
 })
 export default routes;
