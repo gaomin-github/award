@@ -1,0 +1,3 @@
+[submodule "algorithm"]
+	path = algorithm
+	url = https://github.com/gaomin-github/algorithm-explore.git
