@@ -76,6 +76,12 @@ let base_routes = new VueRouter({
       path: '/cardswitch',
       component: () => import('../views/cardswitch/index.vue'),
       children: []
+    },
+    {
+      name: 'lazy',
+      path: '/lazy',
+      component: () => import('../views/lazyload/index.vue'),
+      children: []
     }
     // () => import('./router/index.js')
 

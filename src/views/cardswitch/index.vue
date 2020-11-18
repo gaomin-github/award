@@ -2,18 +2,23 @@
     <div class="cardswitch-wrapper">
         <!-- 个人信息展示 -->
         <div class="info">
-
+            <!-- <div class="info-menu">我的游戏</div>
+            <div class="info-user">
+                <div class="info-user-name">张三</div>
+                <div class="info-user-setting">setting</div>
+                <div class="info-user-duetime"></div>
+            </div> -->
         </div>
         <!-- 卡片 -->
-        <img class="container_bg" :src="actBgUrl"/>
+        <img class="container_bg" :src="actBgUrl" />
 
         <div class="container" >
             <div class="content" ref="container">
                 <template v-if="curList&&curList.length>0" >
                 
                     <div class="cards" :style="{transform:`translateX(${transformX}px`}">
-                        <div v-for="(item,index) in curList" :key="item.index" class="cards-item" @mouseover="handleMouseOver(item,index)" @mouseleave="handleMouseLeave" :ref="`pic_${item.index}`">
-                            <img :class="['cards-item-pic',actCardId==item.index?'cards-item-pic-active':'']" :src="item.cardUrl"/>
+                        <div v-for="(item,index) in curList" :key="item.index" class="cards-item" @mouseenter="handleMouseOver(item,index)" @mouseleave="handleMouseLeave" :ref="`pic_${item.index}`" @click="handleEnterCard(item)">
+                            <img :class="['cards-item-pic',actCardId==item.index?'cards-item-pic-active':'']" v-lazy:imgData="{imgData:item,method:_loadImg}"/>
                         </div>
                     </div>
                     
@@ -23,37 +28,56 @@
         </div>
         <!-- 操作按钮 -->
         <div class="ope">
-
+            <div class="ope-btn" v-show="actCardId>=0">
+                进入游戏
+            </div>
         </div>
+        <!-- <my-modal v-show="showModal" :showModal="showModal"></my-modal> -->
     </div>
 </template>
 <script>
+    // 完成：
     // 横向图片懒加载
     // 图片聚焦样式
     // 图片聚焦右边，向右滑动，聚焦左边，向左滑动
+    // 待补充：
+    // 浏览器大小变化，样式更新
     import {cardList} from './cards.config.js';
     export default{
         data(){
             return {
-                actCardId:0,
+                actCardId:-1,
                 transformX:0,
                 timerTask:null,
                 hasLock:false,  //锁定动画触发；
                 actBgUrl:require('./imgs/01.png'),
+                showModal:false
+            }
+        },
+        components:{
+            myModal:()=>import('./modal.vue')
+        },
+        directives:{
+            lazy:{
+                bind:(el,binding,vnode)=>{
+                    if(window.IntersectionObserver){
+                        let handleObj=binding.value
+                        let intersectionObserver=new IntersectionObserver(()=>{
+                            handleObj.method(el,handleObj.imgData)
+                        })
+                        intersectionObserver.observe(el);
+                    }
+                }
             }
         },
         computed:{
             curList(){
-                // console.log(cardList,35)
                 return cardList;
             },
             containerRc(){
                 if(this.$refs.container){
                     let $container=this.$refs.container;
                     let cr=$container.getBoundingClientRect();
-                    // let containerMid=Math.round((cr.left+cr.right)/2)
-                    // console.log(containerMid,'containerMid')
-                    // return containerMid
                     // 左右边界位置
                     return [cr.left,cr.right]
                 }
@@ -61,41 +85,48 @@
         },
         methods:{
             handleMouseLeave(){
-                // setTimeout(()=>{
-                    // if(this.hasLock) return;
+                    if(this.hasLock) return;
                     this.actCardId=-1;
-                // },1000)
             },
+    
             handleMouseOver(item,index){
-                // (this.throttle(()=>{
-                //     console.log(new Date().getTime(),64)
-
-                // },500))(item)
-                // console.log('index',index,68);
-                (this.throttle(this._mouseOverAnimate,500))(item,index)
+                console.log(item.index,112)
+                console.log(new Date().getTime(),112);
+                this._mouseOverAnimate(item,index)
+                // (this._throttle(this._mouseOverAnimate,200))(item,index)
+            },
+            handleEnterCard(item){
+                // console.log(item,91)
+                this.showModal=true;
+            },
+            _loadImg(el,imgData){
+                // console.log(imgData.index)
+                // console.log(el.getAttribute('loaded'),80)
+                if(el.getAttribute('loaded')) return;
+                let elRc=el.getBoundingClientRect();
+                // console.log(elRc.left,'left',this.containerRc[1],'right')
+                if(elRc.left<this.containerRc[1]+20){
+                    el.setAttribute('src',imgData.cardUrl)
+                    el.setAttribute('loaded',true)
+                }
             },
             _mouseOverAnimate(item,index){
-                // mouseover做节流处理
-            
                 // 获取当前宽度配置，
-                // 移入后200ms内放大，移除后，200ms后缩小
                 // 滑动结束后，暂时锁定该事件；
+                // console.log(item.index,'over',112)
+                // console.log(new Date().getTime(),112);
+                // return;
+                // console.log('index',item.index,'lock',this.hasLock,'cardId',this.actCardId)
                 if(this.hasLock) return;
-                // 头尾元素做处理
-
-                // 当前元素
                 if(this.actCardId===item.index) return ;
+                // 头尾元素处理
                 let $firstEl=this.$refs[`pic_${this.curList[0].index}`][0];
-                
                 let $lastEl=this.$refs[`pic_${this.curList[this.curList.length-1].index}`][0];
-                // console.log($lastEl,86)
                 let firstElRc=$firstEl.getBoundingClientRect()
                 let lastElRc=$lastEl.getBoundingClientRect()
-
+                // 当前元素
                 let $curEl=this.$refs[`pic_${item.index}`][0];
                 let curElCr=$curEl.getBoundingClientRect();
-                // console.log('left',firstElRc,1)
-                // console.log('left',lastElRc,2)
 
                 let moveSet=0;
                 if(index===0){
@@ -111,25 +142,25 @@
                     moveSet=container_tcenter-curEl_tcenter;
                 }
                 // 向右移动
-                console.log('moveSet',moveSet)
+                // console.log('moveSet',moveSet)
                 if(moveSet>0){
-                    console.log('right',this.containerRc[0]-firstElRc.left)
+                    // console.log('right',this.containerRc[0]-firstElRc.left)
                     this.transformX+=Math.min(moveSet,this.containerRc[0]-firstElRc.left)
                 }
                 if(moveSet<0){
-                    console.log('left',this.containerRc[1]-lastElRc.right,0)
-                    console.log('left',this.containerRc[1],1)
-                    console.log('left',lastElRc.right,2)
+                    // console.log('left',this.containerRc[1]-lastElRc.right,0)
+                    // console.log('left',this.containerRc[1],1)
+                    // console.log('left',lastElRc.right,2)
 
-                    this.transformX+=Math.max(moveSet,this.containerRc[1]-lastElRc.right)-50
+                    this.transformX+=Math.max(moveSet,this.containerRc[1]-lastElRc.right)
                 }
-                console.log(this.transformX,'transformX',96)
+                // console.log(this.transformX,'transformX',96)
                 this.actCardId=item.index;
                 this.actBgUrl=item.bgUrl;
                 this.hasLock=true;
                 setTimeout(()=>{
                     this.hasLock=false;
-                },1000)
+                },500)
 
                 // if(curElCr.left<this.containerMidSet[0]){
                 //     this.transformX+=this.containerMidSet[0]-curElCr.left;
@@ -140,22 +171,31 @@
 
 
             },
-            throttle(func,timer){
+            _throttle(func,timer){
                 let that=this;
                 return function(){
                     let params=Array.from(new Set(arguments));
                     params=params.slice(0,params.length)
                     if(!that.timerTask){
                         func.bind(this)(...params);
-                    }else{
-                        clearTimeout(that.timerTask)
-                        that.timerTask=null;
+                        that.timerTask=new Date().getTime();
+                        return;
                     }
 
-
-                    that.timerTask=setTimeout(()=>{
+                    if(new Date().getTime()>that.timerTask+timer){
                         func.bind(this)(...params);
-                    },timer)
+                        that.timerTask=new Date().getTime();
+                        return;
+                    }
+                    // if(!that.timerTask){
+                    //     func.bind(this)(...params);
+                    // }else{
+                    //     clearTimeout(that.timerTask)
+                    //     that.timerTask=null;
+                    // }
+                    // that.timerTask=setTimeout(()=>{
+                    //     func.bind(this)(...params);
+                    // },timer)
                 }
             }
         }
@@ -178,28 +218,33 @@
     .info{
         height: 100px;
         flex-shrink: 1;
-        border:1px black solid;
+        /* border:1px black solid; */
     }
     .ope{
         height:100px;
         flex-shrink: 1;
+        color:#fff;
+        position:relative;
+        &-btn{
+            display: inline-block;
+            position: absolute;
+            right:50px;
+            line-height:32px;
+            padding:0px 15px;
+            border:1px white solid;
+            border-radius:20px;
+        }
     }
     .container{
-        /* width:500px; */
         width:100%;
         margin:0 auto;
         flex:1;
-        /* overflow: visible; */
         padding:0px 20px;
 
     }
     .content{
-        /* border:1px red solid; */
-        box-sizing: border-box;
         width:100%;
         height:100%;
-        overflow: hidden;
-
     }
     .container_bg{
         position: absolute;
@@ -212,25 +257,22 @@
         width:100%;
         height:100%;
         display: flex; 
+        flex-wrap: nowrap;
         align-items: center;
-        transition: all 1s ease;
-        /* padding:0px 20px; */
-        padding-right:20px;
+        transition: all .6s ease;
         &-item{
             display:block;
-            flex-shrink:1;
-            min-width:200px;
-            /* border:1px black solid; */
+            flex-shrink:0;
+            width:200px;
             margin-right:20px;
-            padding:15px;
+            padding:20px;
             &-pic{
                 display: block;
                 width:100%;
-                transition: all 1s ease;
+                transition: all .6s ease;
             }
 
         }
-        /* flex-direction: column; */
     }
     
     .cards-item-pic-active{
@@ -238,9 +280,5 @@
         border:2px white solid;
         border-top-left-radius: 20px;
         border-bottom-right-radius: 20px;
-        /* transform:translate(20px,10px); */
-        /* .pic{
-            /* transform: scale: (1.5);; */
-        /* } */
     }
 </style>
