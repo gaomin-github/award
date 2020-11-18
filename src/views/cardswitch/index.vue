@@ -32,7 +32,7 @@
                 进入游戏
             </div>
         </div>
-        <!-- <my-modal v-show="showModal" :showModal="showModal"></my-modal> -->
+        <my-modal v-show="showModal" :showModal="showModal"  @closeModal="showModal=false" :bgUrl="actBgUrl"></my-modal>
     </div>
 </template>
 <script>
@@ -42,6 +42,7 @@
     // 图片聚焦右边，向右滑动，聚焦左边，向左滑动
     // 待补充：
     // 浏览器大小变化，样式更新
+    // 懒加载，图片加载失败兜底处理
     import {cardList} from './cards.config.js';
     export default{
         data(){
@@ -85,13 +86,13 @@
         },
         methods:{
             handleMouseLeave(){
-                    if(this.hasLock) return;
+                    // if(this.hasLock) return;
                     this.actCardId=-1;
             },
     
             handleMouseOver(item,index){
-                console.log(item.index,112)
-                console.log(new Date().getTime(),112);
+                // console.log(item.index,112)
+                // console.log(new Date().getTime(),112);
                 this._mouseOverAnimate(item,index)
                 // (this._throttle(this._mouseOverAnimate,200))(item,index)
             },
@@ -113,10 +114,7 @@
             _mouseOverAnimate(item,index){
                 // 获取当前宽度配置，
                 // 滑动结束后，暂时锁定该事件；
-                // console.log(item.index,'over',112)
-                // console.log(new Date().getTime(),112);
-                // return;
-                // console.log('index',item.index,'lock',this.hasLock,'cardId',this.actCardId)
+
                 if(this.hasLock) return;
                 if(this.actCardId===item.index) return ;
                 // 头尾元素处理
