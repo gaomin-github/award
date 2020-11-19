@@ -77,8 +77,21 @@ const prodWebpackConfig = merge(baseWebpackConfig, {
         // }),
         new ProgressBarPlugin(),
         new PreloadWebpackPlugin({
-            rel: 'preload',
-            as: 'script'
+            include:'initial',
+            rel:'preload',
+            as(entry){
+                if(/\.(css|scss)$/.test(entry)) return 'style';
+                if(/\.js$/.test(entry)) return 'script';
+            }
+        }),
+        new PreloadWebpackPlugin({
+            include:'allAssets',
+            rel:'prefetch',
+            as(entry){
+                if(/\.(css|scss)$/.test(entry)) return 'style';
+                if(/\.(png|jpeg|jpg|gif)$/.test(entry)) return 'image';
+                if(/\.js$/.test(entry)) return 'script';
+            }
         }),
     ],
     optimization: {
