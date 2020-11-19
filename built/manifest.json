@@ -1,11 +1,9 @@
 {
-  "vendor.js": "./award_dist/js/vendor.ceab65780c9ea311be3b.js",
-  "main.js": "./award_dist/js/main.a7e7e379bc411a51f716.js",
-  "runtime~main.js": "./award_dist/js/runtime~main.df3d35c9243eb3c8b942.js",
-  "award_dist/css/3.97b3d524.css": "./award_dist/css/3.97b3d524.css",
-  "award_dist/js/3.041af921e3651d33c9cb.js": "./award_dist/js/3.041af921e3651d33c9cb.js",
-  "award_dist/css/4.d8ef2a08.css": "./award_dist/css/4.d8ef2a08.css",
-  "award_dist/js/4.a9ae9f4c832b2354252f.js": "./award_dist/js/4.a9ae9f4c832b2354252f.js",
+  "main.js": "./award_dist/js/main.9089c7c72127cc96288e.js",
+  "runtime~main.js": "./award_dist/js/runtime~main.8c4d34ff78813d2ade54.js",
+  "award_dist/css/2.be594dcb.css": "./award_dist/css/2.be594dcb.css",
+  "award_dist/js/2.f1a0b68b25ff9de6b568.js": "./award_dist/js/2.f1a0b68b25ff9de6b568.js",
   "./index.html": "././index.html",
-  "award_dist/js/vendor.ceab65780c9ea311be3b.js.LICENSE.txt": "./award_dist/js/vendor.ceab65780c9ea311be3b.js.LICENSE.txt"
+  "award_dist/imgs/01.jpg": "./award_dist/imgs/01_cb089a0_01.jpg",
+  "award_dist/imgs/02.png": "./award_dist/imgs/02_e5e064f_01.png"
 }

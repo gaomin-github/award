@@ -45,8 +45,8 @@ module.exports = {
         ],
         options: {
           esModule: false,
-          name: "award_dist/imgs/[name].[ext]",
-          limit: 10000,
+          name: "award_dist/imgs/[name]_[hash:7]_01.[ext]",
+          limit: 1000,
         },
       },
       {

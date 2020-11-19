@@ -23,7 +23,11 @@ const PreloadWebpackPlugin = require("preload-webpack-plugin");
 const ManifestPlugin = require('webpack-manifest-plugin');
 
 // 自定义上传模拟插件
+
 // const UploadMockPlugin = require('./uploadMock.js')
+// 自定义图片上传压缩插件
+const TinzyPic=require('./CompilerHandler.js')
+
 const merge = require('webpack-merge');
 
 const baseWebpackConfig = require("./webpack.base");
@@ -57,19 +61,19 @@ const prodWebpackConfig = merge(baseWebpackConfig, {
         include: "/../src",
       },
       {
-            test: /\.(css|scss)$/,
-            use: [{
-                loader: MinCssExtractPlugin.loader,
-                options: {
-                    publicPath: '../../',
-                }
-            }, 'css-loader', "postcss-loader", "sass-loader"],
-            exclude: /node_modules/,
-            include: [
-                path.resolve(__dirname, "../src"),
-                path.resolve(__dirname, "../common/components"),
-            ],
-        }]
+        test: /\.(css|scss)$/,
+        use: [{
+            loader: MinCssExtractPlugin.loader,
+            options: {
+                publicPath: '../../',
+            }
+        }, 'css-loader', "postcss-loader", "sass-loader"],
+        exclude: /node_modules/,
+        include: [
+            path.resolve(__dirname, "../src"),
+            path.resolve(__dirname, "../common/components"),
+        ],
+      }]
     },
     plugins: [
         // new ScriptExtHtmlWebpackPlugin({ defaultAttribute: 'defer' }),
@@ -138,6 +142,7 @@ const prodWebpackConfig = merge(baseWebpackConfig, {
                 }
             }
         }),
+        new TinzyPic()
             // new UploadMockPlugin()
         ]
     }

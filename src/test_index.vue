@@ -1,8 +1,12 @@
 <template>
   <section class="test-wrapper">
    test_index vue file
+   {{configList}}
+   <img src="./01.jpg"/>
+   <img src="./02.png"/>
+
    <!-- {{finalMsg}} -->
-    <router-view></router-view>
+    <!-- <router-view></router-view> -->
     <!-- {{ timeMsg }} -->
     <!-- <section class="btn-list-item" @click="changeImportHandler">test_index import</section>
     <section class="btn-list-item" @click="changeRequireHandler">test_index require</section>-->
@@ -12,7 +16,7 @@
   </section>
 </template>
 <script>
-  import _ from 'lodash'
+  // import _ from 'lodash'
   // import{uuid} from './module_test.js'
 
 // import { name, data, changeName } from "./9_test/module_import.js";
@@ -22,6 +26,8 @@
 //   r_changeName,
 //   r_changeData
 // } = require("./9_test/module_require.js");
+import configList from './test_index.config.js'
+
 export default {
   components: {
     // test2: () => import("./test_com2.vue"),
@@ -31,25 +37,39 @@ export default {
   data() {
     return {
       timeMsg: "this is timeMsg",
-      count:1
+      count:1,
     };
   },
-  mounted() {
-    console.log(_.add(3,4),36)
-    // this._initTimeMsg();
-    // console.log("test_index.vue mounted", 9);
-    setInterval(() => {
-      // console.log('uuid',uuid,37)
-      // console.log(name, data);
-      this.count++;
-    }, 1000);
-  },
   computed:{
-    finalMsg(){
-      console.log('msg:',this.timeMsg,'count:',this.count)
+    configList:function(){
+      return configList;
+      // let res=await import('./test_index.config.js')
+      // return res&&res.default;
+      // .then(res=>{
+      //   console.log(res,40)
+      // })
+
     }
   },
+  mounted() {
+    // console.log(_.add(3,4),36)
+    // this._initTimeMsg();
+    // console.log("test_index.vue mounted", 9);
+    // setInterval(() => {
+      // console.log('uuid',uuid,37)
+      // console.log(name, data);
+    //   this.count++;
+    // }, 1000);
+  },
+  // computed:{
+    // finalMsg(){
+      // console.log('msg:',this.timeMsg,'count:',this.count)
+  //   }
+  // },
   methods: {
+    getConfigList(){
+
+    }
     // _initTimeMsg() {
     //   // 倒计时实现
     //   // 问题1:时间不够准确

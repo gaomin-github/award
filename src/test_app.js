@@ -12,10 +12,10 @@
 // eruda.init();
 // import _ from 'lodash';
 // window['_']=_
-Vue.use(VueRouter)
-const router = new VueRouter({
-  mode: "history",
-  routes: [
+// Vue.use(VueRouter)
+// const router = new VueRouter({
+//   mode: "history",
+//   routes: [
     // {
     //   path:'/test1',
     //   component:()=>import('./test_com1.vue')
@@ -24,23 +24,23 @@ const router = new VueRouter({
     //       path: "/test3",
     //       component: () => import("./test_index3.vue"),
     //   }
-    {
-      path: "/moduleTest",
-      component: () => import("./module_test/index.vue"),
-  }
-    ]})
+  //   {
+  //     path: "/moduleTest",
+  //     component: () => import("./module_test/index.vue"),
+  // }
+    // ]})
 let vm = new Vue({
   el: "#app",
   components: {
-    ModuleTest: () => import("./module_test/index.vue")
-    // App: () => import("./test_index.vue"),
+    // ModuleTest: () => import("./module_test/index.vue")
+    App: () => import("./test_index.vue"),
   },
-  template: "<Module-Test/>",
+  // template: "<Module-Test/>",
 
-  // template: "<App/>",
+  template: "<App/>",
   // template: "<h1>this is test_app h1</h1>",
 
-    router,
+    // router,
   //   mock,
   //   store,
   // router: SelfRoutes
