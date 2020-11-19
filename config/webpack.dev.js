@@ -13,9 +13,9 @@ const devWebpackConfig = merge(baseWebpackConfig, {
     },
     resolve: {
         // extensions: ['.js', '.json', '.vue'],
-        alias: {
-            vue$: 'vue/dist/vue.esm.js'
-        }
+        // alias: {
+        //     vue$: 'vue/dist/vue.esm.js'
+        // }
     },
     devServer: {
         historyApiFallback: true,
@@ -48,7 +48,7 @@ const devWebpackConfig = merge(baseWebpackConfig, {
     plugins: [
         new webpack.HotModuleReplacementPlugin(),
         new webpack.ProvidePlugin({
-            Vue: ["vue/dist/vue.esm.js", "default"],
+            // Vue: ["vue/dist/vue.esm.js", "default"],
         }),
     ],
 })

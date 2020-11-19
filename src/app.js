@@ -1,5 +1,5 @@
-import Vue from "vue";
-import VueRouter from "vue-router";
+// import Vue from "vue";
+// import VueRouter from "vue-router";
 import store from "./store/index";
 import mock from "./mock/index.js";
 // import './axios.js';

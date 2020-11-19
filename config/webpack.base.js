@@ -7,6 +7,11 @@ module.exports = {
     entry: {
         main: ['./src/app.js']
     },
+    externals:{
+        vue:'Vue',
+        'vue-router':'VueRouter',
+        'vuex':'Vuex'
+    },
     node: {
         fs: 'empty',
         net: 'empty',
