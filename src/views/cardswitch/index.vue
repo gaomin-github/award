@@ -13,15 +13,18 @@
         <img class="container_bg" :src="actBgUrl" />
 
         <div class="container" >
-            <div class="content" ref="container">
+            <div class="content" ref="container" @mousedown="dragStartHandler" @mouseup="dragEndHandler" @mousemove="dragMoveHandler">
                 <template v-if="curList&&curList.length>0" >
                 
-                    <div class="cards" :style="{transform:`translateX(${transformX}px`}">
+                    <div class="cards" :style="{transform:`translateX(${transformX}px`}" >
                         <div v-for="(item,index) in curList" :key="item.index" class="cards-item" @mouseenter="handleMouseOver(item,index)" @mouseleave="handleMouseLeave" :ref="`pic_${item.index}`" @click="handleEnterCard(item)">
-                            <img :class="['cards-item-pic',actCardId==item.index?'cards-item-pic-active':'']" v-lazy:imgData="{imgData:item,method:_loadImg}"/>
+                            <img :class="['cards-item-pic',actCardId==item.index?'cards-item-pic-active':'']" v-lazy:imgData="{imgData:item,method:_loadImg}" :alt="item.title"/>
+                            <div class="cards-item-label">{{item.title}}</div>
                         </div>
                     </div>
-                    
+                    <div class="cards-nav">
+                        <div :class="['cards-nav-item',item.index===actCardId?'cards-nav-item-active':'']" v-for="item in curList" :key="item.index"></div>
+                    </div>
                 </template>
             </div>
             
@@ -52,7 +55,10 @@
                 timerTask:null,
                 hasLock:false,  //锁定动画触发；
                 actBgUrl:require('./imgs/01.png'),
-                showModal:false
+                showModal:false,
+                canDrag:false,//是否可拖动
+                startX:0,   //开始拖动位置
+                curX:0,//当前拖动位置
             }
         },
         components:{
@@ -84,10 +90,19 @@
                 }
             }
         },
+        mounted(){
+            // document.onmouseup=()=>{
+
+            // }
+            // document.addEventListener('mouseup',()=>{
+            //     this.canDrag=false;
+            //     console.log('mouseup',new Date().getTime())
+            // })
+        },
         methods:{
             handleMouseLeave(){
                     // if(this.hasLock) return;
-                    this.actCardId=-1;
+                    // this.actCardId=-1;
             },
     
             handleMouseOver(item,index){
@@ -99,6 +114,44 @@
             handleEnterCard(item){
                 // console.log(item,91)
                 this.showModal=true;
+            },
+            // 拖拽行为
+            dragStartHandler(event){
+                // console.log('drag start',new Date().getTime())
+                // console.log(event.clientX,116)
+                this.canDrag=true;
+                this.startX=event.clientX
+            },
+            dragEndHandler(event){
+                this.canDrag=false
+                this.startX=0;
+                this.curX=0;
+            },
+            dragMoveHandler(event){
+                (this._throttle(this._dragMoveAnimation,100))(event)
+
+            },
+            _dragMoveAnimation(event){
+                if(!this.canDrag) return ;
+                // console.log('drag move',event.clientX)
+                this.curX=event.clientX
+                let moveSet=this.curX-this.startX;
+                if(Math.abs(moveSet)<20) return;
+                let $firstEl=this.$refs[`pic_${this.curList[0].index}`][0];
+                let $lastEl=this.$refs[`pic_${this.curList[this.curList.length-1].index}`][0];
+                let firstElRc=$firstEl.getBoundingClientRect()
+                let lastElRc=$lastEl.getBoundingClientRect()
+
+                if(moveSet>0){
+                    // 右
+                    this.transformX+=Math.min(moveSet,this.containerRc[0]-firstElRc.left)
+                }else{
+                    // 左
+                    this.transformX+=Math.max(moveSet,this.containerRc[1]-lastElRc.right)
+                }
+
+                    // this.transformX+=this.curX-this.startX
+                    this.startX=this.curX;
             },
             _loadImg(el,imgData){
                 // console.log(imgData.index)
@@ -134,22 +187,14 @@
                 }else{
                     let curEl_tcenter=Math.round((curElCr.left+curElCr.right)/2)
                     let container_tcenter=Math.round((this.containerRc[0]+this.containerRc[1])/2);
-                    // console.log(this.containerMidSet,'aaa')
-                    // console.log(curEl_tcenter,94)
-                    // console.log(container_tcenter,96)
                     moveSet=container_tcenter-curEl_tcenter;
                 }
                 // 向右移动
                 // console.log('moveSet',moveSet)
                 if(moveSet>0){
-                    // console.log('right',this.containerRc[0]-firstElRc.left)
                     this.transformX+=Math.min(moveSet,this.containerRc[0]-firstElRc.left)
                 }
                 if(moveSet<0){
-                    // console.log('left',this.containerRc[1]-lastElRc.right,0)
-                    // console.log('left',this.containerRc[1],1)
-                    // console.log('left',lastElRc.right,2)
-
                     this.transformX+=Math.max(moveSet,this.containerRc[1]-lastElRc.right)
                 }
                 // console.log(this.transformX,'transformX',96)
@@ -243,12 +288,32 @@
     .content{
         width:100%;
         height:100%;
+        position:relative;
     }
     .container_bg{
         position: absolute;
         z-index:-1;
         width:100%;
         height:100%;
+    }
+    .cards-nav{
+        position:absolute;
+        bottom:50px;
+        width:300px;
+        left:50%;
+        transform: translateX(-50%);
+        justify-content: space-around;
+        display:flex;
+        &-item{
+            width:10px;
+            height:10px;
+            background:rgba(255,255,255,0.6);
+            border-radius:50%;
+        }
+        &-item-active{
+            background:rgba(55,155,200,0.6);
+            border:1px (55,155,200,1) solid;
+        }
     }
     .cards{
         margin-right:30px;
@@ -257,19 +322,28 @@
         display: flex; 
         flex-wrap: nowrap;
         align-items: center;
-        transition: all .6s ease;
+        transition: all .6s linear;
+
         &-item{
             display:block;
             flex-shrink:0;
             width:200px;
             margin-right:20px;
-            padding:20px;
+            padding:20px 20px 40px 20px;
+            position:relative;
             &-pic{
                 display: block;
                 width:100%;
                 transition: all .6s ease;
             }
-
+            &-label{
+                color:#fff;
+                position:absolute;
+                bottom:0px;
+                right:0px;
+                width:100%;
+                text-align: center;
+            }
         }
     }
     

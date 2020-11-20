@@ -36,12 +36,6 @@ const prodWebpackConfig = merge(baseWebpackConfig, {
         publicPath: "./",       //和生成文件inject到html的路径有关
     },
     devtool: "inline-source-map",
-    externals: {
-        'vue': "Vue",
-        'Vue': 'Vue',
-        'vue-router': 'VueRouter',
-        'vuex': 'Vuex'
-    },
     // 编译加速
     module: {
         rules: [{
@@ -72,9 +66,9 @@ const prodWebpackConfig = merge(baseWebpackConfig, {
             filename: 'award_dist/css/[name].css',
             chunkFilename: 'award_dist/css/[id].css'
         }),
-        new webpack.ProvidePlugin({
-            Vue: ["vue/dist/vue.esm.js", "default"],
-        }),
+        // new webpack.ProvidePlugin({
+        //     Vue: ["vue/dist/vue.esm.js", "default"],
+        // }),
         new ProgressBarPlugin(),
         new PreloadWebpackPlugin({
             rel: 'preload',

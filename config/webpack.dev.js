@@ -11,12 +11,12 @@ const devWebpackConfig = merge(baseWebpackConfig, {
         path: path.resolve(__dirname, "../dev_built"),
         chunkFilename: `[name].[hash].js`,
     },
-    resolve: {
-        // extensions: ['.js', '.json', '.vue'],
-        alias: {
-            vue$: 'vue/dist/vue.esm.js'
-        }
-    },
+    // resolve: {
+    //     // extensions: ['.js', '.json', '.vue'],
+    //     alias: {
+    //         vue$: 'vue/dist/vue.esm.js'
+    //     }
+    // },
     devServer: {
         historyApiFallback: true,
         clientLogLevel: "info",
@@ -49,9 +49,9 @@ const devWebpackConfig = merge(baseWebpackConfig, {
     },
     plugins: [
         new webpack.HotModuleReplacementPlugin(),
-        new webpack.ProvidePlugin({
-            Vue: ["vue/dist/vue.esm.js", "default"],
-        }),
+        // new webpack.ProvidePlugin({
+        //     Vue: ["vue/dist/vue.esm.js", "default"],
+        // }),
     ],
 })
 module.exports = devWebpackConfig;

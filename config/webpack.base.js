@@ -12,6 +12,11 @@ module.exports = {
         net: 'empty',
         tls: 'empty'
     },
+    externals:{
+        vue:'Vue',
+        'vue-router':'VueRouter',
+        'vuex':'Vuex'
+    },
     stats: {
         modules: false,
         children: false,
