@@ -13,17 +13,25 @@
         <img class="container_bg" :src="actBgUrl" />
 
         <div class="container" >
-            <div class="content" ref="container" @mousedown="dragStartHandler" @mouseup="dragEndHandler" @mousemove="dragMoveHandler">
+            <div class="content" ref="container" @mousedown.stop="dragStartHandler" @mouseup="dragEndHandler" @mousemove.stop="dragMoveHandler">
                 <template v-if="curList&&curList.length>0" >
                 
                     <div class="cards" :style="{transform:`translateX(${transformX}px`}" >
                         <div v-for="(item,index) in curList" :key="item.index" class="cards-item" @mouseenter="handleMouseOver(item,index)" @mouseleave="handleMouseLeave" :ref="`pic_${item.index}`" @click="handleEnterCard(item)">
                             <img :class="['cards-item-pic',actCardId==item.index?'cards-item-pic-active':'']" v-lazy:imgData="{imgData:item,method:_loadImg}" :alt="item.title"/>
+                            <!-- <img :class="['cards-item-pic',actCardId==item.index?'cards-item-pic-active':'']" :src="item.cardUrl"/> -->
                             <div class="cards-item-label">{{item.title}}</div>
                         </div>
                     </div>
                     <div class="cards-nav">
                         <div :class="['cards-nav-item',item.index===actCardId?'cards-nav-item-active':'']" v-for="item in curList" :key="item.index"></div>
+                    </div>
+                    <div class="cards-tool" v-show="showTool">
+                        可以拖拽浏览感兴趣的游戏哦！<span class="cards-tool-confirm" @click="showTool=false">知道了</span>
+                        <div class="cards-tool-pointer">
+                            <img src="./hand.png"/>
+                        </div>
+    
                     </div>
                 </template>
             </div>
@@ -39,18 +47,16 @@
     </div>
 </template>
 <script>
-    // 完成：
-    // 横向图片懒加载
-    // 图片聚焦样式
-    // 图片聚焦右边，向右滑动，聚焦左边，向左滑动
+   
     // 待补充：
-    // 浏览器大小变化，样式更新
+    // 1.浏览器大小变化，样式更新,页面更新；
     // 懒加载，图片加载失败兜底处理
+    let intersectionObserver;
     import {cardList} from './cards.config.js';
     export default{
         data(){
             return {
-                actCardId:-1,
+                actCardId:0,
                 transformX:0,
                 timerTask:null,
                 hasLock:false,  //锁定动画触发；
@@ -59,6 +65,7 @@
                 canDrag:false,//是否可拖动
                 startX:0,   //开始拖动位置
                 curX:0,//当前拖动位置
+                showTool:true,//展示指引
             }
         },
         components:{
@@ -69,7 +76,7 @@
                 bind:(el,binding,vnode)=>{
                     if(window.IntersectionObserver){
                         let handleObj=binding.value
-                        let intersectionObserver=new IntersectionObserver(()=>{
+                        intersectionObserver=new IntersectionObserver(()=>{
                             handleObj.method(el,handleObj.imgData)
                         })
                         intersectionObserver.observe(el);
@@ -94,9 +101,10 @@
             // document.onmouseup=()=>{
 
             // }
-            // document.addEventListener('mouseup',()=>{
-            //     this.canDrag=false;
-            //     console.log('mouseup',new Date().getTime())
+            // document.addEventListener('resize',()=>{
+            //     intersectionObserver.observe()
+            //     // this.canDrag=false;
+            //     // console.log('mouseup',new Date().getTime())
             // })
         },
         methods:{
@@ -250,12 +258,28 @@
         /* overflow: hidden; */
 
     }
+    @keyframes mypointer{
+        0%{
+            transform:translateX(20px)
+        }
+        100%{
+            transform:translateX(0px)
+        }
+    }
+    @keyframes activeCard {
+        50%{
+            transform:scale(1.05,1.05);
+        }
+        100%{
+            transform:scale(1,1)
+        }
+    }
     .cardswitch-wrapper{
         width:100%;
         height:100%;
         display: flex;
         flex-direction:column;       
-         position:relative;
+        position:relative;
 
     }
     .info{
@@ -296,9 +320,40 @@
         width:100%;
         height:100%;
     }
-    .cards-nav{
+    .cards-tool{
         position:absolute;
         bottom:50px;
+        right:30px;
+        width:280px;
+        line-height:30px;
+        text-align: center;
+        padding-left:60px;
+        color:rgba(255,255,255,0.5);
+        &-confirm{
+            display: inline-block;
+            line-height:30px;
+            border:1px white solid;
+            border-radius:15px;
+            padding:0px 10px;
+        }
+    }
+    .cards-tool-pointer{
+        position:absolute;
+        /* bottom:50px; */
+        bottom:10px;
+        left:20px;
+        width:40px;
+        height:30px;
+        animation:mypointer 2.5s infinite ease-in-out;
+        img{
+            display:block;
+            width:100%;
+            height:100%;
+        }
+    }
+    .cards-nav{
+        position:absolute;
+        bottom:10px;
         width:300px;
         left:50%;
         transform: translateX(-50%);
@@ -348,9 +403,10 @@
     }
     
     .cards-item-pic-active{
-        transform: scale(1.1,1.1);
+        /* transform: scale(1.1,1.1); */
         border:2px white solid;
         border-top-left-radius: 20px;
         border-bottom-right-radius: 20px;
+        animation:activeCard infinite linear 2s;
     }
 </style>
