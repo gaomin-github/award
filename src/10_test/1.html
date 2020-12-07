@@ -1,0 +1,83 @@
+<!Doctype>
+<html>
+    <head>
+        <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no, target-densitydpi=device-dpi, viewport-fit=cover"
+      />
+          <title>
+
+        </title>
+        <style>
+            html,body{
+                height:100%;
+            }
+            div{
+                overflow: hidden;
+            }
+            .main{
+                height:100%;
+                display: flex;
+            }
+            .top{
+                height:100px;
+            }
+            .bot{
+                height:100px;
+            }
+            .container{
+                /* flex:1; */
+                overflow-y: scroll;
+                display: flex;
+                flex-wrap: wrap;
+                max-height: 200px;
+                /* overflow:hidden; */
+            }
+            .container li{
+                line-height: 22px;
+                font-size:24px;
+                display: block;
+                width:100px;
+                height:50px;
+                overflow:hidden;
+                border:1px black solid;
+                margin:10px;
+            }
+
+        </style>
+    </head>
+    <body>
+        <div class="main">
+            <div class="top">
+
+            </div>
+            <div class="container" id="container">
+                <li>this is a good1</li>
+                <li>this is a good</li>
+                <li>this is a good</li>
+                <li>this is a good2</li>
+                <li>this is a good</li>
+                <li>this is a good</li>
+                <li>this is a good3</li>
+                <li>this is a good</li>
+                <li>this is a good</li>
+                <li>this is a good4</li>
+                <li>this is a good</li>
+                <li>this is a good</li>
+                <li>this is a good5</li>
+                <li>this is a good</li>
+                <li>this is a good6</li>
+                <li>this is a good</li>
+            </div>
+            <div class="bot">
+
+            </div>
+        </div>
+        <script>
+            let $contianerEl=document.getElementById('container')
+            window.addEventListener('scroll',()=>{
+                console.log('scroll touched',new Date().getTime())
+            },true)
+</script>
+    </body>
+</html>
