@@ -1,9 +1,18 @@
 <template>
   <section class="test-wrapper">
-   test_index vue file
+    <div class="swiper-container">
+
+      <my-swiper :dataList="imgList">
+        <div class="swiper-item" v-for="(item,index) in imgList" :key="index">
+          <img class="swiper-item-img" :src="item.imgUrl"/>
+          <div class="swiper-item-label">{{item.label}}</div>
+        </div>
+      </my-swiper>
+    </div>
+   <!-- test_index vue file
    {{configList}}
    <img src="./01.jpg"/>
-   <img src="./02.png"/>
+   <img src="./02.png"/> -->
 
    <!-- {{finalMsg}} -->
     <!-- <router-view></router-view> -->
@@ -27,17 +36,31 @@
 //   r_changeData
 // } = require("./9_test/module_require.js");
 import configList from './test_index.config.js'
-
 export default {
   components: {
     // test2: () => import("./test_com2.vue"),
     // safeTest: () => import("./safe_test.vue"),
     // changeTest: () => import("./change_test.vue")
+    mySwiper:()=>import("components/ui-swiper.vue")
+
   },
   data() {
     return {
       timeMsg: "this is timeMsg",
       count:1,
+      imgList:[{
+        imgUrl:require('./imgs/01.jpg'),
+        label:'围攻1'
+      },{
+        imgUrl:require('./imgs/02.jpg'),
+        label:'让水蛙去旅游2'
+      },{
+        imgUrl:require('./imgs/03.jpg'),
+        label:'古剑3'
+      },{
+        imgUrl:require('./imgs/04.jpg'),
+        label:'限时4'
+      }]
     };
   },
   computed:{
@@ -108,11 +131,32 @@ export default {
   }
 };
 </script>
-<style lang="scss" scoped>
+<style lang="scss">
+  div{
+    box-sizing: border-box;
+    overflow: hidden;
+  }
 .btn-list-item {
   line-height: 42px;
 }
 .test-wrapper {
   user-select: none;
+}
+.swiper-container{
+  width:100%;
+  height:550px;
+  overflow: hidden;
+  /* padding:0px 30px; */
+
+}
+.swiper-item{
+  width:100%;
+  height:100%;
+  &-img{
+    width:100%;
+  }
+  &-label{
+    line-height: 32px;
+  }
 }
 </style>
