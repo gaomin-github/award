@@ -1,13 +1,15 @@
 <template>
   <section class="test-wrapper">
-    <div class="swiper-container">
-
+    <!-- <div class="swiper-container">
       <my-swiper :dataList="imgList">
         <div class="swiper-item" v-for="(item,index) in imgList" :key="index">
           <img class="swiper-item-img" :src="item.imgUrl"/>
           <div class="swiper-item-label">{{item.label}}</div>
         </div>
       </my-swiper>
+    </div> -->
+    <div class="list-container">
+      <my-list :imgList="imgList"></my-list>
     </div>
    <!-- test_index vue file
    {{configList}}
@@ -41,7 +43,8 @@ export default {
     // test2: () => import("./test_com2.vue"),
     // safeTest: () => import("./safe_test.vue"),
     // changeTest: () => import("./change_test.vue")
-    mySwiper:()=>import("components/ui-swiper.vue")
+    mySwiper:()=>import("components/ui-swiper.vue"),
+    myList:()=>import("components/ui-list.vue")
 
   },
   data() {
@@ -148,6 +151,11 @@ export default {
   overflow: hidden;
   /* padding:0px 30px; */
 
+}
+.list-container{
+  width:100%;
+  height:500px;
+  overflow: hidden;
 }
 .swiper-item{
   width:100%;
