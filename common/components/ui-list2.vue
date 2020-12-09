@@ -1,18 +1,18 @@
-<!-- scroll版本 -->
 <template>
     <div class="list-wrapper" >
-        <div class="handler">
+        <!-- <div class="handler">
             <div class="handler-del" @click="scrollDelTest(true)">顶部移除</div>
             <div class="handler-del" @click="scrollDelTest(false)">顶部增加</div>
+        </div> -->
+        <div class="list-container">
+            <div class="list-content"  ref="listWrapper" @touchstart="touchStartHander" :style="{transform:`translate(${transformX}%,${transformY}%)`}">
 
-        </div>
-        <div class="list-content"  ref="listWrapper" @touchstart="touchStartHander">
-
-            <div class="list-item" v-for="item in actList" :key="item.index">
-                <img class="list-item-img" :src="item.imgUrl"/>
-                <p class="list-item-label">
-                    pageNo,{{pageNo}},{{item.label}}
-                </p>
+                <div class="list-item" v-for="item in actList" :key="item.index">
+                    <img class="list-item-img" :src="item.imgUrl"/>
+                    <p class="list-item-label">
+                        pageNo,{{pageNo}},{{item.label}}
+                    </p>
+                </div>
             </div>
         </div>
     </div>
@@ -33,6 +33,9 @@
                 timerTask:0,
                 startY:0,   //触摸开始位置
                 endY:0, //触摸停止位置
+                transformX:0,
+                transformY:0,
+                clientHeight:document.documentElement.clientHeight,
             }
         },
         computed:{
@@ -67,18 +70,8 @@
             // 子元素宽高
 
             setTimeout(()=>{
-                // let {p,l}=this._els()
-                // console.log('p',p)
-                // console.log('l',l)
                 this._addBottom()
-            //     for(let i=0;i<4;i++){
-            //         this._initChildRect()
-            //     }
             },0)
-            // window.addEventListener('touchmove',()=>{
-            //     (this._throttle(this._initChildRect,300))()
-            //     // this._initChildRect()
-            // },true)
         },
         methods:{
             scrollDelTest(param){
@@ -97,17 +90,19 @@
             },
             async touchMoveHandler(e){
                 let curY=e.touches[0].clientY;
-                // console.log('curY',curY,'startY',this.startY)
-                // this._initChildRect()
                 if(curY-this.startY>10){
                     // down
                     console.log('down')
 
-                    await this._downHandler()
+                    this._transitionMove(curY-this.startY)
+                    this._downHandler()
                 }else if(curY-this.startY<-10){
                     // up
                     console.log('up')
-                    await this._upHandler()
+                    this._transitionMove(curY-this.startY)
+                    this._upHandler()
+                    // console.log('_transitionMove start')
+
                 }else{
                     return;
                 }
@@ -127,6 +122,26 @@
                     l:childs[childs.length-1]
                 }
             },
+            _transitionMove(distance){
+                // console.log('distance',distance,'clientHeight',this.clientHeight)
+                return new Promise((resolve,reject)=>{
+                    let moveRation=distance/this.clientHeight;
+                    console.log('moveRation',moveRation)
+                    this.transformY+=moveRation*100
+                    console.log('transformY',this.transformY)
+
+                    setTimeout(()=>{
+                        resolve()
+                    },1500)
+                })
+                // console.log('_transitionMove')
+                // console.log('clientHeight',this.clientHeight)
+
+                // console.log('transformY',this.transformY)
+                // let {p}=this._els();
+                // console.log('pRec.bottom',p.getBoundingClientRect().bottom)
+
+            },
             // 下滑，尾部回收，头部追加
             _downHandler(){
                 
@@ -140,19 +155,18 @@
             // 上滑，尾部追加，头部回收
            async _upHandler(){
                 await this._addBottom();
-                await this._recycleTop()
-
+                // await this._recycleTop()
             },
             _recycleTop(){
                 return new Promise((resolve,reject)=>{
-                    let {p,f}=this._els()
+                    let {f}=this._els()
                     let pRec=this.pRec,fRec=f.getBoundingClientRect()
-                    console.log('pRec.top',pRec.top,'fRec.top',fRec.top,'f.offsetHeight',f.offsetHeight)
+                    // console.log('pRec.top',pRec.top,'fRec.top',fRec.top,'f.offsetHeight',f.offsetHeight)
                     if(pRec.top+fRec.top<-(f.offsetHeight)){
-                        console.log('del',150)
+                        // console.log('del',150)
                         this.startIndex++;
                         requestAnimationFrame(()=>{
-                            resolve()
+                            resolve(true)
                         })
                     }
                 })
@@ -161,67 +175,24 @@
                 return new Promise((resolve,reject)=>{
                     let {p,l}=this._els()
                     let pRec=this.pRec,lRec=l.getBoundingClientRect()
-                    // console.log('pRect.bottom',pRec.bottom,'l.offsetHeight',l.offsetHeight)
+                    // console.log('pRect.bottom',pRec.bottom,'lRec.bottom',lRec.bottom,'l.offsetHeight',l.offsetHeight)
                     if(lRec.bottom-pRec.bottom<=l.offsetHeight){
                         console.log('add')
                         this.endIndex++;
                         requestAnimationFrame(()=>{
-                            let {p,l}=this._els();
-                            this._addBottom(p,l)
-                            resolve(true)
+                            this._addBottom()
                         })
+                    }else{
+                        resolve(true)
                     }
                 })
             },
             // 容器边界
             _initContainerrNum(){
-                // this.pRec=this.$refs.listWrapper.getBoundingClientRect();
-                // console.log('clientHeight',this.clientHeight)
             },
-            // 头尾元素更新
-            _initChildRect(){
-                // console.log('_initChildRect',new Date().getTime())
-                // console.log('lastEl',lastEl)
-                // console.log('pRec',this.pRec)
-                // console.log('lastRec',lastRec)
-                // console.log('lastEl',lastEl,82)
-
-                // if(lastRec.bottom-this.pRec.bottom<=this.pEl.offsetHeight){
-                //     console.log('add')
-                //     this.endIndex++;
-                //     requestAnimationFrame(()=>{
-                        // let lastEl=childEl[childEl.length-1];
-                        // let lastRec=lastEl.getBoundingClientRect();
-                        // let childEl=this.$refs.listWrapper.childNodes;
-                        // let lastEl=childEl[childEl.length-1];
-                        // console.log('lastEl',lastEl)
-                        // let lastRec=lastEl.getBoundingClientRect();
-                        // let firstEl=childEl[0];
-
-                        // console.log('pEl.bottom',this.pRec.bottom,'lastEl.bottom',lastRec.bottom)
-                        // console.log('firstEl.offsetHeight',firstEl.offsetHeight,'firstEl.bottom',firstRec.top)
-                //         console.log('pEl.scrollHeight1',this.pEl.scrollHeight)
-                //         if(firstRec.top+firstEl.offsetHeight<-(firstEl.offsetHeight)){
-                //             console.log('del')
-                //             this.startIndex++;
-                //             requestAnimationFrame(()=>{
-                //                 console.log('pEl.scrollHeight2',this.pEl.scrollHeight)
-                //             })
-                //         }
-                //     })
-                // }
-                // console.log('firstEl.top',firstRec.top,'firstEl.height',firstEl.offsetHeight,'pEl.top',this.pRec.top)
-            },
-           
             _throttle(func,delay){
                 let that=this;
                 return function(params){
-                    // console.log('timerTask',that.timerTask,'now',new Date().getTime())
-                    // if(!that.timerTask){
-                    //     func.bind(this)(params)
-                    //     that.timerTask=new Date().getTime()
-                    //     return ;
-                    // }
                     if(that.timerTask&&new Date().getTime()-that.timerTask<delay){
                         return;
                     }
@@ -233,11 +204,16 @@
     }
 </script>
 <style lang="scss" scoped>
+div{
+    box-sizing: border-box;
+    overflow: hidden;
+}
 .list-wrapper{
     width:100%;
     height:100%;
     padding:10px;
     border:1px red solid;
+    padding:40px 10px;
 }
 .handler{
     display: flex;
@@ -246,24 +222,29 @@
     &-del{
         line-height: 28px;
         padding:0px 10px;
-        border:1px grey solid;
         border-radius:20%;
     }
 }
-.list-content{
-    /* overflow: visible; */
+.list-container{
     width:100%;
     height:100%;
+    overflow:hidden;
+    border:1px grey solid;
 
-    overflow-y: scroll;
-
+}
+.list-content{
+    overflow: visible;
+    width:100%;
+    height:100%;
+    transition:all .6s linear;
+    border:1px blue solid;
 }
 .list-item{
     line-height: 62px;
     display:flex;
     height:130px;
     padding:7px 10px;
-    border-bottom:1px grey solid;
+    /* border-bottom:1px grey solid; */
     &-img{
         width:80px;
     }

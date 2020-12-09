@@ -8,8 +8,11 @@
         </div>
       </my-swiper>
     </div> -->
-    <div class="list-container">
+    <!-- <div class="list-container">
       <my-list :imgList="imgList"></my-list>
+    </div> -->
+    <div class="frame-container">
+      <my-frame></my-frame>
     </div>
    <!-- test_index vue file
    {{configList}}
@@ -43,8 +46,9 @@ export default {
     // test2: () => import("./test_com2.vue"),
     // safeTest: () => import("./safe_test.vue"),
     // changeTest: () => import("./change_test.vue")
-    mySwiper:()=>import("components/ui-swiper.vue"),
-    myList:()=>import("components/ui-list.vue")
+    // mySwiper:()=>import("components/ui-swiper.vue"),
+    // myList:()=>import("components/ui-list2.vue")
+    myFrame:()=>import("./pages/iframeTest/index.vue")
 
   },
   data() {
@@ -155,7 +159,7 @@ export default {
 .list-container{
   width:100%;
   height:500px;
-  overflow: hidden;
+  /* overflow: hidden; */
 }
 .swiper-item{
   width:100%;
