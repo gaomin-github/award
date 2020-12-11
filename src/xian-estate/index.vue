@@ -6,7 +6,7 @@
       </div> -->
 
     <div class="header">
-      高新周边楼盘参考
+      <!-- 高新周边楼盘参考 -->
       <ui-switch
         class="switch-btn"
         :switchBool="switchBool"
@@ -14,13 +14,21 @@
       ></ui-switch>
     </div>
     <div class="content">
-      <transition name="in" mode="out-in">
-        <div
-          class="building"
-          v-if="areaList && areaList.length > 0"
-          ref="building"
-        >
-          <section
+      <div
+      class="building"
+      v-if="areaList && areaList.length > 0"
+      ref="building"
+      >
+                <transition-group name="in" mode="out-in">
+                  
+                  <div class="item" v-for="(building,buildingIndex) in areaList"
+                  :key="building.href" >
+                    <estate-info v-if="buildingIndex<1"  :bInfo="areaList[0]"></estate-info>
+                    <!-- <estate-info v-if="buildingIndex<1"></estate-info> -->
+
+                  </div>
+                  
+          <!-- <section
             v-for="building in areaList"
             :key="building.href"
             class="building-item"
@@ -84,10 +92,10 @@
                 }}&nbsp;</span
               >家公园
             </div>
-          </section>
+          </section> -->
+          </transition-group>
         </div>
-        <loading :imgUrl="loadingUrl" class="loading" v-else></loading>
-      </transition>
+        <!-- <loading :imgUrl="loadingUrl" class="loading" v-else></loading> -->
     </div>
   </div>
 </template>
@@ -99,6 +107,7 @@ import loading from "components/ui-loading.vue";
 export default {
   components: {
     loading,
+    estateInfo:()=>import('./estate-info.vue'),
     email: () => import("./email.vue"),
     uiSwitch: () => import("components/ui-switch.vue"),
   },
@@ -207,7 +216,7 @@ section {
 .content {
   flex-shrink: 1;
   flex: 1;
-  padding: 10px;
+  /* padding: 10px; */
   border-radius: 10px;
   background: rgb(245, 245, 245);
   position: relative;
@@ -217,76 +226,7 @@ section {
   overflow-y: scroll;
   border-radius: 5px;
   &-item {
-    margin-bottom: 15px;
-    padding: 10px;
-    background: rgba(20, 53, 129, 1);
-    /* background: rgba(237, 237, 237, 1); */
-    border-radius: 5px;
-
-    &-title {
-      line-height: 28px;
-      font-size: 18px;
-      font-weight: 600;
-      /* color: rgba(1, 1, 1, 1); */
-      color: rgb(255, 178, 11);
-    }
-    &-time {
-      line-height: 20px;
-      font-size: 14px;
-      color: rgba(255, 255, 255, 0.6);
-      /* color: rgba(155, 155, 155, 1); */
-    }
-    &-unitprice {
-      line-height: 30px;
-      font-size: 16px;
-      color: rgba(255, 255, 255, 0.9);
-      span {
-        color: rgba(243, 88, 67, 1);
-        font-weight: 600;
-      }
-    }
-    &-drive {
-      /* color: rgba(25, 25, 25, 1); */
-
-      margin: 3px 0px;
-      line-height: 26px;
-      font-size: 16px;
-      color: rgba(255, 255, 255, 0.9);
-      span {
-        color: rgb(255, 178, 11);
-      }
-    }
-    &-bus,
-    &-garden {
-      line-height: 24px;
-      font-size: 14px;
-      color: rgba(255, 255, 255, 0.8);
-    }
-    &-garden {
-      span {
-        line-height: 24px;
-        color: rgba(112, 226, 30, 1);
-        font-size: 16px;
-        font-weight: 600;
-      }
-    }
-
-    &-bus,
-    &-garden,
-    &-drive {
-      display: flex;
-      &-label {
-        width: 60px;
-        flex-shrink: 1;
-        text-align: justify;
-        text-align-last: justify;
-      }
-    }
-    &-content {
-      flex: 1;
-      flex-shrink: 1;
-      justify-content: start;
-    }
+    /* margin-bottom: 15px; */
   }
 }
 .loading {
