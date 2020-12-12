@@ -1,85 +1,69 @@
 <template>
     <div class="estateInfo-wrapper">
-        
-        <div v-if="estInfo" class="estate">
-            <div class="estate-head">
-                <div class="title" v-html="estInfo.label"></div>
-                <div class="time">备案时间：{{ bInfo.time }}</div>
-            </div>
-            <div class="estate-con">
-                <div class="unitprice">
-                    单价：最低 <span>{{ bInfo.minUnitPrice }}</span> 元，最高
-                    <span>{{ bInfo.maxUnitPrice }}</span> 元
+        <!-- <transition name="showinfo"> -->
+            <div v-if="estInfo" class="estate">
+                <div class="estate-head">
+                    <div class="title" v-html="estInfo.label"></div>
+                    <div class="time">备案时间：{{ bInfo.time }}</div>
                 </div>
-                <div class="drive h">
-                    <div class="h-l">
-                        <img class="drive-icon" src="https://i3.dd-img.com/upload/2018/0705/1530787534754.jpg!ddb"/>
+                <div class="estate-con">
+                    <div class="unitprice">
+                        单价：最低 <span>{{ bInfo.minUnitPrice }}</span> 元，最高
+                        <span>{{ bInfo.maxUnitPrice }}</span> 元
                     </div>
-                    <div class="h-r">
-                        <div class="drive-label">开车</div>
-                        <div class="drive-content">
-                            距离
-                            <span>
-                            {{
-                                Math.ceil(
-                                parseInt(bInfo.drivingRoute.distance || 0) / 100
-                                ) / 10
-                            }}
-                            </span>
-                            公里,需要
-                            <span>{{
-                            Math.ceil(parseInt(bInfo.drivingRoute.duration) / 60)
-                            }}</span>
-                            分钟
+                    <div class="drive h">
+                        <div class="h-l">
+                            <img class="drive-icon" src="https://i3.dd-img.com/upload/2018/0705/1530787534754.jpg!ddb"/>
                         </div>
+                        <div class="h-r">
+                            <div class="drive-label">开车</div>
+                            <div class="drive-content">
+                                距离
+                                <span>
+                                {{
+                                    Math.ceil(
+                                    parseInt(bInfo.drivingRoute.distance || 0) / 100
+                                    ) / 10
+                                }}
+                                </span>
+                                公里,需要
+                                <span>{{
+                                Math.ceil(parseInt(bInfo.drivingRoute.duration) / 60)
+                                }}</span>
+                                分钟
+                            </div>
 
-                    </div>
-                </div>
-                <div class="bus h">
-                    <div class="h-l">
-                        <img class="bus-icon" src="https://img95.699pic.com/element/40091/3312.png_300.png"/>
-                    </div>
-                    <div class="h-r">
-                        <div class="bus-label">乘公交</div>
-                        <div class="bus-content">
-                            距离{{
-                                Math.ceil(parseInt(bInfo.busRoute.distance || 0) / 100) /
-                                10
-                            }}
-                            公里，需要
-                            {{ Math.ceil(parseInt(bInfo.busRoute.duration) / 60) }}
-                            分钟，需要步行{{ bInfo.busRoute.walking_distance }}米
                         </div>
                     </div>
+                    <div class="bus h">
+                        <div class="h-l">
+                            <img class="bus-icon" src="https://img95.699pic.com/element/40091/3312.png_300.png"/>
+                        </div>
+                        <div class="h-r">
+                            <div class="bus-label">乘公交</div>
+                            <div class="bus-content">
+                                距离{{
+                                    Math.ceil(parseInt(bInfo.busRoute.distance || 0) / 100) /
+                                    10
+                                }}
+                                公里，需要
+                                {{ Math.ceil(parseInt(bInfo.busRoute.duration) / 60) }}
+                                分钟，需要步行{{ bInfo.busRoute.walking_distance }}米
+                            </div>
+                        </div>
+                    </div>
+                    <div class="garden">
+                    周边
+                    <span
+                        >&nbsp;{{
+                        bInfo.garden ? bInfo.garden.num : 0
+                        }}&nbsp;</span
+                    >家公园
+                    </div>
                 </div>
-                <div class="garden">
-                周边
-                <span
-                    >&nbsp;{{
-                    bInfo.garden ? bInfo.garden.num : 0
-                    }}&nbsp;</span
-                >家公园
-                </div>
+                
             </div>
-            
-        </div>
-        <div v-else class="nestate">
-            <div class="nestate-head">
-                <div class="title"></div>
-            </div>
-            <div class="nestate-con">
-                <div class="nestate-unitprice"></div>
-                <div class="nestate-bus">
-                    <div class="nestate-icon"></div>
-                    <div class="nestate-content"></div>
-                </div>
-                <div class="nestate-drive">
-                    <div class="nestate-icon"></div>
-                    <div class="nestate-content"></div>
-                </div>
-                <div class="nestate-garden"></div>
-            </div>
-        </div>
+        <!-- </transition> -->
     </div>
 </template>
 <script>
@@ -108,10 +92,8 @@
             }
         },
         mounted(){
-            setTimeout(()=>{
-                this.estInfo=this.bInfo
-                console.log(this.bInfo,'bInfo')
-            },5000)
+            this.estInfo=this.bInfo
+            // console.log(this.bInfo,'bInfo')
         },
         methods:{
         }
@@ -122,75 +104,20 @@ div{
     box-sizing: border-box;
     overflow: hidden;
 }
-@keyframes loading {
-    0%{
-        opacity:0.3;
-    }
-    50%{
-        opacity:0.9;
-    }
-    100%{
-        opacity: 0.3;
-    }
-}
-.nestate{
-    padding:10px;
-    /* animation: loading 2s infinite; */
-    &-head{
-        background: rgb(90, 128, 216);
-        min-height:24px;
-        margin-bottom:5px;
-        padding:5px 10px;
-        border-radius:5px;
-    }
-    &-con{
-        background: rgba(20, 53, 129, 1);
 
-        /* background: rgba(90, 128, 216,0.2); */
-        padding:5px 10px;
-        border-radius:5px;
-    }
-    &-unitprice{
-        min-height: 28px;
-    }
-    &-drive{
-        margin-top:15px;
-    }
-    &-bus,&-drive{
-        display:flex;
-        margin-top:15px;
-    }
-    &-icon{
-        display: block;
-        flex-shrink:0;
-        width:40px;
-        height:40px;
-        border-radius:50%;
-        background: rgba(90, 128, 216,0.3);
-    }
-    &-content{
-        flex:1;
-        min-height:50px;
-        background: rgba(90, 128, 216,0.3);
-        border-radius:5px;
-        margin-left:10px;
-    }
-    &-garden{
-        min-height: 28px;
-    }
-}
 .estate{
-    padding: 10px;
     border-radius: 5px;
     color: rgba(255, 255, 255, 1);
+
     &-head{
-        background: rgb(90, 128, 216);
-        margin-bottom:5px;
+        background: rgba(20, 53, 129, 1);
         padding:5px 10px;
-        border-radius:5px;
+        border-radius:10px;
     }
     &-con{
-        background: rgba(20, 53, 129, 1);
+        background: rgb(90, 128, 216);
+
+        /* background: rgba(20, 53, 129, 1); */
         padding:5px 10px;
         border-radius:5px;
 
@@ -210,10 +137,10 @@ div{
     color: rgba(255, 255, 255, 0.6);
 }
 .unitprice {
-    line-height: 42px;
+    line-height: 22px;
+    margin:5px 0px;
     font-size: 16px;
     color: rgba(255, 255, 255, 0.9);
-    margin-bottom:5px;
     span {
         color: rgba(243, 88, 67, 1);
         font-weight: 600;
@@ -295,24 +222,10 @@ div{
     flex-shrink: 1;
     justify-content: start;
 }
-.list-enter{
-    /* opacity:0; */
-    min-height: 50px;
-    background:grey;
-
-    .title{
-        min-height: 32px;
-        background:grey;
-    }
-    .time{
-        min-height: 24px;
-        background:grey;
-    }
+.showinfo-enter{
+    opacity:0;
 }
-.list-enter-active{
-    /* transition:all 3s ease; */
-}
-.list-enter-to{
-    
+.showinfo-enter-active{
+    transition:all .3s ease;
 }
 </style>

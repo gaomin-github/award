@@ -6,7 +6,7 @@
       </div> -->
 
     <div class="header">
-      <!-- 高新周边楼盘参考 -->
+      高新周边楼盘参考
       <ui-switch
         class="switch-btn"
         :switchBool="switchBool"
@@ -19,81 +19,13 @@
       v-if="areaList && areaList.length > 0"
       ref="building"
       >
-                <transition-group name="in" mode="out-in">
+          <estate-info-default v-for="(item,key) in defaultListSize" :key="key" v-show="showDefaultList"></estate-info-default>
+          <div class="building-item" v-for="(building,buildingIndex) in areaList"
+          :key="building.href" >
+            <estate-info :bInfo="building"></estate-info>
+            <!-- <estate-info v-if="buildingIndex<1"></estate-info> -->
+          </div>
                   
-                  <div class="item" v-for="(building,buildingIndex) in areaList"
-                  :key="building.href" >
-                    <estate-info v-if="buildingIndex<1"  :bInfo="areaList[0]"></estate-info>
-                    <!-- <estate-info v-if="buildingIndex<1"></estate-info> -->
-
-                  </div>
-                  
-          <!-- <section
-            v-for="building in areaList"
-            :key="building.href"
-            class="building-item"
-            @click="stepTo(building)"
-          >
-            <div class="building-item-title" v-html="building.label"></div>
-            <div class="building-item-time">备案时间：{{ building.time }}</div>
-
-            <div class="building-item-unitprice">
-              单价：最低 <span>{{ building.minUnitPrice }}</span> 元，最高
-              <span>{{ building.maxUnitPrice }}</span> 元
-            </div>
-
-            <div class="building-item-drive">
-              <section class="label">开车：</section>
-              <section class="building-item-content">
-                距离
-                <span>
-                  {{
-                    Math.ceil(
-                      parseInt(building.drivingRoute.distance || 0) / 100
-                    ) / 10
-                  }}
-                </span>
-                公里,需要
-                <span>{{
-                  Math.ceil(parseInt(building.drivingRoute.duration) / 60)
-                }}</span>
-                分钟
-              </section>
-            </div>
-            <div class="building-item-bus">
-              <section class="building-item-label">乘公交：</section>
-              <section class="building-item-content">
-                距离{{
-                  Math.ceil(parseInt(building.busRoute.distance || 0) / 100) /
-                    10
-                }}
-                公里，需要
-                {{ Math.ceil(parseInt(building.busRoute.duration) / 60) }}
-                分钟，需要步行{{ building.busRoute.walking_distance }}米
-              </section>
-            </div>
-            <div class="building-item-bus">
-              <section class="building-item-label">乘公交：</section>
-              <section class="building-item-content">
-                距离{{
-                  Math.ceil(parseInt(building.busRoute.distance || 0) / 100) /
-                    10
-                }}
-                公里，需要
-                {{ Math.ceil(parseInt(building.busRoute.duration) / 60) }}
-                分钟，需要步行{{ building.busRoute.walking_distance }}米
-              </section>
-            </div>
-            <div class="building-item-garden">
-              周边
-              <span
-                >&nbsp;{{
-                  building.garden ? building.garden.num : 0
-                }}&nbsp;</span
-              >家公园
-            </div>
-          </section> -->
-          </transition-group>
         </div>
         <!-- <loading :imgUrl="loadingUrl" class="loading" v-else></loading> -->
     </div>
@@ -108,6 +40,7 @@ export default {
   components: {
     loading,
     estateInfo:()=>import('./estate-info.vue'),
+    estateInfoDefault:()=>import('./estate-info-default.vue'),
     email: () => import("./email.vue"),
     uiSwitch: () => import("components/ui-switch.vue"),
   },
@@ -118,6 +51,8 @@ export default {
       loadingUrl: require("./imgs/house.png"),
       showEmailModal: false,
       switchBool: false, //开关状态
+      defaultListSize:3,
+      showDefaultList:true,
     };
   },
   computed: {
@@ -153,6 +88,8 @@ export default {
       request.get("/xian/estateArea").then((res) => {
         if (res.status === 200) {
           this.areaList = res.data;
+          let that=this;
+            that.showDefaultList=false;
         }
       });
     },
@@ -216,7 +153,7 @@ section {
 .content {
   flex-shrink: 1;
   flex: 1;
-  /* padding: 10px; */
+  padding: 10px;
   border-radius: 10px;
   background: rgb(245, 245, 245);
   position: relative;
@@ -224,9 +161,9 @@ section {
 .building {
   height: 100%;
   overflow-y: scroll;
-  border-radius: 5px;
+  /* border-radius: 5px; */
   &-item {
-    /* margin-bottom: 15px; */
+    margin-bottom: 10px;
   }
 }
 .loading {
