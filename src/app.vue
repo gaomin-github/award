@@ -14,6 +14,18 @@ export default {
 </script>
 <style lang="scss">
 @import url("https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.css");
+$vw_fontsize:16;
+$vw_base:375;
+html{
+  font-size: 20px;
+  font-size: ($vw_fontsize/$vw_base)*100vw;
+}
+@media screen and (orientation: landscape){
+  html{
+    font-size: 20px;
+    font-size: ($vw_fontsize/$vw_base)*100vh;
+  }
+}
 html,
 body {
   height: 100%;

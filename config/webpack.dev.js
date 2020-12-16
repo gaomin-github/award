@@ -38,7 +38,7 @@ const devWebpackConfig = merge(baseWebpackConfig, {
         rules: [
             {
                 test: /\.(css|scss)$/,
-                use: ['style-loader', 'css-loader', 'postcss-loader', 'sass-loader'],
+                use: ['style-loader', 'css-loader','postcss-loader', 'sass-loader'],
                 include: [
                     path.resolve(__dirname, '../src'),
                     path.resolve(__dirname, '../common/components'),

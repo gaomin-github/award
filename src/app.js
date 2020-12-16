@@ -75,6 +75,16 @@ const router = new VueRouter({
             path: "/scrollTest",
             component: () => import("./scrollTest/index.vue"),
         },
+        {
+            name: "flexDemo",
+            path: "/flexDemo",
+            component: () => import("./cssDemo/flex.vue"),
+        },
+        {
+            name: "zIndexDemo",
+            path: "/zIndexDemo",
+            component: () => import("./cssDemo/zIndex.vue"),
+        }
 
         // {
         //     name: "weekly",

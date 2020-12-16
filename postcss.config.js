@@ -7,13 +7,16 @@ module.exports = {
     "postcss-aspect-ratio-mini": {},
     "postcss-write-svg": { utf8: false },
     "postcss-cssnext": {},
-    "postcss-px-to-viewport": {
-      viewportWidth: 375,
-      unitPrecision: 3,
-      viewportUnit: "vw",
-      selectorBlackList: [".ignore", ".hairlines"],
-      minPixelValue: 1,
-      mediaQuery: false,
+    // "postcss-px-to-viewport": {
+    //   viewportWidth: 375,
+    //   unitPrecision: 3,
+    //   viewportUnit: "vw",
+    //   selectorBlackList: [".ignore", ".hairlines"],
+    //   minPixelValue: 1,
+    //   mediaQuery: false,
+    // },
+    "postcss-pxtorem":{
+      rootVal:16,
     },
     "postcss-viewport-units": {},
     cssnano: {

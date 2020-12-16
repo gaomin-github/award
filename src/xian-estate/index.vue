@@ -6,7 +6,7 @@
       </div> -->
 
     <div class="header">
-      高新周边楼盘参考
+      <!-- 高新周边楼盘参考 -->
       <ui-switch
         class="switch-btn"
         :switchBool="switchBool"
@@ -88,6 +88,7 @@ export default {
       request.get("/xian/estateArea").then((res) => {
         if (res.status === 200) {
           this.areaList = res.data;
+          this.areaList=res.data.slice(0,2)
           let that=this;
             that.showDefaultList=false;
         }
