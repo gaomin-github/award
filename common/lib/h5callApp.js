@@ -1,5 +1,5 @@
 // h5调起app
-
+// 实现参考：callapp-lib库
 export function CallApp(androidOption, iosOption, delay) {
     this.androidOption = androidOption
     this.iosOption = iosOption
