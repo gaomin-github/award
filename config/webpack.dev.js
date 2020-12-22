@@ -28,7 +28,8 @@ const devWebpackConfig = merge(baseWebpackConfig, {
     publicPath: "/",
     disableHostCheck: true,
     proxy: {
-      "/xian": "http://localhost:9081",
+      "/xian":"http://59.110.143.244:9081",
+      // "/xian": "http://localhost:9081",
       "/task": "http://localhost:9081",
       "/common": "http://localhost:9081",
     },

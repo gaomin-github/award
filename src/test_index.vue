@@ -11,9 +11,9 @@
     <!-- <div class="list-container">
       <my-list :imgList="imgList"></my-list>
     </div> -->
-    <div class="frame-container">
+    <!-- <div class="frame-container">
       <my-frame></my-frame>
-    </div>
+    </div> -->
    <!-- test_index vue file
    {{configList}}
    <img src="./01.jpg"/>
@@ -41,14 +41,15 @@
 //   r_changeData
 // } = require("./9_test/module_require.js");
 import configList from './test_index.config.js'
+// import {reqLimit} from './timeout_req.js'
 export default {
   components: {
     // test2: () => import("./test_com2.vue"),
     // safeTest: () => import("./safe_test.vue"),
     // changeTest: () => import("./change_test.vue")
     // mySwiper:()=>import("components/ui-swiper.vue"),
-    // myList:()=>import("components/ui-list2.vue")
-    myFrame:()=>import("./pages/iframeTest/index.vue")
+    myList:()=>import("components/ui-list.vue")
+    // myFrame:()=>import("./pages/iframeTest/index.vue")
 
   },
   data() {
@@ -82,6 +83,7 @@ export default {
     }
   },
   mounted() {
+    
     // console.log(_.add(3,4),36)
     // this._initTimeMsg();
     // console.log("test_index.vue mounted", 9);
