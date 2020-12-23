@@ -1,5 +1,7 @@
 
 // 请求超时处理 sdk
+// 知识点：
+// 1）xhr请求，收到回复之后，才会加入到微任务队列中，由事件调度引擎调度
 // 超时
 function timeoutReq(url,time,count){
     return new Promise((resolve,reject)=>{
