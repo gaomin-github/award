@@ -3,7 +3,7 @@ const webpack = require("webpack");
 const merge = require("webpack-merge");
 
 const baseWebpackConfig = require("./webpack.base.js");
-
+const manifestPlugin=require('pwa-manifest-webpack-plugin');
 const devWebpackConfig = merge(baseWebpackConfig, {
   mode: "development",
   output: {
@@ -52,6 +52,20 @@ const devWebpackConfig = merge(baseWebpackConfig, {
     new webpack.ProvidePlugin({
       //   Vue: ["vue/dist/vue.esm.js", "default"],
     }),
+    new manifestPlugin({
+      name:'award测试',
+      short_name:'award',
+      description:'award测试——pwa测试描述',
+      display:'standalone',
+      start_url:'/',
+      orientation:'portrait-primary',
+      icon:{
+        src:path.resolve('src/test.png'),
+        sizes:[200]
+      },
+      background_color: '#2d8cf0', // background_color是在应用的样式资源为加载完毕前的默认背景，因此会展示在开屏界面。background_color加上我们刚才定义的icons就组成了Web App打开时的“开屏图”。
+      theme_color: '#2d8cf0' // 
+        })
   ],
 });
 module.exports = devWebpackConfig;

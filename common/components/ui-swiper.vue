@@ -58,8 +58,9 @@
                     // data修改是同步的，dom更新/渲染是异步的
                     // setTimout,0设置动画，也会有跑帧数的情况
                     // 参考：https://zhuanlan.zhihu.com/p/66398148
+                    // console.log('actIndex',this.actIndex,'showList.length',this.showList.length)
                     if(this.actIndex===this.showList.length-1){
-                        
+                        // 加settimeout作用：动画执行为600ms，执行/渲染过程中，动画被取消，按照新的取消属性执行
                         setTimeout(()=>{
                             requestAnimationFrame(()=>{
                                 that.hasAnimate=false;
