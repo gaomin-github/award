@@ -33,6 +33,7 @@ let vm = new Vue({
   el: "#app",
   components: {
     // ModuleTest: () => import("./module_test/index.vue")
+    // App:()=>import('./pages/iframeTest/index.vue')
     App: () => import("./test_index.vue"),
   },
   // template: "<Module-Test/>",

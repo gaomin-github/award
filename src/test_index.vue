@@ -1,19 +1,19 @@
 <template>
   <section class="test-wrapper">
-    <div class="swiper-container">
+    <!-- <div class="swiper-container">
       <my-swiper :dataList="imgList">
         <div class="swiper-item" v-for="(item,index) in imgList" :key="index">
           <img class="swiper-item-img" :src="item.imgUrl"/>
           <div class="swiper-item-label">{{item.label}}</div>
         </div>
       </my-swiper>
-    </div>
+    </div> -->
     <!-- <div class="list-container">
       <my-list :imgList="imgList"></my-list>
     </div> -->
-    <!-- <div class="frame-container">
+    <div class="frame-container">
       <my-frame></my-frame>
-    </div> -->
+    </div>
    <!-- test_index vue file
    {{configList}}
    <img src="./01.jpg"/>
@@ -49,7 +49,7 @@ export default {
     // changeTest: () => import("./change_test.vue")
     mySwiper:()=>import("components/ui-swiper.vue"),
     // myList:()=>import("components/ui-list.vue")
-    // myFrame:()=>import("./pages/iframeTest/index.vue")
+    myFrame:()=>import("./pages/iframeTest/index.vue")
 
   },
   data() {

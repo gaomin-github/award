@@ -15,15 +15,12 @@
             }
         },
         mounted(){
-            console.log('award',window.top.location.href)
-
             this._initFrameListener()
             let iframe=this.$refs.iframe;
             let that=this;
             iframe.onload=function(){
                 that.iframe=iframe;
             }
-            // window.setCookie=fuction()
         },
         methods:{
             // 监听子页面返回值
